@@ -30,7 +30,7 @@
             </div>
         </header>
 
-        <form action="${pageContext.request.contextPath}/LecturaArchivo" method="POST" id="register-form">
+        <form action="${pageContext.request.contextPath}/LecturaArchivo" method="POST" id="register-form" enctype="multipart/form-data">
             <div class="container-fluid py-4 bg-light">
                 <div class="row">
                     <div class="col-xl-3">
