@@ -16,8 +16,9 @@ public class Conexion {
 
     private Conexion() {
         try {
+            Class.forName("org.mariadb.jdbc.Driver");
             conexion = DriverManager.getConnection(url, usuario, password);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace(System.out);
         }
     }
