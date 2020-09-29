@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import model.usuario.Laboratorista;
 
@@ -30,7 +31,26 @@ public class LaboratoristaDAOImpl implements LaboratoristaDAO {
 
     @Override
     public List<Laboratorista> getListado() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String sql = "SELECT * FROM laboratorista";
+        List<Laboratorista> laboratoristas = null;
+
+        try ( PreparedStatement declaracion = conexion.prepareStatement(sql);  
+                ResultSet rs = declaracion.executeQuery()) {
+            laboratoristas = new ArrayList();
+
+            while (rs.next()) {
+                Laboratorista laboratorista = new Laboratorista();
+                laboratorista.setCodigo(rs.getString("codigo"));
+                laboratorista.setNombre(rs.getString("nombre"));
+                laboratorista.setCUI(rs.getString("cui"));
+                laboratorista.setPassword(rs.getString("password"));
+                //faltan agregar los demas datos
+                laboratoristas.add(laboratorista);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return laboratoristas;
     }
 
     @Override

@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import model.usuario.Paciente;
 
@@ -30,7 +31,26 @@ public class PacienteDAOImpl implements PacienteDAO {
 
     @Override
     public List<Paciente> getListado() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String sql = "SELECT * FROM paciente";
+        List<Paciente> pacientes = null;
+
+        try ( PreparedStatement declaracion = conexion.prepareStatement(sql);  
+                ResultSet rs = declaracion.executeQuery()) {
+            pacientes = new ArrayList();
+
+            while (rs.next()) {
+                Paciente paciente = new Paciente();
+                paciente.setCodigo(rs.getString("codigo"));
+                paciente.setNombre(rs.getString("nombre"));
+                paciente.setCUI(rs.getString("cui"));
+                paciente.setPassword(rs.getString("password"));
+                //faltan agregar los demas datos
+                pacientes.add(paciente);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return pacientes;
     }
 
     @Override

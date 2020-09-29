@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import model.usuario.Medico;
 
@@ -31,7 +32,26 @@ public class MedicoDAOImpl implements MedicoDAO {
 
     @Override
     public List<Medico> getListado() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String sql = "SELECT * FROM medico";
+        List<Medico> medicos = null;
+
+        try ( PreparedStatement declaracion = conexion.prepareStatement(sql);  
+                ResultSet rs = declaracion.executeQuery()) {
+            medicos = new ArrayList();
+
+            while (rs.next()) {
+                Medico medico = new Medico();
+                medico.setCodigo(rs.getString("codigo"));
+                medico.setNombre(rs.getString("nombre"));
+                medico.setCUI(rs.getString("cui"));
+                medico.setPassword(rs.getString("password"));
+                //faltan agregar los demas datos
+                medicos.add(medico);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return medicos;
     }
 
     @Override

@@ -4,6 +4,8 @@
     Author     : asael
 --%>
 
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -41,18 +43,24 @@
                             <input type="text" class="form-control" name="codigo" placeholder="Ingrese codigo">
                         </div>
                         <div class="form-group">
-                            <label for="password">Contrase�a</label>
+                            <label for="password">Contraseña</label>
                             <input type="password" class="form-control" name="password" placeholder="Password">
                         </div>
                         <div class="text-center">
                             <button type="reset" class="btn btn-primary mr-2">Limpiar</button>
                             <button type="submit" class="btn btn-primary">Iniciar sesion</button>
                         </div>
+                        <c:if test="${errorLogin  != null}" >
+                            <script>
+                                alert("Codigo y/o contraseña incorrectos");
+                            </script>
+                        </c:if>
                     </form>
                 </div>
                 <div class="col-xl-3"></div>
             </div>
         </div>
+
 
         <!--JS--> 
         <jsp:include page="/WEB-INF/extras/extrasJS.jsp"/>

@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import model.usuario.Admin;
 
@@ -19,7 +21,7 @@ public class AdminDAOImpl implements AdminDAO {
 
     private AdminDAOImpl() {
     }
-    
+
     public static AdminDAOImpl getAdminDAO() {
         if (adminDAO == null) {
             adminDAO = new AdminDAOImpl();
@@ -29,7 +31,25 @@ public class AdminDAOImpl implements AdminDAO {
 
     @Override
     public List<Admin> getListado() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String sql = "SELECT * FROM admin";
+        List<Admin> admins = null;
+
+        try ( PreparedStatement declaracion = conexion.prepareStatement(sql);  
+                ResultSet rs = declaracion.executeQuery()) {
+            admins = new ArrayList();
+
+            while (rs.next()) {
+                Admin admin = new Admin();
+                admin.setCodigo(rs.getString("codigo"));
+                admin.setNombre(rs.getString("nombre"));
+                admin.setCUI(rs.getString("cui"));
+                admin.setPassword(rs.getString("password"));
+                admins.add(admin);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return admins;
     }
 
     @Override
@@ -52,9 +72,9 @@ public class AdminDAOImpl implements AdminDAO {
         String sql = "SELECT * FROM admin WHERE codigo = ?";
 
         Admin admin = null;
-        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+        try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, codigo);
-            try (ResultSet rs = ps.executeQuery()) {
+            try ( ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     admin = new Admin();
                     admin.setCodigo(codigo);
