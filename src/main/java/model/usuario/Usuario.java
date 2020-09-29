@@ -1,37 +1,29 @@
-package model;
+package model.usuario;
 
-import java.io.Serializable;
+import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  *
  * @author asael
  */
-public class Admin implements Serializable {
+public class Usuario {
 
     private String codigo;
     private String nombre;
-    private String nit;
+    private String cui;
     private String password;
 
-    public Admin() {
+    public Usuario() {
     }
 
-    public Admin(String codigo) {
-        this.codigo = codigo;
-    }
-
-    public Admin(String nombre, String nit, String password) {
-        this.nombre = nombre;
-        this.nit = nit;
-        this.password = password;
-    }
-
-    public Admin(String codigo, String nombre, String nit, String password) {
+    public Usuario(String codigo, String nombre, String cui, String password) {
         this.codigo = codigo;
         this.nombre = nombre;
-        this.nit = nit;
+        this.cui = cui;
         this.password = password;
     }
+    
+    
 
     public String getCodigo() {
         return codigo;
@@ -49,12 +41,12 @@ public class Admin implements Serializable {
         this.nombre = nombre;
     }
 
-    public String getNit() {
-        return nit;
+    public String getCUI() {
+        return cui;
     }
 
-    public void setNit(String nit) {
-        this.nit = nit;
+    public void setCUI(String nit) {
+        this.cui = nit;
     }
 
     public String getPassword() {
@@ -63,5 +55,9 @@ public class Admin implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    
+    public String getEncryptPassword() {
+        return DigestUtils.sha1Hex(password);
     }
 }

@@ -5,7 +5,7 @@ USE SistemaHospital;
 CREATE TABLE  admin (
   codigo VARCHAR(20) NOT NULL,
   nombre VARCHAR(45) NOT NULL,
-  nit VARCHAR(45) NOT NULL,
+  cui VARCHAR(15) NOT NULL,
   password VARCHAR(40) NOT NULL,
   PRIMARY KEY (codigo));
 
@@ -23,9 +23,9 @@ CREATE TABLE  medico (
   PRIMARY KEY (codigo));
 
 CREATE TABLE  especialidad (
-  id INT NOT NULL,
-  nombre VARCHAR(45) NOT NULL,
-  costo VARCHAR(45) NULL,
+  id INT AUTO_INCREMENT NOT NULL,
+  nombre VARCHAR(45) UNIQUE NOT NULL,
+  costo VARCHAR(45) NOT NULL,
   PRIMARY KEY (id));
 
 CREATE TABLE  asignacionEspecialidad (
@@ -58,7 +58,7 @@ CREATE TABLE  paciente (
 
 CREATE TABLE  tipoExamen (
   codigo VARCHAR(10) NOT NULL,
-  nombre VARCHAR(45) NOT NULL,
+  nombre VARCHAR(45) UNIQUE NOT NULL,
   requiereOrden TINYINT NOT NULL DEFAULT 0,
   descripcion VARCHAR(1200) NOT NULL,
   costo FLOAT NOT NULL,
@@ -84,7 +84,7 @@ CREATE TABLE  laboratorista (
 
 CREATE TABLE  turno (
   codigoLaboratorista VARCHAR(20) NOT NULL,
-  dia INT NOT NULL,
+  dia VARCHAR(10) NOT NULL,
   PRIMARY KEY (codigoLaboratorista, dia),
   CONSTRAINT FK_CODIGO_LABORATORISTA
     FOREIGN KEY (codigoLaboratorista)
@@ -98,10 +98,10 @@ CREATE TABLE  examen (
   codigoLaboratorista VARCHAR(20) NOT NULL,
   codigoTipoExamen VARCHAR(10) NOT NULL,
   codigoMedico VARCHAR(20) NULL,
-  orden BLOB NULL,
+  orden MEDIUMBLOB NULL,
   fecha DATE NOT NULL,
   hora TIME NOT NULL,
-  estado TINYINT NOT NULL DEFAULT 0,
+  estado TINYINT NOT NULL,
   total FLOAT NOT NULL,
   PRIMARY KEY (codigo),
   CONSTRAINT FK_EXAMEN_TO_CODIGO_PACIENTE
@@ -133,7 +133,7 @@ CREATE TABLE  consulta (
   fecha DATE NOT NULL,
   hora TIME NOT NULL,
   estado TINYINT NOT NULL,
-  total VARCHAR(45) NULL,
+  total VARCHAR(45) NOT NULL,
   PRIMARY KEY (codigo),
   CONSTRAINT FK_CONSULTA_TO_CODIGO_PACIENTE
     FOREIGN KEY (codigoPaciente)
@@ -153,7 +153,7 @@ CREATE TABLE  consulta (
 
 CREATE TABLE  resultado (
   codigoExamen VARCHAR(15) NOT NULL,
-  resultado BLOB NOT NULL,
+  resultado MEDIUMBLOB NOT NULL,
   fecha DATE NOT NULL,
   hora TIME NOT NULL,
   PRIMARY KEY (codigoExamen),

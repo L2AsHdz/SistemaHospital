@@ -1,4 +1,4 @@
-package model;
+package model.especialidad;
 
 /**
  *
@@ -11,6 +11,11 @@ public class Especialidad {
     private float costo;
 
     public Especialidad() {
+    }
+
+    public Especialidad(String nombre, String costo) {
+        this.nombre = nombre;
+        this.costo = Float.parseFloat(costo);
     }
 
     public int getId() {

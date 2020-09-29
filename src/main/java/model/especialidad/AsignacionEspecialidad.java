@@ -1,4 +1,4 @@
-package model;
+package model.especialidad;
 
 /**
  *
@@ -10,6 +10,11 @@ public class AsignacionEspecialidad {
     private int idEspecialidad;
 
     public AsignacionEspecialidad() {
+    }
+
+    public AsignacionEspecialidad(String codigoMedico, int idEspecialidad) {
+        this.codigoMedico = codigoMedico;
+        this.idEspecialidad = idEspecialidad;
     }
 
     public String getCodigoMedico() {
