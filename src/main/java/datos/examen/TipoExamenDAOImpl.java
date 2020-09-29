@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import model.examen.TipoExamen;
 
@@ -29,7 +30,27 @@ public class TipoExamenDAOImpl implements TipoExamenDAO {
 
     @Override
     public List<TipoExamen> getListado() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String sql = "SELECT * FROM tipoExamen";
+        List<TipoExamen> tiposExamen = null;
+
+        try ( PreparedStatement declaracion = conexion.prepareStatement(sql);  
+                ResultSet rs = declaracion.executeQuery()) {
+            tiposExamen = new ArrayList();
+
+            while (rs.next()) {
+                TipoExamen tipoExamen = new TipoExamen();
+                tipoExamen.setCodigo(rs.getString("codigo"));
+                tipoExamen.setNombre(rs.getString("nombre"));
+                tipoExamen.setRequiereOrden(rs.getInt("requiereOrden"));
+                tipoExamen.setDescripcion(rs.getString("descripcion"));
+                tipoExamen.setCosto(rs.getFloat("costo"));
+                tipoExamen.setTipoInforme(rs.getString("tipoInforme"));
+                tiposExamen.add(tipoExamen);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return tiposExamen;
     }
 
     @Override

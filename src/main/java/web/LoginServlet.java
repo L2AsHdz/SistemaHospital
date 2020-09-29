@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.usuario.Admin;
 import model.usuario.Laboratorista;
 import model.usuario.Medico;
@@ -39,7 +40,7 @@ public class LoginServlet extends HttpServlet {
         verificarCredenciales(codigo, DigestUtils.sha1Hex(password), response, request);
     }
 
-    private void verificarCredenciales(String codigo, String encryptPassword, 
+    private void verificarCredenciales(String codigo, String encryptPassword,
             HttpServletResponse response, HttpServletRequest request) throws IOException, ServletException {
         boolean login = false;
         int tipoUser = 0;
@@ -65,7 +66,7 @@ public class LoginServlet extends HttpServlet {
                 tipoUser = 2;
             }
         }
-        
+
         for (Laboratorista l : laboratoristas) {
             if (l.getCodigo().equals(codigo) && l.getPassword().equals(encryptPassword)) {
                 login = true;
@@ -73,7 +74,7 @@ public class LoginServlet extends HttpServlet {
                 tipoUser = 3;
             }
         }
-        
+
         for (Paciente p : pacientes) {
             if (p.getCodigo().equals(codigo) && p.getPassword().equals(encryptPassword)) {
                 login = true;
@@ -81,23 +82,29 @@ public class LoginServlet extends HttpServlet {
                 tipoUser = 4;
             }
         }
-        
+
         if (login) {
+            HttpSession sesion = request.getSession();
+            sesion.setMaxInactiveInterval(3600);
             switch (tipoUser) {
                 case 1 -> {
-                    request.getSession().setAttribute("user", user);
+                    sesion.setAttribute("user", user);
+                    sesion.setAttribute("tipoUser", 1);
                     response.sendRedirect("admin/inicioAdmin.jsp");
                 }
                 case 2 -> {
-                    request.getSession().setAttribute("user", user);
+                    sesion.setAttribute("user", user);
+                    sesion.setAttribute("tipoUser", 2);
                     response.sendRedirect("medico/inicioMedico.jsp");
                 }
                 case 3 -> {
-                    request.getSession().setAttribute("user", user);
+                    sesion.setAttribute("user", user);
+                    sesion.setAttribute("tipoUser", 3);
                     response.sendRedirect("laboratorista/inicioLab.jsp");
                 }
                 case 4 -> {
-                    request.getSession().setAttribute("user", user);
+                    sesion.setAttribute("user", user);
+                    sesion.setAttribute("tipoUser", 4);
                     response.sendRedirect("paciente/inicioPaciente.jsp");
                 }
             }

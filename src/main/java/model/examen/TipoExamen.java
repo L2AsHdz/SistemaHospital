@@ -72,4 +72,12 @@ public class TipoExamen {
     public void setTipoInforme(String tipoInforme) {
         this.tipoInforme = tipoInforme;
     }
+    
+    public String getRequiereOrdenS() {
+        if (this.requiereOrden == 1) {
+            return "Si";
+        } else {
+            return "No";
+        }
+    }
 }
