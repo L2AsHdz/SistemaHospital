@@ -16,6 +16,7 @@ import model.usuario.Admin;
 import model.usuario.Laboratorista;
 import model.usuario.Medico;
 import model.usuario.Paciente;
+import model.usuario.Usuario;
 import org.apache.commons.codec.digest.DigestUtils;
 
 /**
@@ -43,6 +44,7 @@ public class LoginServlet extends HttpServlet {
         boolean login = false;
         int tipoUser = 0;
 
+        Usuario user = null;
         List<Admin> admins = adminDAO.getListado();
         List<Medico> medicos = medicoDAO.getListado();
         List<Laboratorista> laboratoristas = laboratoristaDAO.getListado();
@@ -51,6 +53,7 @@ public class LoginServlet extends HttpServlet {
         for (Admin a : admins) {
             if (a.getCodigo().equals(codigo) && a.getPassword().equals(encryptPassword)) {
                 login = true;
+                user = a;
                 tipoUser = 1;
             }
         }
@@ -58,6 +61,7 @@ public class LoginServlet extends HttpServlet {
         for (Medico m : medicos) {
             if (m.getCodigo().equals(codigo) && m.getPassword().equals(encryptPassword)) {
                 login = true;
+                user = m;
                 tipoUser = 2;
             }
         }
@@ -65,6 +69,7 @@ public class LoginServlet extends HttpServlet {
         for (Laboratorista l : laboratoristas) {
             if (l.getCodigo().equals(codigo) && l.getPassword().equals(encryptPassword)) {
                 login = true;
+                user = l;
                 tipoUser = 3;
             }
         }
@@ -72,16 +77,29 @@ public class LoginServlet extends HttpServlet {
         for (Paciente p : pacientes) {
             if (p.getCodigo().equals(codigo) && p.getPassword().equals(encryptPassword)) {
                 login = true;
+                user = p;
                 tipoUser = 4;
             }
         }
         
         if (login) {
             switch (tipoUser) {
-                case 1 -> response.sendRedirect("admin/inicioAdmin.jsp");
-                case 2 -> response.sendRedirect("medico/inicioMedico.jsp");
-                case 3 -> response.sendRedirect("laboratorista/inicioLab.jsp");
-                case 4 -> response.sendRedirect("paciente/inicioPaciente.jsp");
+                case 1 -> {
+                    request.getSession().setAttribute("user", user);
+                    response.sendRedirect("admin/inicioAdmin.jsp");
+                }
+                case 2 -> {
+                    request.getSession().setAttribute("user", user);
+                    response.sendRedirect("medico/inicioMedico.jsp");
+                }
+                case 3 -> {
+                    request.getSession().setAttribute("user", user);
+                    response.sendRedirect("laboratorista/inicioLab.jsp");
+                }
+                case 4 -> {
+                    request.getSession().setAttribute("user", user);
+                    response.sendRedirect("paciente/inicioPaciente.jsp");
+                }
             }
         } else {
             request.setAttribute("errorLogin", true);

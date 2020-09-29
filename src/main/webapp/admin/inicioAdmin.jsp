@@ -9,9 +9,17 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Admin</title>
+        <title>${user.codigo} - ${user.nombre}</title>
+        
+        <!--CSS-->
+        <jsp:include page="/WEB-INF/extras/extrasCSS.jsp"/>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <!--Barra de navegacion-->
+        <jsp:include page="/WEB-INF/admin/navBarAdmin.jsp" />
+        
+        
+        <!--JS--> 
+        <jsp:include page="/WEB-INF/extras/extrasJS.jsp"/>
     </body>
 </html>
