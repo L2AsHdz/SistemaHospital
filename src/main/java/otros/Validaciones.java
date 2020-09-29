@@ -287,7 +287,7 @@ public class Validaciones {
     }
 
     public static boolean exists(String nameFile) {
-        File file = new File("/home/asael/uploads/archivoEntrada/" + nameFile);
+        File file = new File("/home/asael/uploads/datosEntrada/" + nameFile);
         return file.exists();
     }
 

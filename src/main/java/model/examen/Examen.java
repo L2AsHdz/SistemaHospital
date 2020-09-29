@@ -40,7 +40,7 @@ public class Examen {
 
         if (!orden.trim().isEmpty()) {
             try {
-                this.orden = new FileInputStream("/home/asael/uploads/archivoEntrada/" + orden);
+                this.orden = new FileInputStream("/home/asael/uploads/datosEntrada/" + orden);
             } catch (FileNotFoundException e) {
                 e.printStackTrace(System.out);
             }

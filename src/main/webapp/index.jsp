@@ -21,7 +21,7 @@
                 <div class="row">
                     <div class="col-xl-6">
                         <h1>
-                            <i class="fas fa-file"></i>
+                            <i class="fas fa-file-search"></i>
                             Lectura Archivo    
                         </h1>
 

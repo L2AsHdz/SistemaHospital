@@ -25,7 +25,7 @@ public class Resultado {
         this.codigoExamen = codigoExamen;
         
         try {
-            this.resultado = new FileInputStream("/home/asael/uploads/archivoEntrada/" + resultado);
+            this.resultado = new FileInputStream("/home/asael/uploads/datosEntrada/" + resultado);
         } catch (FileNotFoundException e) {
             e.printStackTrace(System.out);
         }
