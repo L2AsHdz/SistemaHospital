@@ -21,13 +21,13 @@ import static otros.Validaciones.validarInforme;
  * @author asael
  */
 public class LecturaInforme {
-    
+
     private static final EspecialidadDAO especialidadDAO = EspecialidadDAOImpl.getEspecialidadDAO();
     private static final AsignacionEspecialidadDAO asignacionDAO = AsignacionEspecialidadDAOImpl.getAsignacionEsDAO();
     private static final CRUD<Consulta> consultaDAO = ConsultaDAOImpl.getconsultaDAO();
     private static final CRUD<Informe> informeDAO = InformeDAOImpl.getInformeDAO();
 
-    public static void leerInforme(Document doc) {
+    public static void leerInforme(Document doc) throws FileInputException {
         NodeList informes = doc.getElementsByTagName("reporte");
 
         for (int i = 0; i < informes.getLength(); i++) {
@@ -43,21 +43,17 @@ public class LecturaInforme {
                 String fecha = getTextNode(informe, "FECHA");
                 String hora = getTextNode(informe, "HORA");
 
-                try {
-                    validarInforme(codigo, paciente, medico, informeText, fecha, hora, i);
-                    if (!consultaDAO.exists(codigo)) {
-                        int idEspecialidad = asignacionDAO.getIdFirstAsinacion(medico);
-                        consultaDAO.create(new Consulta(codigo, medico, paciente, idEspecialidad,
-                                fecha, hora, 1, especialidadDAO.getCosto(idEspecialidad)));
-                    }
-                    informeDAO.create(new Informe(codigo, informeText, fecha, hora));
-                } catch (FileInputException e) {
-                    e.printStackTrace(System.out);
+                validarInforme(codigo, paciente, medico, informeText, fecha, hora, i);
+                if (!consultaDAO.exists(codigo)) {
+                    int idEspecialidad = asignacionDAO.getIdFirstAsinacion(medico);
+                    consultaDAO.create(new Consulta(codigo, medico, paciente, idEspecialidad,
+                            fecha, hora, 1, especialidadDAO.getCosto(idEspecialidad)));
                 }
+                informeDAO.create(new Informe(codigo, informeText, fecha, hora));
             }
         }
     }
-    
+
     private static String getTextNode(Element element, String tagName) {
         return element.getElementsByTagName(tagName).item(0).getTextContent();
     }

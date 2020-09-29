@@ -15,10 +15,10 @@ import static otros.Validaciones.validarTipoExamen;
  * @author asael
  */
 public class LecturaTipoExamen {
-    
+
     private static final CRUD<TipoExamen> tipoExamenDAO = TipoExamenDAOImpl.getTipoExamenDAO();
 
-    public static void leerTipoExamen(Document doc) {
+    public static void leerTipoExamen(Document doc) throws FileInputException {
         NodeList tiposExamenes = doc.getElementsByTagName("examen");
 
         for (int i = 0; i < tiposExamenes.getLength(); i++) {
@@ -34,16 +34,12 @@ public class LecturaTipoExamen {
                 String costo = getTextNode(tipoExamen, "COSTO");
                 String informe = getTextNode(tipoExamen, "INFORME");
 
-                try {
-                    validarTipoExamen(codigo, nombre, orden, descripcion, costo, informe, i);
-                    tipoExamenDAO.create(new TipoExamen(codigo, nombre, orden, descripcion, costo, informe));
-                } catch (FileInputException e) {
-                    e.printStackTrace(System.out);
-                }
+                validarTipoExamen(codigo, nombre, orden, descripcion, costo, informe, i);
+                tipoExamenDAO.create(new TipoExamen(codigo, nombre, orden, descripcion, costo, informe));
             }
         }
     }
-    
+
     private static String getTextNode(Element element, String tagName) {
         return element.getElementsByTagName(tagName).item(0).getTextContent();
     }

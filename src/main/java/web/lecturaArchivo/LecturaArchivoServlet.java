@@ -1,21 +1,11 @@
 package web.lecturaArchivo;
 
-import datos.*;
-import datos.admin.*;
-import datos.consulta.*;
-import datos.especialidad.*;
-import datos.examen.*;
-import datos.laboratorista.*;
-import datos.medico.*;
-import datos.paciente.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -26,19 +16,12 @@ import javax.servlet.http.Part;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import model.consulta.*;
-import model.especialidad.*;
-import model.examen.*;
-import model.usuario.*;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import otros.FileInputException;
-import static otros.Validaciones.*;
-import static web.lecturaArchivo.lecturaAdmin.leerAdmin;
+import static web.lecturaArchivo.LecturaAdmin.leerAdmin;
 import static web.lecturaArchivo.LecturaPaciente.leerPaciente;
 import static web.lecturaArchivo.LecturaEspecialidad.leerEspecialidad;
 import static web.lecturaArchivo.LecturaMedico.leerMedico;
@@ -55,8 +38,6 @@ import static web.lecturaArchivo.LecturaInforme.leerInforme;
 @WebServlet("/LecturaArchivo")
 @MultipartConfig
 public class LecturaArchivoServlet extends HttpServlet {
-    
-    
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -68,7 +49,7 @@ public class LecturaArchivoServlet extends HttpServlet {
 
         //Leer datos del archivo XML
         leerArchivoXML(nombreArchivo);
-        
+
         response.sendRedirect("login.jsp");
     }
 
@@ -95,41 +76,69 @@ public class LecturaArchivoServlet extends HttpServlet {
             DocumentBuilder builder = factory.newDocumentBuilder();
 
             //Crear documento
-            File xml = new File("/home/asael/uploads/datosEntrada/"+nombreArchivo);
+            File xml = new File("/home/asael/uploads/datosEntrada/" + nombreArchivo);
             Document doc = builder.parse(xml);
 
             //Leer etiqueta admin
-            leerAdmin(doc);
+            try {
+                leerAdmin(doc);
+            } catch (FileInputException e) {
+                //mostrar error en pagina web
+            }
 
             //Leer etiqueta paciente
-            leerPaciente(doc);
+            try {
+                leerPaciente(doc);
+            } catch (FileInputException ex) {
+            }
 
             //Leer etiqueta consulta (especialidad)
-            leerEspecialidad(doc);
+            try {
+                leerEspecialidad(doc);
+            } catch (FileInputException ex) {
+            }
 
             //Leer etiqueta doctor (medico)
-            leerMedico(doc);
+            try {
+                leerMedico(doc);
+            } catch (FileInputException ex) {
+            }
 
             //Leer etiqueta examen (Tipo Examen)
-            leerTipoExamen(doc);
+            try {
+                leerTipoExamen(doc);
+            } catch (FileInputException ex) {
+            }
 
             //Leer etiqueta laboratorista
-            leerLaboratorista(doc);
+            try {
+                leerLaboratorista(doc);
+            } catch (FileInputException ex) {
+            }
 
             //Leer etiqueta resultado (Examen y Resultado)
-            leerResultado(doc);
+            try {
+                leerResultado(doc);
+            } catch (FileInputException ex) {
+            }
 
             //Leer etiqueta cita (consulta)
-            leerConsulta(doc);
+            try {
+                leerConsulta(doc);
+            } catch (FileInputException ex) {
+            }
 
             //Leer etiqueta reporte (informe)
-            leerInforme(doc);
+            try {
+                leerInforme(doc);
+            } catch (FileInputException ex) {
+            }
 
         } catch (IOException | ParserConfigurationException | DOMException | SAXException ex) {
-            System.out.println(System.out);
+            ex.printStackTrace(System.out);
         }
     }
-    
+
     private String getTextNode(Element element, String tagName) {
         return element.getElementsByTagName(tagName).item(0).getTextContent();
     }

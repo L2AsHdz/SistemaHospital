@@ -15,10 +15,10 @@ import static otros.Validaciones.validarEspecialidad;
  * @author asael
  */
 public class LecturaEspecialidad {
-    
+
     private static final CRUD<Especialidad> especialidadDAO = EspecialidadDAOImpl.getEspecialidadDAO();
 
-    public static void leerEspecialidad(Document doc) {
+    public static void leerEspecialidad(Document doc) throws FileInputException {
         NodeList costosConsulta = doc.getElementsByTagName("consulta");
 
         for (int i = 0; i < costosConsulta.getLength(); i++) {
@@ -30,16 +30,13 @@ public class LecturaEspecialidad {
                 String nombre = getTextNode(costoConsulta, "TIPO");
                 String costo = getTextNode(costoConsulta, "COSTO");
 
-                try {
-                    validarEspecialidad(nombre, costo, i);
-                    especialidadDAO.create(new Especialidad(nombre, costo));
-                } catch (FileInputException e) {
-                    e.printStackTrace(System.out);
-                }
+                validarEspecialidad(nombre, costo, i);
+                especialidadDAO.create(new Especialidad(nombre, costo));
+
             }
         }
     }
-    
+
     private static String getTextNode(Element element, String tagName) {
         return element.getElementsByTagName(tagName).item(0).getTextContent();
     }

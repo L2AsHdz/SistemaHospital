@@ -14,11 +14,11 @@ import static otros.Validaciones.validarAdmin;
  *
  * @author asael
  */
-public class lecturaAdmin {
+public class LecturaAdmin {
 
     private static final CRUD<Admin> adminDAO = AdminDAOImpl.getAdminDAO();
 
-    public static void leerAdmin(Document doc) {
+    public static void leerAdmin(Document doc) throws FileInputException {
         //nodos admin
         NodeList admins = doc.getElementsByTagName("admin");
 
@@ -32,12 +32,8 @@ public class lecturaAdmin {
                 String nombre = getTextNode(admin, "NOMBRE");
                 String password = getTextNode(admin, "PASSWORD");
 
-                try {
-                    validarAdmin(codigo, nombre, cui, password, i);
-                    adminDAO.create(new Admin(codigo, nombre, cui, password));
-                } catch (FileInputException e) {
-                    e.printStackTrace(System.out);
-                }
+                validarAdmin(codigo, nombre, cui, password, i);
+                adminDAO.create(new Admin(codigo, nombre, cui, password));
             }
         }
     }

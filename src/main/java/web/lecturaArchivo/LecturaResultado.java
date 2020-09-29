@@ -24,7 +24,7 @@ public class LecturaResultado {
     private static final CRUD<Examen> examenDAO = ExamenDAOImpl.getExamenDAO();
     private static final CRUD<Resultado> resultadoDAO = ResultadoDAOImpl.getResultadoDAO();
 
-    public static void leerResultado(Document doc) {
+    public static void leerResultado(Document doc) throws FileInputException {
         NodeList resultados = doc.getElementsByTagName("resultado");
 
         for (int i = 0; i < resultados.getLength(); i++) {
@@ -43,19 +43,15 @@ public class LecturaResultado {
                 String fecha = getTextNode(resultadoE, "FECHA");
                 String hora = getTextNode(resultadoE, "HORA");
 
-                try {
-                    validarResultado(codigo, paciente, examen, medico, laboratorista,
-                            orden, resultado, fecha, hora, i);
-                    examenDAO.create(new Examen(codigo, paciente, laboratorista, examen,
-                            medico, orden, fecha, hora, 1, tipoExamenDAO.getCosto(examen)));
-                    resultadoDAO.create(new Resultado(codigo, resultado, fecha, hora));
-                } catch (FileInputException e) {
-                    e.printStackTrace(System.out);
-                }
+                validarResultado(codigo, paciente, examen, medico, laboratorista,
+                        orden, resultado, fecha, hora, i);
+                examenDAO.create(new Examen(codigo, paciente, laboratorista, examen,
+                        medico, orden, fecha, hora, 1, tipoExamenDAO.getCosto(examen)));
+                resultadoDAO.create(new Resultado(codigo, resultado, fecha, hora));
             }
         }
     }
-    
+
     private static String getTextNode(Element element, String tagName) {
         return element.getElementsByTagName(tagName).item(0).getTextContent();
     }

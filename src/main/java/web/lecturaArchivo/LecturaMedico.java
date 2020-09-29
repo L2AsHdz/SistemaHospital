@@ -26,7 +26,7 @@ public class LecturaMedico {
     private static final EspecialidadDAO especialidadDAO = EspecialidadDAOImpl.getEspecialidadDAO();
     private static final CRUD<AsignacionEspecialidad> asignacionDAO = AsignacionEspecialidadDAOImpl.getAsignacionEsDAO();
 
-    public static void leerMedico(Document doc) {
+    public static void leerMedico(Document doc) throws FileInputException {
         NodeList medicos = doc.getElementsByTagName("doctor");
         List<String> listTitulos = new ArrayList<>();
 
@@ -58,19 +58,14 @@ public class LecturaMedico {
                 String horaInicio = getTextNode(horario, "INICIO");
                 String horaFinal = getTextNode(horario, "FIN");
 
-                try {
-                    validarMedico(codigo, nombre, colegiado, cui, telefono, correo,
-                            horaInicio, horaFinal, fechaInicioLabores, password, listTitulos, i);
-                    medicoDAO.create(new Medico(colegiado, telefono, correo, horaInicio,
-                            horaFinal, fechaInicioLabores, codigo, nombre, cui, password));
+                validarMedico(codigo, nombre, colegiado, cui, telefono, correo,
+                        horaInicio, horaFinal, fechaInicioLabores, password, listTitulos, i);
+                medicoDAO.create(new Medico(colegiado, telefono, correo, horaInicio,
+                        horaFinal, fechaInicioLabores, codigo, nombre, cui, password));
 
-                    listTitulos.forEach(t -> {
-                        asignacionDAO.create(new AsignacionEspecialidad(codigo, especialidadDAO.getIdEspecialidad(t)));
-                    });
-
-                } catch (FileInputException e) {
-                    e.printStackTrace(System.out);
-                }
+                listTitulos.forEach(t -> {
+                    asignacionDAO.create(new AsignacionEspecialidad(codigo, especialidadDAO.getIdEspecialidad(t)));
+                });
             }
         }
     }

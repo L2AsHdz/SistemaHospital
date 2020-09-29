@@ -21,7 +21,7 @@ public class LecturaConsulta {
     private static final CRUD<Consulta> consultaDAO = ConsultaDAOImpl.getconsultaDAO();
     private static final EspecialidadDAO especialidadDAO = EspecialidadDAOImpl.getEspecialidadDAO();
 
-    public static void leerConsulta(Document doc) {
+    public static void leerConsulta(Document doc) throws FileInputException {
         NodeList consultas = doc.getElementsByTagName("cita");
 
         for (int i = 0; i < consultas.getLength(); i++) {
@@ -37,18 +37,15 @@ public class LecturaConsulta {
                 String fecha = getTextNode(consulta, "FECHA");
                 String hora = getTextNode(consulta, "HORA");
 
-                try {
-                    validarConsulta(codigo, paciente, medico, especialidad, fecha, hora, i);
-                    int idEspecialidad = especialidadDAO.getIdEspecialidad(especialidad);
-                    consultaDAO.create(new Consulta(codigo, medico, paciente, idEspecialidad,
-                            fecha, hora, 0, especialidadDAO.getCosto(idEspecialidad)));
-                } catch (FileInputException e) {
-                    e.printStackTrace(System.out);
-                }
+                validarConsulta(codigo, paciente, medico, especialidad, fecha, hora, i);
+                int idEspecialidad = especialidadDAO.getIdEspecialidad(especialidad);
+                consultaDAO.create(new Consulta(codigo, medico, paciente, idEspecialidad,
+                        fecha, hora, 0, especialidadDAO.getCosto(idEspecialidad)));
+
             }
         }
     }
-    
+
     private static String getTextNode(Element element, String tagName) {
         return element.getElementsByTagName(tagName).item(0).getTextContent();
     }
