@@ -43,9 +43,14 @@ public class MedicoDAOImpl implements MedicoDAO {
                 Medico medico = new Medico();
                 medico.setCodigo(rs.getString("codigo"));
                 medico.setNombre(rs.getString("nombre"));
+                medico.setNoColegiado(rs.getString("noColegiado"));
                 medico.setCUI(rs.getString("cui"));
+                medico.setTelefono(rs.getString("telefono"));
+                medico.setCorreo(rs.getString("correo"));
+                medico.setHoraInicio(LocalTime.parse(rs.getString("horaInicio")));
+                medico.setHoraFinal(LocalTime.parse(rs.getString("horaFinal")));
+                medico.setFechaInicioLabores(LocalDate.parse(rs.getString("fechaInicioLabores")));
                 medico.setPassword(rs.getString("password"));
-                //faltan agregar los demas datos
                 medicos.add(medico);
             }
         } catch (SQLException e) {
