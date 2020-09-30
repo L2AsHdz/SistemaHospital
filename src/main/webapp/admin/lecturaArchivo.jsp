@@ -50,6 +50,6 @@
 
         <!-- JQuery Validation -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
-        <script src="js/validaciones/validacionArchivo.js"></script>
+        <script src="${pageContext.request.contextPath}/js/validaciones/validacionArchivo.js"></script>
     </body>
 </html>

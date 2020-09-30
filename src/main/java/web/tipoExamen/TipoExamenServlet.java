@@ -36,18 +36,30 @@ public class TipoExamenServlet extends HttpServlet {
                 if (!tipoExamenDAO.exists(codigo)) {
                     tipoExamenDAO.create(new TipoExamen(codigo, nombre, requiereOrden, descripcion, costo, tipoInforme));
                     redirect(request, response);
+                    //mostrar mensaje de exito
                 } else {
-                    
+                    //Mostrar error por entidad repetida
                 }
             }
-            case "editar" -> {
+            case "modificar" -> {
+                tipoExamenDAO.update(new TipoExamen(codigo, nombre, requiereOrden, descripcion, costo, tipoInforme));
+                redirect(request, response);
+                    //mostrar mensaje de exito
             }
         }
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        redirect(request, response);
+        String accion = request.getParameter("accion");
+        if (accion != null && accion.equals("editar")) {
+            String codigo = request.getParameter("codigo");
+            TipoExamen tipoExamen = tipoExamenDAO.getObject(codigo);
+            request.setAttribute("tipoExamen", tipoExamen);
+            request.getRequestDispatcher("admin/formTipoExamen.jsp").forward(request, response);
+        } else {
+            redirect(request, response);
+        }
     }
 
     private void redirect(HttpServletRequest request, HttpServletResponse response) throws IOException {

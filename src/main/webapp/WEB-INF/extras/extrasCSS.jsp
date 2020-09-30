@@ -6,4 +6,4 @@
       integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" 
       crossorigin="anonymous">
 <!-- Estilos propios -->
-<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">

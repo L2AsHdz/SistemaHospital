@@ -95,8 +95,20 @@ public class TipoExamenDAOImpl implements TipoExamenDAO {
     }
 
     @Override
-    public void update(TipoExamen t) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void update(TipoExamen tipoExamen) {
+        String sql = "UPDATE tipoExamen SET nombre = ?, requiereOrden = ?, descripcion = ?,"
+                + "costo = ?, tipoInforme = ? WHERE codigo = ?";
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, tipoExamen.getNombre());
+            ps.setInt(2, tipoExamen.getRequiereOrden());
+            ps.setString(3, tipoExamen.getDescripcion());
+            ps.setFloat(4, tipoExamen.getCosto());
+            ps.setString(5, tipoExamen.getTipoInforme());
+            ps.setString(6, tipoExamen.getCodigo());
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        }
     }
 
     @Override

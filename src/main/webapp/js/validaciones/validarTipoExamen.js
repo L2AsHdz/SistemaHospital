@@ -12,7 +12,7 @@ $('document').ready(function () {
             },
             requiereOrden: {
                 required: true,
-                number: true
+                minlength: 1
             },
             descripcion: {
                 required: true,
@@ -23,7 +23,8 @@ $('document').ready(function () {
                 number: true
             },
             tipoInforme: {
-                required: true
+                required: true,
+                minlength: 1
             }
         },
         messages: {
@@ -37,7 +38,7 @@ $('document').ready(function () {
             },
             requiereOrden: {
                 required: "Este campo es obligatorio",
-                number: "seleccione una opcion"
+                minlength: "Seleccione una opcion"
             },
             descripcion: {
                 required: "Este campo es obligatorio",
@@ -48,7 +49,8 @@ $('document').ready(function () {
                 number: "Debe ser un dato numerico"
             },
             tipoInforme: {
-                required: "Este campo es obligatorio"
+                required: "Este campo es obligatorio",
+                minlength: "Seleccione una opcion"
             }
         }
     });

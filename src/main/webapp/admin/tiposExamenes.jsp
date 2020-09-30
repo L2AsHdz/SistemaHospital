@@ -25,7 +25,7 @@
         <div class="container-fluid py-3 mb-4 bg-secondary">
             <div class="row">
                 <div class="col-xl-3">
-                    <a href="formularioTipoExamen.jsp" class="btn btn-primary btn-block">
+                    <a href="formTipoExamen.jsp" class="btn btn-primary btn-block">
                         <i class="fas fa-plus"></i> Agregar tipo de Examen
                     </a>
                 </div>
