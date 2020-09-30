@@ -56,27 +56,38 @@
                                 <tbody>
 
                                     <!--Iteramos los elementos de la lista de clientes-->
-                                <c:forEach var="tipoExamen" items="${tiposExamen}">
-                                    <tr>
-                                        <td>${tipoExamen.codigo}</td>
-                                        <td>${tipoExamen.nombre}</td>
-                                        <td>${tipoExamen.requiereOrdenS}</td>
-                                        <td><fmt:formatNumber value="${tipoExamen.costo}" type="currency" /></td>
-                                        <td>${tipoExamen.tipoInforme}</td>
-                                        <td>
-                                            <a href="${pageContext.request.contextPath}/TipoExamenServlet?accion=descripcion&codigo=${tipoExamen.codigo}" 
-                                               class="btn btn-info">
-                                                <i class="fas fa-eye"></i> Ver descripcion
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <a href="${pageContext.request.contextPath}/TipoExamenServlet?accion=editar&codigo=${tipoExamen.codigo}" 
-                                               class="btn btn-secondary">
-                                                <i class="fas fa-angle-double-right"></i> Editar
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
+                                    <c:forEach var="tipoExamen" items="${tiposExamen}">
+                                        <tr>
+                                            <td>${tipoExamen.codigo}</td>
+                                            <td>${tipoExamen.nombre}</td>
+                                            <td>${tipoExamen.requiereOrdenS}</td>
+                                            <td><fmt:formatNumber value="${tipoExamen.costo}" type="currency" /></td>
+                                            <td>${tipoExamen.tipoInforme}</td>
+                                            <td>
+                                                <a class="btn btn-info" data-toggle="modal" data-target="#d${tipoExamen.codigo}">
+                                                    <i class="fas fa-eye"></i> Ver descripcion
+                                                </a>
+                                                   
+                                                <div class="modal" id="d${tipoExamen.codigo}">
+                                                    <div class="modal-dialog modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <div class="modal-body">
+                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                <h5>Descripcion:</h5>
+                                                                ${tipoExamen.descripcion}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <a href="${pageContext.request.contextPath}/TipoExamenServlet?accion=editar&codigo=${tipoExamen.codigo}" 
+                                                   class="btn btn-secondary">
+                                                    <i class="fas fa-angle-double-right"></i> Editar
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
                                 </tbody>
                             </table>	
                         </div>
@@ -84,6 +95,8 @@
                 </div>
             </div>
         </div>
+
+
 
         <!--JS--> 
         <jsp:include page="/WEB-INF/extras/extrasJS.jsp"/>

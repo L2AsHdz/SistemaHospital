@@ -13,12 +13,13 @@
 
         <!--CSS-->
         <jsp:include page="/WEB-INF/extras/extrasCSS.jsp"/>
+        <link rel="stylesheet" href="../css/styles.css">
     </head>
     <body>
         <!--Barra de navegacion-->
         <jsp:include page="/WEB-INF/admin/navBarAdmin.jsp" />
 
-        <form action="${pageContext.request.contextPath}/TipoExamenServlet?accion=agregar" 
+        <form id="form-tipoExamen" action="${pageContext.request.contextPath}/TipoExamenServlet?accion=agregar" 
               method="POST">
 
             <!--Boton regresar-->
@@ -37,34 +38,33 @@
                     <div class="col-xl-6">
                         <h3>Agregar Tipo de Examen</h3>
                         <div class="form-group">
-                            <label for="codigo">Codigo</label>
+                            <label for="codigo">*Codigo</label>
                             <input type="text" class="form-control" name="codigo">
 
                         </div>
                         <div class="form-group">
-                            <label for="nombre">Nombre</label>
+                            <label for="nombre">*Nombre</label>
                             <input type="text" class="form-control" name="nombre">
                         </div>
                         <div class="form-group">
-                            <label for="requiereOrden">Requiere orden</label>
+                            <label for="requiereOrden">*Requiere orden</label>
                             <select class="form-control" name="requiereOrden">
-                                <option value="-1">Seleccione...</option>
+                                <option value="">Seleccione...</option>
                                 <option value="1">Si</option>
                                 <option value="0">No</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="descripcion">Descripcion</label>
+                            <label for="descripcion">*Descripcion</label>
                             <textarea type="textarea" rows="3" class="form-control" name="descripcion"></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="costo">Costo</label>
+                            <label for="costo">*Costo</label>
                             <input type="text" class="form-control" name="costo">
                         </div>
                         <div class="form-group">
-                            <label for="requiereOrden">Tipo Informe</label>
-                            <select class="form-control" name="requiereOrden">
-                                <option>Seleccione...</option>
+                            <label for="tipoInforme">*Tipo Informe</label>
+                            <select class="form-control" name="tipoInforme">
                                 <option>PDF</option>
                                 <option>IMG</option>
                             </select>
@@ -83,8 +83,12 @@
                 </div>
             </div>
         </form>
-        
+
         <!--JS--> 
         <jsp:include page="/WEB-INF/extras/extrasJS.jsp"/>
+
+        <!-- JQuery Validation -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+        <script src="../js/validaciones/validarTipoExamen.js"></script>
     </body>
 </html>

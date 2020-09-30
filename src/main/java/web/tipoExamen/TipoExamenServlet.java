@@ -20,19 +20,40 @@ import model.examen.TipoExamen;
 public class TipoExamenServlet extends HttpServlet {
 
     private final CRUD<TipoExamen> tipoExamenDAO = TipoExamenDAOImpl.getTipoExamenDAO();
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        
+        String accion = request.getParameter("accion");
+        String codigo = request.getParameter("codigo");
+        String nombre = request.getParameter("nombre");
+        String requiereOrden = request.getParameter("requiereOrden");
+        String descripcion = request.getParameter("descripcion");
+        String costo = request.getParameter("costo");
+        String tipoInforme = request.getParameter("tipoInforme");
+
+        switch (accion) {
+            case "agregar" -> {
+                if (!tipoExamenDAO.exists(codigo)) {
+                    tipoExamenDAO.create(new TipoExamen(codigo, nombre, requiereOrden, descripcion, costo, tipoInforme));
+                    redirect(request, response);
+                } else {
+                    
+                }
+            }
+            case "editar" -> {
+            }
+        }
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        redirect(request, response);
+    }
+
+    private void redirect(HttpServletRequest request, HttpServletResponse response) throws IOException {
         List<TipoExamen> tiposExamen = tipoExamenDAO.getListado();
         HttpSession sesion = request.getSession();
         sesion.setAttribute("tiposExamen", tiposExamen);
         response.sendRedirect("admin/tiposExamenes.jsp");
     }
-    
-    
 }

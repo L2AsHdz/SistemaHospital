@@ -51,7 +51,7 @@
                             <button type="submit" class="btn btn-primary">Iniciar sesion</button>
                         </div>
                         <c:if test="${errorLogin  != null}" >
-                            <div class="alert alert-danger mt-2">
+                            <div class="alert alert-danger alert-dismissible mt-2">
                                 Codigo y/o contraseña incorrecta
                             </div>
                         </c:if>
