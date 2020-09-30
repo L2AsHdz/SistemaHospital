@@ -15,7 +15,6 @@
 
         <!--CSS-->
         <jsp:include page="/WEB-INF/extras/extrasCSS.jsp"/>
-        <link rel="stylesheet" href="css/styles.css">
     </head>
     <body>
         <header class="py-2 bg-dark text-white">
