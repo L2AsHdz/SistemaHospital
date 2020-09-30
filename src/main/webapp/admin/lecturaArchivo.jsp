@@ -29,7 +29,7 @@
                 </div>
             </div>
         </header>
-        
+
         <form action="${pageContext.request.contextPath}/LecturaArchivo" method="POST" id="register-form" enctype="multipart/form-data">
             <div class="container-fluid py-4 bg-light">
                 <div class="row">
@@ -48,8 +48,8 @@
         <!--JS--> 
         <jsp:include page="/WEB-INF/extras/extrasJS.jsp"/>
 
-        <!-- JQuery Validation -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+        <!-- JQuery Validate -->
+        <script src="${pageContext.request.contextPath}/js/jquery.validate.min.js"></script>
         <script src="${pageContext.request.contextPath}/js/validaciones/validacionArchivo.js"></script>
     </body>
 </html>
