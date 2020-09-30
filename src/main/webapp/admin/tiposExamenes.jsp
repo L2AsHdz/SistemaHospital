@@ -24,9 +24,9 @@
         <!--Boton agregar tipo de examen-->
         <div class="container-fluid py-3 mb-4 bg-secondary">
             <div class="row">
-                <div class="col-3">
-                    <a href="#" class="btn btn-primary btn-block" data-toggle="modal" data-target="#agregarClienteModal">
-                        <i class="fas fa-plus"></i> Agregar Tipo de Examen
+                <div class="col-xl-3">
+                    <a href="agregarTipoExamen.jsp" class="btn btn-primary btn-block">
+                        <i class="fas fa-plus"></i> Agregar tipo de Examen
                     </a>
                 </div>
             </div>
@@ -51,7 +51,6 @@
                                         <th>Tipo informe</th>
                                         <th></th>
                                         <th></th>
-                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -65,21 +64,15 @@
                                         <td><fmt:formatNumber value="${tipoExamen.costo}" type="currency" /></td>
                                         <td>${tipoExamen.tipoInforme}</td>
                                         <td>
-                                            <a href="${pageContext.request.contextPath}/ServletControlador?accion=editar&idCliente=${cliente.idCliente}" 
+                                            <a href="${pageContext.request.contextPath}/TipoExamenServlet?accion=descripcion&codigo=${tipoExamen.codigo}" 
                                                class="btn btn-info">
                                                 <i class="fas fa-eye"></i> Ver descripcion
                                             </a>
                                         </td>
                                         <td>
-                                            <a href="${pageContext.request.contextPath}/ServletControlador?accion=editar&idCliente=${cliente.idCliente}" 
+                                            <a href="${pageContext.request.contextPath}/TipoExamenServlet?accion=editar&codigo=${tipoExamen.codigo}" 
                                                class="btn btn-secondary">
                                                 <i class="fas fa-angle-double-right"></i> Editar
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <a href="${pageContext.request.contextPath}/ServletControlador?accion=editar&idCliente=${cliente.idCliente}" 
-                                               class="btn btn-danger">
-                                                <i class="fas fa-trash"></i> Eliminar
                                             </a>
                                         </td>
                                     </tr>

@@ -18,11 +18,11 @@
         <link rel="stylesheet" href="css/styles.css">
     </head>
     <body>
-        <header class="py-2 bg-info text-white">
-            <div class="container">
+        <header class="py-2 bg-dark text-white">
+            <div class="container-fluid">
                 <div class="row">
                     <div class="col-xl-6">
-                        <h1>
+                        <h1 class="ml-3">
                             <i class="fas fa-hospital"></i>
                             Sistema Hospital
                         </h1>
@@ -51,9 +51,9 @@
                             <button type="submit" class="btn btn-primary">Iniciar sesion</button>
                         </div>
                         <c:if test="${errorLogin  != null}" >
-                            <script>
-                                alert("Codigo y/o contraseña incorrectos");
-                            </script>
+                            <div class="alert alert-danger mt-2">
+                                Codigo y/o contraseña incorrecta
+                            </div>
                         </c:if>
                     </form>
                 </div>
