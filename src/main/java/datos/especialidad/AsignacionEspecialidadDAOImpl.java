@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import model.especialidad.AsignacionEspecialidad;
 
@@ -99,6 +100,28 @@ public class AsignacionEspecialidadDAOImpl implements AsignacionEspecialidadDAO 
             ex.printStackTrace(System.out);
         }
         return id;
+    }
+
+    @Override
+    public List<String> getEspecialidadesByCodMed(String codMedico) {
+        String sql = "SELECT e.nombre FROM asignacionEspecialidad ae INNER JOIN "
+                + "especialidad e ON ae.idEspecialidad=e.id WHERE ae.codigoMedico = ?";
+        List<String> especialidades = null;
+
+        try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, codMedico);
+            try ( ResultSet rs = ps.executeQuery()) {
+                especialidades = new ArrayList();
+
+                while (rs.next()) {
+                    String especialidad = rs.getString("nombre");
+                    especialidades.add(especialidad);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return especialidades;
     }
 
 }

@@ -1,6 +1,8 @@
 package datos.medico;
 
 import datos.Conexion;
+import datos.especialidad.AsignacionEspecialidadDAO;
+import datos.especialidad.AsignacionEspecialidadDAOImpl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,6 +21,8 @@ public class MedicoDAOImpl implements MedicoDAO {
     
     private static MedicoDAOImpl medicoDAO = null;
     private Connection conexion = Conexion.getConexion();
+    
+    private final AsignacionEspecialidadDAO asignacionDAO = AsignacionEspecialidadDAOImpl.getAsignacionEsDAO();
     
     private MedicoDAOImpl() {
     }
@@ -51,6 +55,7 @@ public class MedicoDAOImpl implements MedicoDAO {
                 medico.setHoraFinal(LocalTime.parse(rs.getString("horaFinal")));
                 medico.setFechaInicioLabores(LocalDate.parse(rs.getString("fechaInicioLabores")));
                 medico.setPassword(rs.getString("password"));
+                medico.setEspecialidades(asignacionDAO.getEspecialidadesByCodMed(medico.getCodigo()));
                 medicos.add(medico);
             }
         } catch (SQLException e) {
@@ -109,8 +114,24 @@ public class MedicoDAOImpl implements MedicoDAO {
     }
 
     @Override
-    public void update(Medico t) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void update(Medico medico) {
+        String sql = "UPDATE tipoExamen SET nombre = ?, noColegiado = ?, cui = ?, telefono = ?,"
+                + "correo = ?, horaInicio = ?, horaFinal = ?, fechaInicioLabores = ?, password = ? WHERE codigo = ?";
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, medico.getNombre());
+            ps.setString(2, medico.getNoColegiado());
+            ps.setString(3, medico.getCUI());
+            ps.setString(4, medico.getTelefono());
+            ps.setString(5, medico.getCorreo());
+            ps.setString(6, medico.getHoraInicio().toString());
+            ps.setString(7, medico.getHoraFinal().toString());
+            ps.setString(8, medico.getFechaInicioLabores().toString());
+            ps.setString(9, medico.getEncryptPassword());
+            ps.setString(10, medico.getCodigo());
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        }
     }
 
     @Override

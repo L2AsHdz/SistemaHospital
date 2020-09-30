@@ -1,14 +1,16 @@
 package model.usuario;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 /**
  *
  * @author asael
  */
-public class Medico extends Usuario {
+public class Medico extends Usuario implements Serializable {
 
     private String noColegiado;
     private String telefono;
@@ -16,6 +18,7 @@ public class Medico extends Usuario {
     private LocalTime horaInicio;
     private LocalTime horaFinal;
     private LocalDate fechaInicioLabores;
+    private List<String> especialidades;
 
     public Medico() {
     }
@@ -109,5 +112,13 @@ public class Medico extends Usuario {
 
     public void setFechaInicioLabores(LocalDate fechaInicioLabores) {
         this.fechaInicioLabores = fechaInicioLabores;
+    }
+
+    public List<String> getEspecialidades() {
+        return especialidades;
+    }
+
+    public void setEspecialidades(List<String> especialidades) {
+        this.especialidades = especialidades;
     }
 }
