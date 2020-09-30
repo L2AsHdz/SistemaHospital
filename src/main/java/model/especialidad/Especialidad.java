@@ -1,11 +1,13 @@
 package model.especialidad;
 
+import java.io.Serializable;
+
 /**
  *
  * @author asael
  */
-public class Especialidad {
-    
+public class Especialidad implements Serializable {
+
     private int id;
     private String nombre;
     private float costo;

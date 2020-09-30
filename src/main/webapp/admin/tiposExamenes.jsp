@@ -26,14 +26,14 @@
             <div class="row">
                 <div class="col-xl-3">
                     <a href="formTipoExamen.jsp" class="btn btn-primary btn-block">
-                        <i class="fas fa-plus"></i> Agregar tipo de Examen
+                        <i class="fas fa-plus"></i> Agregar tipo de examen
                     </a>
                 </div>
             </div>
         </div>
 
         <!--Listado de tipos de examenes-->
-        <div class="container-fluid">
+        <div class="container-fluid mb-5">
             <div class="row">
                 <div class="col-xl-10">
                     <div class="card">

@@ -42,11 +42,13 @@
                                 <i class="fas fa-check"></i> Guardar tipo de examen
                             </button>
                         </div>
-                        <div class="col-xl-2">
-                            <button type="reset" class="btn btn-dark btn-block">
-                                <i class="fas fa-backspace"></i> Limpiar campos
-                            </button>
-                        </div>
+                        <c:if test="${tipoExamen == null}">
+                            <div class="col-xl-2">
+                                <button type="reset" class="btn btn-dark btn-block">
+                                    <i class="fas fa-backspace"></i> Limpiar campos
+                                </button>
+                            </div>
+                        </c:if>
                     </div>
                 </div>
 
@@ -56,10 +58,10 @@
                         <div class="col-xl-6">
                             <c:choose>
                                 <c:when test="${tipoExamen != null}">
-                                    <h3>Modificar tipo de Examen</h3>
+                                    <h3>Modificar tipo de examen</h3>
                                 </c:when>
                                 <c:otherwise>
-                                    <h3>Agregar tipo de Examen</h3>
+                                    <h3>Agregar tipo de examen</h3>
                                 </c:otherwise>
                             </c:choose>
                             <div class="form-group">

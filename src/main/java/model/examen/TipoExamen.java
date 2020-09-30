@@ -1,10 +1,12 @@
 package model.examen;
 
+import java.io.Serializable;
+
 /**
  *
  * @author asael
  */
-public class TipoExamen {
+public class TipoExamen implements Serializable {
 
     private String codigo;
     private String nombre;

@@ -25,7 +25,7 @@ CREATE TABLE  medico (
 CREATE TABLE  especialidad (
   id INT AUTO_INCREMENT NOT NULL,
   nombre VARCHAR(45) UNIQUE NOT NULL,
-  costo VARCHAR(45) NOT NULL,
+  costo FLOAT NOT NULL,
   PRIMARY KEY (id));
 
 CREATE TABLE  asignacionEspecialidad (

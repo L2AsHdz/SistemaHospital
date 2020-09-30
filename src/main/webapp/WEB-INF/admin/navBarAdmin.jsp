@@ -10,7 +10,7 @@
                 <a class="nav-link" href="${pageContext.request.contextPath}/TipoExamenServlet">Tipos de examenes</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="#">Especialidades</a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/EspecialidadServlet">Especialidades</a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link" href="#">Medicos</a>

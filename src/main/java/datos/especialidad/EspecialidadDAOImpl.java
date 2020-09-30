@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import model.especialidad.Especialidad;
 
@@ -29,7 +30,24 @@ public class EspecialidadDAOImpl implements EspecialidadDAO {
 
     @Override
     public List<Especialidad> getListado() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String sql = "SELECT * FROM especialidad";
+        List<Especialidad> especialidades = null;
+
+        try ( PreparedStatement declaracion = conexion.prepareStatement(sql);  
+                ResultSet rs = declaracion.executeQuery()) {
+            especialidades = new ArrayList();
+
+            while (rs.next()) {
+                Especialidad especialidad = new Especialidad();
+                especialidad.setId(rs.getInt("id"));
+                especialidad.setNombre(rs.getString("nombre"));
+                especialidad.setCosto(rs.getFloat("costo"));
+                especialidades.add(especialidad);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return especialidades;
     }
 
     @Override
@@ -67,8 +85,16 @@ public class EspecialidadDAOImpl implements EspecialidadDAO {
     }
 
     @Override
-    public void update(Especialidad t) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void update(Especialidad especialidad) {
+        String sql = "UPDATE especialidad SET nombre = ?, costo = ? WHERE id = ?";
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, especialidad.getNombre());
+            ps.setFloat(2, especialidad.getCosto());
+            ps.setInt(3, especialidad.getId());
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        }
     }
 
     @Override
