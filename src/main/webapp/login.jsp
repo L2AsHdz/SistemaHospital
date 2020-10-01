@@ -39,7 +39,7 @@
                     <form id="form-login" action="${pageContext.request.contextPath}/LoginServlet" method="POST">
                         <div class="form-group">
                             <label for="codigo">Codigo</label>
-                            <input type="text" class="form-control" name="codigo" placeholder="Ingrese codigo">
+                            <input type="text" class="form-control" name="codigo" placeholder="Ingrese codigo" autofocus>
                         </div>
                         <div class="form-group">
                             <label for="password">Contraseña</label>

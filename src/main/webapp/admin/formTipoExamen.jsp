@@ -67,7 +67,7 @@
                             </c:choose>
                             <div class="form-group">
                                 <label for="codigo">*Codigo</label>
-                                <input type="text" class="form-control" name="codigo" value="${tipoExamen.codigo}">
+                                <input type="text" class="form-control" name="codigo" value="${tipoExamen.codigo}" autofocus>
                             </div>
                             <div class="form-group">
                                 <label for="nombre">*Nombre</label>

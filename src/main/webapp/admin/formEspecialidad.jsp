@@ -73,7 +73,7 @@
                             </c:if>
                             <div class="form-group">
                                 <label for="nombre">*Nombre</label>
-                                <input type="text" class="form-control" name="nombre" value="${especialidad.nombre}">
+                                <input type="text" class="form-control" name="nombre" value="${especialidad.nombre}" autofocus>
                             </div>
                             <div class="form-group">
                                 <label for="costo">*Costo</label>
