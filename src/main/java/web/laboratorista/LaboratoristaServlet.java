@@ -30,6 +30,36 @@ public class LaboratoristaServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String accion = request.getParameter("accion");
+        String codigo = request.getParameter("codigo");
+        String nombre = request.getParameter("nombre");
+        String registroSalud = request.getParameter("registroSalud");
+        String cui = request.getParameter("cui");
+        String telefono = request.getParameter("telefono");
+        String correo = request.getParameter("correo");
+        String tipoExamen = request.getParameter("tipoExamen");
+        String fechaInicioLabores = request.getParameter("fechaLabores");
+        String password = request.getParameter("password");
+        String[] turnos = request.getParameterValues("turnos");
+        
+        switch (accion) {
+            case "agregar" -> {
+                if (!laboratoristaDAO.exists(codigo)) {
+                    laboratoristaDAO.create(new Laboratorista(registroSalud, telefono, tipoExamen, correo, fechaInicioLabores, codigo, nombre, cui, password));
+                    
+                    for (String turno : turnos) {
+                        turnoDAO.create(new Turno(codigo, turno));
+                    }
+                    redirect(request, response);
+                    //mostrar mensaje de exito
+                } else {
+                    redirect(request, response);
+                    //Mostrar error por entidad repetida
+                }
+            }
+            case "modificar" -> {
+            }
+        }
     }
 
     @Override

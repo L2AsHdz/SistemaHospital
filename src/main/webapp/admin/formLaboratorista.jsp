@@ -97,47 +97,47 @@
                                     </c:forEach>
                                 </select>
                             </div>
-                            <div class="form-group esp">
+                            <div class="form-group turno">
                                 <label for="turnos">*Turnos:</label>
                                 <div class="form-check">
                                     <label class="form-check-label">
-                                        <input type="checkbox" class="form-check-input" name="turnos">
+                                        <input type="checkbox" class="form-check-input" name="turnos" value="Lunes">
                                         Lunes
                                     </label>
                                 </div>
                                 <div class="form-check">
                                     <label class="form-check-label">
-                                        <input type="checkbox" class="form-check-input" name="turnos">
+                                        <input type="checkbox" class="form-check-input" name="turnos" value="Martes">
                                         Martes
                                     </label>
                                 </div>
                                 <div class="form-check">
                                     <label class="form-check-label">
-                                        <input type="checkbox" class="form-check-input" name="turnos">
+                                        <input type="checkbox" class="form-check-input" name="turnos" value="Miercoles">
                                         Miercoles
                                     </label>
                                 </div>
                                 <div class="form-check">
                                     <label class="form-check-label">
-                                        <input type="checkbox" class="form-check-input" name="turnos">
+                                        <input type="checkbox" class="form-check-input" name="turnos" value="Jueves">
                                         Jueves
                                     </label>
                                 </div>
                                 <div class="form-check">
                                     <label class="form-check-label">
-                                        <input type="checkbox" class="form-check-input" name="turnos">
+                                        <input type="checkbox" class="form-check-input" name="turnos" value="viernes">
                                         Viernes
                                     </label>
                                 </div>
                                 <div class="form-check">
                                     <label class="form-check-label">
-                                        <input type="checkbox" class="form-check-input" name="turnos">
+                                        <input type="checkbox" class="form-check-input" name="turnos" value="sabado">
                                         Sabado
                                     </label>
                                 </div>
                                 <div class="form-check">
                                     <label class="form-check-label">
-                                        <input type="checkbox" class="form-check-input" name="turnos">
+                                        <input type="checkbox" class="form-check-input" name="turnos" value="domingo">
                                         Domingo
                                     </label>
                                 </div>

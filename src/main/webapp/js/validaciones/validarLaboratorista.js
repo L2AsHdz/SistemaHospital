@@ -1,18 +1,25 @@
 $('document').ready(function () {
-    $("#form-medico").validate({
+    
+    $.validator.addMethod("notEmpty", function(value, element) {
+        return value.trim().length !== 0;
+    }, "El campo no puede contener solo espacios en blanco");
+    
+    $("#form-laboratorista").validate({
         rules: {
             codigo: {
                 required: true,
-                maxlength: 20
+                maxlength: 20,
+                notEmpty: true
             },
             nombre: {
                 required: true,
-                maxlength: 45
+                maxlength: 45,
+                notEmpty: true
             },
-            noColegiado: {
+            registroSalud: {
                 required: true,
-                maxlength: 20,
-                digits: true
+                maxlength: 45,
+                notEmpty: true
             },
             cui: {
                 required: true,
@@ -29,11 +36,9 @@ $('document').ready(function () {
                 maxlength: 45,
                 email: true
             },
-            horaInicio: {
-                required: true
-            },
-            horaFinal: {
-                required: true
+            tipoExamen: {
+                required: true,
+                minlength: 1
             },
             fechaLabores: {
                 required: true
@@ -42,7 +47,7 @@ $('document').ready(function () {
                 required: true,
                 minlength: 8
             },
-            checkEsp: {
+            turnos: {
                 required: true
             }
         },
@@ -55,10 +60,9 @@ $('document').ready(function () {
                 required: "Este campo es obligatorio",
                 maxlength: "No debe ser mayor a 45 caracteres"
             },
-            noColegiado: {
+            registroSalud: {
                 required: "Este campo es obligatorio",
-                maxlength: "No puede ser mayor a 20 caracteres",
-                digits: "El campo solo debe contener numeros"
+                maxlength: "No puede ser mayor a 45 caracteres"
             },
             cui: {
                 required: "Este campo es obligatorio",
@@ -75,11 +79,9 @@ $('document').ready(function () {
                 maxlength: "No puede ser mayor a 45 caracteres",
                 email: "Ingrese un correo valido"
             },
-            horaInicio: {
-                required: "Este campo es obligatorio"
-            },
-            horaFinal: {
-                required: "Este campo es obligatorio"
+            tipoExamen: {
+                required: "Este campo es obligatorio",
+                minlength: "Seleccione una opcion"
             },
             fechaLabores: {
                 required: "Este campo es obligatorio"
@@ -88,13 +90,13 @@ $('document').ready(function () {
                 required: "Este campo es obligatorio",
                 minlength: "Debe tener al menos 8 caracteres"
             },
-            checkEsp: {
-                required: "No ha seleccionado ninguna especialidad"
+            turnos: {
+                required: "No ha seleccionado ningun turno"
             }
         },
         errorPlacement: function(error, element) {
             if (element.is(":checkbox")) {
-                error.appendTo(element.parents(".esp"));
+                error.appendTo(element.parents(".turno"));
             } else {
                 error.insertAfter(element);
             }
