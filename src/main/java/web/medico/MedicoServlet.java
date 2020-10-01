@@ -1,6 +1,7 @@
 package web.medico;
 
 import datos.CRUD;
+import datos.especialidad.AsignacionEspecialidadDAOImpl;
 import datos.especialidad.EspecialidadDAOImpl;
 import datos.medico.MedicoDAOImpl;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.especialidad.AsignacionEspecialidad;
 import model.especialidad.Especialidad;
 import model.usuario.Medico;
 
@@ -19,13 +21,13 @@ import model.usuario.Medico;
  * @time 03:39:07
  * @author asael
  */
-
 @WebServlet("/MedicoServlet")
 public class MedicoServlet extends HttpServlet {
-    
+
     private final CRUD<Medico> medicoDAO = MedicoDAOImpl.getMedicoDAO();
     private final CRUD<Especialidad> especialidadDAO = EspecialidadDAOImpl.getEspecialidadDAO();
-
+    private final CRUD<AsignacionEspecialidad> asignacionDAO = AsignacionEspecialidadDAOImpl.getAsignacionEsDAO();
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String accion = request.getParameter("accion");
@@ -39,11 +41,16 @@ public class MedicoServlet extends HttpServlet {
         String horaFinal = request.getParameter("horaFinal");
         String fechaInicioLabores = request.getParameter("fechaLabores");
         String password = request.getParameter("password");
-    
+        String[] checkEsp = request.getParameterValues("checkEsp");
+
         switch (accion) {
             case "agregar" -> {
                 if (!medicoDAO.exists(codigo)) {
                     medicoDAO.create(new Medico(noColegiado, telefono, correo, horaInicio, horaFinal, fechaInicioLabores, codigo, nombre, cui, password));
+
+                    for (String e : checkEsp) {
+                        asignacionDAO.create(new AsignacionEspecialidad(codigo, Integer.parseInt(e)));
+                    }
                     redirect(request, response);
                     //mostrar mensaje de exito
                 } else {
@@ -53,7 +60,7 @@ public class MedicoServlet extends HttpServlet {
             case "modificar" -> {
                 medicoDAO.update(new Medico(noColegiado, telefono, correo, horaInicio, horaFinal, fechaInicioLabores, codigo, nombre, cui, password));
                 redirect(request, response);
-                    //mostrar mensaje de exito
+                //mostrar mensaje de exito
             }
         }
     }
@@ -63,7 +70,9 @@ public class MedicoServlet extends HttpServlet {
         String accion = request.getParameter("accion");
         if (accion != null && accion.equals("editar")) {
             String codigo = request.getParameter("codigo");
+            List<Especialidad> especialidades = especialidadDAO.getListado();
             Medico medico = medicoDAO.getObject(codigo);
+            request.setAttribute("especialidades", especialidades);
             request.setAttribute("medico", medico);
             request.getRequestDispatcher("admin/formMedico.jsp").forward(request, response);
         } else if (accion != null && accion.equals("add")) {

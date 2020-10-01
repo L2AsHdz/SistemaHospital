@@ -1,11 +1,5 @@
 $('document').ready(function () {
-
-    $.validator.addMethod("horario", function(value) {
-        return Date.parse($("#horaInicio").val()) > Date.parse($("#horaFinal").val());
-    });
-    
     $("#form-medico").validate({
-
         rules: {
             codigo: {
                 required: true,
@@ -39,8 +33,7 @@ $('document').ready(function () {
                 required: true
             },
             horaFinal: {
-                required: true,
-                horario: true
+                required: true
             },
             fechaLabores: {
                 required: true
@@ -86,8 +79,7 @@ $('document').ready(function () {
                 required: "Este campo es obligatorio"
             },
             horaFinal: {
-                required: "Este campo es obligatorio",
-                horario: "La hora de entrada no puede ser mayor a la hora de salida"
+                required: "Este campo es obligatorio"
             },
             fechaLabores: {
                 required: "Este campo es obligatorio"
@@ -98,6 +90,13 @@ $('document').ready(function () {
             },
             checkEsp: {
                 required: "No ha seleccionado ninguna especialidad"
+            }
+        },
+        errorPlacement: function(error, element) {
+            if (element.is(":checkbox")) {
+                error.appendTo(element.parents(".esp"));
+            } else {
+                error.insertAfter(element);
             }
         }
     });

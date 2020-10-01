@@ -66,7 +66,7 @@
                             </c:choose>
                             <div class="form-group">
                                 <label for="codigo">*Codigo</label>
-                                <input type="text" class="form-control" name="codigo" value="${medico.codigo}">
+                                <input type="text" class="form-control" name="codigo" value="${medico.codigo}" autofocus="">
                             </div>
                             <div class="form-group">
                                 <label for="nombre">*Nombre</label>
@@ -104,27 +104,8 @@
                                 <label for="password">*Contraseña</label>
                                 <input type="password" class="form-control" name="password" value="${medico.password}">
                             </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xl-6">
-                            <button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#asignarEspecialidad">
-                                Asignar especialidades
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal fade" id="asignarEspecialidad">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header bg-info text-white">
-                                <h5 class="modal-title">Asignar especialidad</h5>
-                                <button class="close" data-dismiss="modal">
-                                    <span>&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
+                            <div class="form-group esp">
+                                <label for="checkEsp">*Especialidades</label>
                                 <c:forEach var="especialidad" items="${especialidades}">
                                     <div class="form-check">
                                         <label class="form-check-label">
