@@ -64,10 +64,21 @@
                                     <h3>Agregar laboratorista</h3>
                                 </c:otherwise>
                             </c:choose>
-                            <div class="form-group">
-                                <label for="codigo">*Codigo</label>
-                                <input type="text" class="form-control" name="codigo" value="${laboratorista.codigo}" autofocus>
-                            </div>
+
+                            <c:choose>
+                                <c:when test="${laboratorista != null}">
+                                    <div class="form-group">
+                                        <label for="codigo">*Codigo</label>
+                                        <input type="text" class="form-control" name="codigo" value="${laboratorista.codigo}" readonly>
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="form-group">
+                                        <label for="codigo">*Codigo</label>
+                                        <input type="text" class="form-control" name="codigo" value="${laboratorista.codigo}" autofocus>
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>
                             <div class="form-group">
                                 <label for="nombre">*Nombre</label>
                                 <input type="text" class="form-control" name="nombre" value="${laboratorista.nombre}">
@@ -148,7 +159,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="password">*Contraseña</label>
-                                <input type="password" class="form-control" name="password" value="${laboratorista.password}">
+                                <input type="password" class="form-control" name="password">
                             </div>
                         </div>
                     </div>

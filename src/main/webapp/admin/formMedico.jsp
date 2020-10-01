@@ -64,10 +64,21 @@
                                     <h3>Agregar medico</h3>
                                 </c:otherwise>
                             </c:choose>
-                            <div class="form-group">
-                                <label for="codigo">*Codigo</label>
-                                <input type="text" class="form-control" name="codigo" value="${medico.codigo}" autofocus>
-                            </div>
+
+                            <c:choose>
+                                <c:when test="${medico != null}">
+                                    <div class="form-group">
+                                        <label for="codigo">*Codigo</label>
+                                        <input type="text" class="form-control" name="codigo" value="${medico.codigo}" readonly>
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="form-group">
+                                        <label for="codigo">*Codigo</label>
+                                        <input type="text" class="form-control" name="codigo" value="${medico.codigo}" autofocus>
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>
                             <div class="form-group">
                                 <label for="nombre">*Nombre</label>
                                 <input type="text" class="form-control" name="nombre" value="${medico.nombre}">
@@ -102,7 +113,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="password">*Contraseña</label>
-                                <input type="password" class="form-control" name="password" value="${medico.password}">
+                                <input type="password" class="form-control" name="password">
                             </div>
                             <div class="form-group esp">
                                 <label for="checkEsp">*Especialidades</label>

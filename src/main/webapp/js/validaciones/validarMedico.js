@@ -1,13 +1,20 @@
 $('document').ready(function () {
+    
+    $.validator.addMethod("notEmpty", function(value, element) {
+        return value.trim().length !== 0;
+    }, "El campo no puede contener solo espacios en blanco");
+    
     $("#form-medico").validate({
         rules: {
             codigo: {
                 required: true,
-                maxlength: 20
+                maxlength: 20,
+                notEmpty: true
             },
             nombre: {
                 required: true,
-                maxlength: 45
+                maxlength: 45,
+                notEmpty: true
             },
             noColegiado: {
                 required: true,
@@ -40,7 +47,8 @@ $('document').ready(function () {
             },
             password: {
                 required: true,
-                minlength: 8
+                minlength: 8,
+                notEmpty: true
             },
             checkEsp: {
                 required: true

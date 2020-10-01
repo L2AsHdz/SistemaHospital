@@ -65,10 +65,21 @@
                                     <h3>Agregar tipo de examen</h3>
                                 </c:otherwise>
                             </c:choose>
-                            <div class="form-group">
-                                <label for="codigo">*Codigo</label>
-                                <input type="text" class="form-control" name="codigo" value="${tipoExamen.codigo}" autofocus>
-                            </div>
+
+                            <c:choose>
+                                <c:when test="${tipoExamen != null}">
+                                    <div class="form-group">
+                                        <label for="codigo">*Codigo</label>
+                                        <input type="text" class="form-control" name="codigo" value="${tipoExamen.codigo}" readonly>
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="form-group">
+                                        <label for="codigo">*Codigo</label>
+                                        <input type="text" class="form-control" name="codigo" value="${tipoExamen.codigo}" autofocus>
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>
                             <div class="form-group">
                                 <label for="nombre">*Nombre</label>
                                 <input type="text" class="form-control" name="nombre" value="${tipoExamen.nombre}">

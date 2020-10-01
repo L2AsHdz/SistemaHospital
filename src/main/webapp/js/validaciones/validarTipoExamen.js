@@ -1,14 +1,21 @@
 $('document').ready(function () {
+    
+    $.validator.addMethod("notEmpty", function(value, element) {
+        return value.trim().length !== 0;
+    }, "El campo no puede contener solo espacios en blanco");
+    
     $("#form-tipoExamen").validate({
 
         rules: {
             codigo: {
                 required: true,
-                maxlength: 10
+                maxlength: 10,
+                notEmpty: true
             },
             nombre: {
                 required: true,
-                maxlength: 45
+                maxlength: 45,
+                notEmpty: true
             },
             requiereOrden: {
                 required: true,
@@ -16,7 +23,8 @@ $('document').ready(function () {
             },
             descripcion: {
                 required: true,
-                maxlength: 1200
+                maxlength: 1200,
+                notEmpty: true
             },
             costo: {
                 required: true,
