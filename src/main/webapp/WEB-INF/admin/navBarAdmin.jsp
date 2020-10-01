@@ -16,7 +16,7 @@
                 <a class="nav-link" href="${pageContext.request.contextPath}/MedicoServlet">Medicos</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="#">Laboratoristas</a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/LaboratoristaServlet">Laboratoristas</a>
             </li>
 
             <li class="nav-item dropdown">

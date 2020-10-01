@@ -19,6 +19,8 @@ public class LaboratoristaDAOImpl implements LaboratoristaDAO {
     private static LaboratoristaDAOImpl laboratoristaDAO = null;
     private Connection conexion = Conexion.getConexion();
     
+    private final TurnoDAO turnoDAO = TurnoDAOImpl.getTurnoDAO();
+    
     private LaboratoristaDAOImpl() {
     }
     
@@ -42,9 +44,14 @@ public class LaboratoristaDAOImpl implements LaboratoristaDAO {
                 Laboratorista laboratorista = new Laboratorista();
                 laboratorista.setCodigo(rs.getString("codigo"));
                 laboratorista.setNombre(rs.getString("nombre"));
+                laboratorista.setRegistroSalud(rs.getString("registroSalud"));
                 laboratorista.setCUI(rs.getString("cui"));
+                laboratorista.setTelefono(rs.getString("telefono"));
+                laboratorista.setCorreo(rs.getString("correo"));
+                laboratorista.setFechaInicioLabores(LocalDate.parse(rs.getString("fechaInicioLabores")));
+                laboratorista.setCodigoTipoExamen(rs.getString("codigoTipoExamen"));
                 laboratorista.setPassword(rs.getString("password"));
-                //faltan agregar los demas datos
+                laboratorista.setTurnos(turnoDAO.getTurnosByCodLab(laboratorista.getCodigo()));
                 laboratoristas.add(laboratorista);
             }
         } catch (SQLException e) {

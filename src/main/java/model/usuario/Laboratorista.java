@@ -2,6 +2,7 @@ package model.usuario;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 /**
  *
@@ -14,6 +15,7 @@ public class Laboratorista extends Usuario {
     private String codigoTipoExamen;
     private String correo;
     private LocalDate fechaInicioLabores;
+    private List<String> turnos;
 
     public Laboratorista() {
     }
@@ -80,5 +82,13 @@ public class Laboratorista extends Usuario {
 
     public void setFechaInicioLabores(LocalDate fechaInicioLabores) {
         this.fechaInicioLabores = fechaInicioLabores;
+    }
+
+    public List<String> getTurnos() {
+        return turnos;
+    }
+
+    public void setTurnos(List<String> turnos) {
+        this.turnos = turnos;
     }
 }
