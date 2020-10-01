@@ -108,6 +108,16 @@
                                     </c:forEach>
                                 </select>
                             </div>
+                            <div class="form-group">
+                                <label for="fechaLabores">*Fecha inicio labores</label>
+                                <input type="date" class="form-control" name="fechaLabores" value="${laboratorista.fechaInicioLabores}">
+                            </div>
+                            <c:if test="${laboratorista == null}">
+                                <div class="form-group">
+                                    <label for="password">*Contraseña</label>
+                                    <input type="password" class="form-control" name="password">
+                                </div>
+                            </c:if>
                             <div class="form-group turno">
                                 <label for="turnos">*Turnos:</label>
                                 <div class="form-check">
@@ -152,14 +162,6 @@
                                         Domingo
                                     </label>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="fechaLabores">*Fecha inicio labores</label>
-                                <input type="date" class="form-control" name="fechaLabores" value="${laboratorista.fechaInicioLabores}">
-                            </div>
-                            <div class="form-group">
-                                <label for="password">*Contraseña</label>
-                                <input type="password" class="form-control" name="password">
                             </div>
                         </div>
                     </div>

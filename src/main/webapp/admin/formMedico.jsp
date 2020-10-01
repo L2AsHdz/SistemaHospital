@@ -111,10 +111,12 @@
                                 <label for="fechaLabores">*Fecha inicio labores</label>
                                 <input type="date" class="form-control" name="fechaLabores" value="${medico.fechaInicioLabores}">
                             </div>
-                            <div class="form-group">
-                                <label for="password">*Contraseña</label>
-                                <input type="password" class="form-control" name="password">
-                            </div>
+                            <c:if test="${medico == null}">
+                                <div class="form-group">
+                                    <label for="password">*Contraseña</label>
+                                    <input type="password" class="form-control" name="password">
+                                </div>
+                            </c:if>
                             <div class="form-group esp">
                                 <label for="checkEsp">*Especialidades</label>
                                 <c:forEach var="especialidad" items="${especialidades}">
