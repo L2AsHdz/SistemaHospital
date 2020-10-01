@@ -58,6 +58,8 @@ public class LaboratoristaServlet extends HttpServlet {
                 }
             }
             case "modificar" -> {
+                laboratoristaDAO.update(new Laboratorista(registroSalud, telefono, tipoExamen, correo, fechaInicioLabores, codigo, nombre, cui, password));
+                redirect(request, response);
             }
         }
     }
@@ -66,7 +68,12 @@ public class LaboratoristaServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String accion = request.getParameter("accion");
         if (accion != null && accion.equals("editar")) {
-            
+            String codigo = request.getParameter("codigo");
+            List<TipoExamen> tiposExamen = tipoExamenDAO.getListado();
+            Laboratorista laboratorista = laboratoristaDAO.getObject(codigo);
+            request.setAttribute("tiposExamen", tiposExamen);
+            request.setAttribute("laboratorista", laboratorista);
+            request.getRequestDispatcher("admin/formLaboratorista.jsp").forward(request, response);
         } else if (accion != null && accion.equals("add")) {
             List<TipoExamen> tiposExamen = tipoExamenDAO.getListado();
             request.setAttribute("tiposExamen", tiposExamen);
