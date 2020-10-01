@@ -25,7 +25,7 @@
         <div class="container-fluid py-3 mb-4 bg-secondary">
             <div class="row">
                 <div class="col-xl-3">
-                    <a href="formLaboratorista.jsp" class="btn btn-primary btn-block">
+                    <a href="${pageContext.request.contextPath}/LaboratoristaServlet?accion=add" class="btn btn-primary btn-block">
                         <i class="fas fa-plus"></i> Agregar laboratorista
                     </a>
                 </div>

@@ -1,7 +1,9 @@
 package web.laboratorista;
 
 import datos.CRUD;
+import datos.examen.TipoExamenDAOImpl;
 import datos.laboratorista.LaboratoristaDAOImpl;
+import datos.laboratorista.TurnoDAOImpl;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -10,7 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.examen.TipoExamen;
 import model.usuario.Laboratorista;
+import model.usuario.Turno;
 
 /**
  * @date 1/10/2020
@@ -21,6 +25,8 @@ import model.usuario.Laboratorista;
 public class LaboratoristaServlet extends HttpServlet {
     
     private final CRUD<Laboratorista> laboratoristaDAO = LaboratoristaDAOImpl.getLaboratoristaDAO();
+    private final CRUD<TipoExamen> tipoExamenDAO = TipoExamenDAOImpl.getTipoExamenDAO();
+    private final CRUD<Turno> turnoDAO = TurnoDAOImpl.getTurnoDAO();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -32,7 +38,9 @@ public class LaboratoristaServlet extends HttpServlet {
         if (accion != null && accion.equals("editar")) {
             
         } else if (accion != null && accion.equals("add")) {
-            
+            List<TipoExamen> tiposExamen = tipoExamenDAO.getListado();
+            request.setAttribute("tiposExamen", tiposExamen);
+            request.getRequestDispatcher("admin/formLaboratorista.jsp").forward(request, response);
         } else {
             redirect(request, response);
         }

@@ -14,13 +14,13 @@ import model.usuario.Turno;
  * @author asael
  */
 public class TurnoDAOImpl implements TurnoDAO {
-    
+
     private static TurnoDAOImpl turnoDAO = null;
     private Connection conexion = Conexion.getConexion();
-    
+
     private TurnoDAOImpl() {
     }
-    
+
     public static TurnoDAOImpl getTurnoDAO() {
         if (turnoDAO == null) {
             turnoDAO = new TurnoDAOImpl();
@@ -79,13 +79,27 @@ public class TurnoDAOImpl implements TurnoDAO {
                 while (rs.next()) {
                     String turno = rs.getString("dia");
                     switch (turno) {
-                        case "SUNDAY" -> {turnos.add("Domingo");}
-                        case "MONDAY" -> {turnos.add("Lunes");}
-                        case "TUESDAY" -> {turnos.add("Martes");}
-                        case "WEDNESDAY" -> {turnos.add("Miercoles");}
-                        case "THURSDAY" -> {turnos.add("Jueves");}
-                        case "FRIDAY" -> {turnos.add("Viernes");}
-                        case "SATURDAY" -> {turnos.add("Sabado");}
+                        case "SUNDAY" -> {
+                            turnos.add("Domingo");
+                        }
+                        case "MONDAY" -> {
+                            turnos.add("Lunes");
+                        }
+                        case "TUESDAY" -> {
+                            turnos.add("Martes");
+                        }
+                        case "WEDNESDAY" -> {
+                            turnos.add("Miercoles");
+                        }
+                        case "THURSDAY" -> {
+                            turnos.add("Jueves");
+                        }
+                        case "FRIDAY" -> {
+                            turnos.add("Viernes");
+                        }
+                        case "SATURDAY" -> {
+                            turnos.add("Sabado");
+                        }
                     }
                 }
             }
@@ -94,5 +108,5 @@ public class TurnoDAOImpl implements TurnoDAO {
         }
         return turnos;
     }
-    
+
 }
