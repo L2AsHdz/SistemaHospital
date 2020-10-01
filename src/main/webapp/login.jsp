@@ -46,8 +46,11 @@
                             <input type="password" class="form-control" name="password" placeholder="Password">
                         </div>
                         <div class="text-center">
-                            <button type="reset" class="btn btn-primary mr-2">Limpiar</button>
-                            <button type="submit" class="btn btn-primary">Iniciar sesion</button>
+                            <button type="reset" class="btn btn-secondary mr-2">Limpiar</button>
+                            <button type="submit" class="btn btn-success">Iniciar sesion</button>
+                        </div>
+                        <div class="text-center mt-2">
+                            <a href="${pageContext.request.contextPath}/paciente/registro.jsp">Registrase como paciente</a>
                         </div>
                         <c:if test="${errorLogin  != null}" >
                             <div class="alert alert-danger alert-dismissible mt-2">
