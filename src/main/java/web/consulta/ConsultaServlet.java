@@ -57,7 +57,7 @@ public class ConsultaServlet extends HttpServlet {
                 
                 request.setAttribute("especialidades", especialidades);
                 request.setAttribute("medicos", medicos);
-                request.getRequestDispatcher("paciente/buscarMedico.jsp").forward(request, response);
+                request.getRequestDispatcher("paciente/agendarConsulta.jsp").forward(request, response);
                 
             }
         }
@@ -71,7 +71,7 @@ public class ConsultaServlet extends HttpServlet {
             case "add" -> {
                 List<Especialidad> especialidades = especialDAO.getListado();
                 request.setAttribute("especialidades", especialidades);
-                request.getRequestDispatcher("paciente/buscarMedico.jsp").forward(request, response);
+                request.getRequestDispatcher("paciente/agendarConsulta.jsp").forward(request, response);
             }
             case "buscar" -> {
             }

@@ -42,10 +42,12 @@ public class LaboratoristaServlet extends HttpServlet {
         String password = request.getParameter("password");
         String[] turnos = request.getParameterValues("turnos");
         
+        Laboratorista laboratorista = new Laboratorista(registroSalud, telefono, tipoExamen, correo, fechaInicioLabores, codigo, nombre, cui, password);
+        
         switch (accion) {
             case "agregar" -> {
                 if (!laboratoristaDAO.exists(codigo)) {
-                    laboratoristaDAO.create(new Laboratorista(registroSalud, telefono, tipoExamen, correo, fechaInicioLabores, codigo, nombre, cui, password));
+                    laboratoristaDAO.create(laboratorista);
                     
                     for (String turno : turnos) {
                         turnoDAO.create(new Turno(codigo, turno));
@@ -53,12 +55,12 @@ public class LaboratoristaServlet extends HttpServlet {
                     redirect(request, response);
                     //mostrar mensaje de exito
                 } else {
-                    redirect(request, response);
-                    //Mostrar error por entidad repetida
+                    request.setAttribute("error", "Ya existe un laboratorista registrado con ese codigo");
+                    request.getRequestDispatcher("admin/formLaboratorista.jsp").forward(request, response);
                 }
             }
             case "modificar" -> {
-                laboratoristaDAO.update(new Laboratorista(registroSalud, telefono, tipoExamen, correo, fechaInicioLabores, codigo, nombre, cui, password));
+                laboratoristaDAO.update(laboratorista);
                 redirect(request, response);
             }
         }

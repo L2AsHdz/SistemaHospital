@@ -30,19 +30,22 @@ public class TipoExamenServlet extends HttpServlet {
         String descripcion = request.getParameter("descripcion");
         String costo = request.getParameter("costo");
         String tipoInforme = request.getParameter("tipoInforme");
+        
+        TipoExamen tipoExamen = new TipoExamen(codigo, nombre, requiereOrden, descripcion, costo, tipoInforme);
 
         switch (accion) {
             case "agregar" -> {
                 if (!tipoExamenDAO.exists(codigo)) {
-                    tipoExamenDAO.create(new TipoExamen(codigo, nombre, requiereOrden, descripcion, costo, tipoInforme));
+                    tipoExamenDAO.create(tipoExamen);
                     redirect(request, response);
                     //mostrar mensaje de exito
                 } else {
-                    //Mostrar error por entidad repetida
+                    request.setAttribute("error", "Ya existe un tipo de examen registrado con ese codigo");
+                    request.getRequestDispatcher("admin/formTipoExamen.jsp").forward(request, response);
                 }
             }
             case "modificar" -> {
-                tipoExamenDAO.update(new TipoExamen(codigo, nombre, requiereOrden, descripcion, costo, tipoInforme));
+                tipoExamenDAO.update(tipoExamen);
                 redirect(request, response);
                     //mostrar mensaje de exito
             }

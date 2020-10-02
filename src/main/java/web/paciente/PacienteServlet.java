@@ -18,7 +18,7 @@ import model.usuario.Paciente;
  */
 @WebServlet("/PacienteServlet")
 public class PacienteServlet extends HttpServlet {
-    
+
     private final CRUD<Paciente> pacienteDAO = PacienteDAOImpl.getPacienteDAO();
 
     @Override
@@ -34,29 +34,37 @@ public class PacienteServlet extends HttpServlet {
         String peso = request.getParameter("peso");
         String sangre = request.getParameter("sangre");
         String password = request.getParameter("password");
-        
+
+        Paciente paciente = new Paciente(sexo, birth, telefono, peso, sangre, correo, codigo, nombre, cui, password);
+
         switch (accion) {
             case "agregar" -> {
                 if (!pacienteDAO.exists(codigo)) {
                     HttpSession sesion = request.getSession();
-                    Paciente paciente = new Paciente(sexo, birth, telefono, peso, sangre, correo, codigo, nombre, cui, password);
                     pacienteDAO.create(paciente);
                     sesion.setAttribute("user", paciente);
                     sesion.setAttribute("tipoUser", 4);
                     response.sendRedirect("paciente/inicioPaciente.jsp");
                 } else {
-                    //regresar a la pagina de inicio y alertar que el paciente ya existe
+                    request.setAttribute("paciente", paciente);
+                    request.setAttribute("error", "Ya existe un paciente con ese codigo");
+                    request.getRequestDispatcher("paciente/registro.jsp").forward(request, response);
                 }
             }
             case "editar" -> {
-                
+
             }
         }
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse reponse) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String accion = request.getParameter("accion");
+
+        if (accion.equals("logout")) {
+            request.getSession().invalidate();
+            response.sendRedirect("index.jsp");
+        }
     }
 
-    
 }

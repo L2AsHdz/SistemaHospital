@@ -35,7 +35,8 @@ public class EspecialidadServlet extends HttpServlet {
                     redirect(request, response);
                     //mostrar mensaje de exito
                 } else {
-                    //Mostrar error por entidad repetida
+                    request.setAttribute("error", "La especialidad ya esta registrada");
+                    request.getRequestDispatcher("admin/formEspecialidad.jsp").forward(request, response);
                 }
             }
             case "modificar" -> {

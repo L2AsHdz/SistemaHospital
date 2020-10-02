@@ -54,6 +54,7 @@
                         </div>
                         <c:if test="${errorLogin  != null}" >
                             <div class="alert alert-danger alert-dismissible mt-2">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
                                 Codigo y/o contraseña incorrecta
                             </div>
                         </c:if>

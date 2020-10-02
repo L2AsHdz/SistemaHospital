@@ -42,11 +42,13 @@ public class MedicoServlet extends HttpServlet {
         String fechaInicioLabores = request.getParameter("fechaLabores");
         String password = request.getParameter("password");
         String[] checkEsp = request.getParameterValues("checkEsp");
+        
+        Medico medico = new Medico(noColegiado, telefono, correo, horaInicio, horaFinal, fechaInicioLabores, codigo, nombre, cui, password);
 
         switch (accion) {
             case "agregar" -> {
                 if (!medicoDAO.exists(codigo)) {
-                    medicoDAO.create(new Medico(noColegiado, telefono, correo, horaInicio, horaFinal, fechaInicioLabores, codigo, nombre, cui, password));
+                    medicoDAO.create(medico);
 
                     for (String e : checkEsp) {
                         asignacionDAO.create(new AsignacionEspecialidad(codigo, Integer.parseInt(e)));
@@ -54,11 +56,12 @@ public class MedicoServlet extends HttpServlet {
                     redirect(request, response);
                     //mostrar mensaje de exito
                 } else {
-                    //Mostrar error por entidad repetida
+                    request.setAttribute("error", "Ya existe un medico registrado con ese codigo");
+                    request.getRequestDispatcher("admin/formMedico.jsp").forward(request, response);
                 }
             }
             case "modificar" -> {
-                medicoDAO.update(new Medico(noColegiado, telefono, correo, horaInicio, horaFinal, fechaInicioLabores, codigo, nombre, cui, password));
+                medicoDAO.update(medico);
                 redirect(request, response);
                 //mostrar mensaje de exito
             }

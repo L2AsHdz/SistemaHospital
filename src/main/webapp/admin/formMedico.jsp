@@ -56,6 +56,12 @@
                 <div class="container-fluid mb-5">
                     <div class="row">
                         <div class="col-xl-6">
+                            <c:if test="${error  != null}" >
+                                <div class="alert alert-danger alert-dismissible mt-2">
+                                    <button type="button" class="close" data-dismiss="alert">×</button>
+                                    ${error}
+                                </div>
+                            </c:if>
                             <c:choose>
                                 <c:when test="${medico != null}">
                                     <h3>Modificar medico</h3>

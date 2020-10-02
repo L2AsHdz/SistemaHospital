@@ -5,31 +5,45 @@
             Sistema Hospital
         </a>
 
-        <ul class="navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href="${pageContext.request.contextPath}/TipoExamenServlet">Tipos de examenes</a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="${pageContext.request.contextPath}/EspecialidadServlet">Especialidades</a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="${pageContext.request.contextPath}/MedicoServlet">Medicos</a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="${pageContext.request.contextPath}/LaboratoristaServlet">Laboratoristas</a>
-            </li>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/TipoExamenServlet">Tipos de examenes</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/EspecialidadServlet">Especialidades</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/MedicoServlet">Medicos</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/LaboratoristaServlet">Laboratoristas</a>
+                </li>
 
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                    Reportes
-                </a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                        Reportes
+                    </a>
 
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#">Reporte 1</a>
-                    <a class="dropdown-item" href="#">Reporte 2</a>
-                </div>
-            </li>
-        </ul>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">Reporte 1</a>
+                        <a class="dropdown-item" href="#">Reporte 2</a>
+                    </div>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+                        ${user.nombre}
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">Ver Perfil</a>
+                        <a class="dropdown-item" href="${pageContext.request.contextPath}/AdminServlet?accion=logout">Cerrar sesion</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </nav>
 </div>
 <div class="py-4 mb-2"></div>
