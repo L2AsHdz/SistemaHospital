@@ -1,0 +1,8 @@
+Medicos en una hora en especifico
+select * from medico where horaInicio <= '15:00' and horaFinal > '15:00'
+
+Medicos filtrado por especialidad
+SELECT m.* FROM medico m INNER JOIN asignacionEspecialidad ae ON m.codigo=ae.codigoMedico WHERE ae.idEspecialidad=6;
+
+Medicos filtrado por nombre
+SELECT * FROM medico WHERE nombre like %nombre%;
