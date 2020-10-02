@@ -230,7 +230,6 @@ public class MedicoDAOImpl implements MedicoDAO {
                     medicos.add(medico);
                 }
             }
-            System.out.println("Listado de productos obtenido");
         } catch (SQLException e) {
             e.printStackTrace(System.out);
         } finally {

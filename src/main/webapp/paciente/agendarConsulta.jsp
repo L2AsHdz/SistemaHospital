@@ -36,7 +36,7 @@
                             <h5>Buscar medicos por:</h5>
                         </label>
                         <label for="nombre" class="mr-sm-2">Nombre:</label>
-                        <input type="text" class="form-control mb-2 mr-sm-2" placeholder="Nombre del medico" name="nombre" autofocus>
+                        <input type="text" class="form-control mb-2 mr-sm-2" placeholder="Nombre del medico" name="nombre" value="${nombre}" autofocus>
                         <label for="especialidad" class="mr-sm-2">Especialidad:</label>
                         <select class="form-control mb-2 mr-sm-2" name="especialidad">
                             <option value="">Seleccione...</option>
@@ -45,7 +45,7 @@
                             </c:forEach>
                         </select>
                         <label for="hora" class="mr-sm-2">Hora:</label>
-                        <input type="time" class="form-control mb-2 mr-sm-2" name="hora">
+                        <input type="time" class="form-control mb-2 mr-sm-2" name="hora" value="${hora}">
                         <button type="submit" class="btn btn-primary mb-2 ml-2">Buscar</button>
                     </form>
                 </div>
@@ -74,6 +74,7 @@
                             </thead>
                             <tbody>
                                 <c:forEach var="medico" items="${medicos}">
+                                <form action="${pageContext.request.contextPath}/ConsultaServlet?accion=preAgendar&codMedico=${medico.codigo}" method="POST">
                                     <tr>
                                         <td>${medico.codigo}</td>
                                         <td>${medico.nombre}</td>
@@ -85,20 +86,19 @@
                                         <td>${medico.fechaInicioLabores}</td>
                                         <td>
                                             <select class="form-control" name="tipoConsulta">
-                                                <option value="">Seleccione...</option>
                                                 <c:forEach var="e" items="${medico.especialidades}">
                                                     <option value="${e}">${e}</option>
                                                 </c:forEach>
                                             </select>
                                         </td>
                                         <td>
-                                            <a href="${pageContext.request.contextPath}/ConsultaServlet?accion=editar&codigo=${medico.codigo}" 
-                                               class="btn btn-secondary">
+                                            <button type="submit" class="btn btn-secondary">
                                                 <i class="fas fa-angle-double-right"></i> Agendar consulta
-                                            </a>
+                                            </button>
                                         </td>
                                     </tr>
-                                </c:forEach>
+                                </form>
+                            </c:forEach>
                             </tbody>
                         </table>
                     </div>
@@ -106,7 +106,63 @@
             </div>
         </c:if>
 
+        <c:if test="${agendar}">
+            <div class="container-fluid mt-4">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-xl-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Agendar</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="form-consulta" action="${pageContext.request.contextPath}/ConsultaServlet?accion=agendar" method="POST">
+                                    <div class="form-group d-none">
+                                        <label for="codigoMedico">Codigo medico:</label>
+                                        <input type="text" class="form-control" name="codigoMedico" value="${medico.codigo}" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="nombre">Medico:</label>
+                                        <input type="text" class="form-control" name="nombre" value="${medico.nombre}" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="horario">Horario:</label>
+                                        <input type="text" class="form-control" name="horario" value="${medico.horaInicio} - ${medico.horaFinal}" readonly>
+                                        <input type="text" class="form-control d-none" id="horaEntrada" value="${medico.horaInicio}"  readonly>
+                                        <input type="text" class="form-control d-none" id="horaSalida" value="${medico.horaFinal}" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="especialidad">Especialidad:</label>
+                                        <input type="text" class="form-control d-none" name="idEspecialidad" value="${especialidad.id}" readonly>
+                                        <input type="text" class="form-control" name="especialidad" value="${especialidad.nombre}" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="costo">Costo:</label>
+                                        <input type="text" class="form-control" name="costo" value="${especialidad.costo}" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="hora">*Hora:</label>
+                                        <input type="time" class="form-control" name="hora" id="hora" autofocus>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="fecha">*Fecha:</label>
+                                        <input type="date" class="form-control" name="fecha">
+                                    </div>
+                                    <div>
+                                        <button type="submit" class="btn btn-primary btn-block">Agendar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </c:if>
+
         <!--JS--> 
         <jsp:include page="/WEB-INF/extras/extrasJS.jsp"/>
+
+        <!-- JQuery Validate -->
+        <script src="${pageContext.request.contextPath}/js/jquery.validate.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/validaciones/validarConsulta.js"></script>
     </body>
 </html>
