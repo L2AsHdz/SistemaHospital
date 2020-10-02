@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -42,13 +43,20 @@ public class LecturaArchivoServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Part filePart = request.getPart("archivoEntrada");
-        String nombreArchivo = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+        String inputFileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
 
-        //Guardar archivo en servidor
-        guardarArchivo(filePart, nombreArchivo);
+        List<Part> fileParts = (List<Part>) request.getParts();
+        
+        fileParts.forEach(part -> {
+            String name = Paths.get(part.getSubmittedFileName()).getFileName().toString();
+            guardarArchivo(part, name);
+        });
+        
+        //Guardar archivo de entrada en servidor
+        guardarArchivo(filePart, inputFileName);
 
         //Leer datos del archivo XML
-        leerArchivoXML(nombreArchivo);
+        leerArchivoXML(inputFileName);
 
         response.sendRedirect("login.jsp");
     }
@@ -64,6 +72,7 @@ public class LecturaArchivoServlet extends HttpServlet {
 
         try ( InputStream input = filePart.getInputStream()) {
             Files.copy(input, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            System.out.println("Archivo "+nombreArchivo + " guardado");
         } catch (Exception e) {
             e.printStackTrace(System.out);
         }

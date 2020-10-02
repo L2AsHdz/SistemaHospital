@@ -1,14 +1,20 @@
 $('document').ready(function () {
-    $("#register-form").validate({
+    $("#form-archivo").validate({
 
         rules: {
             archivoEntrada: {
+                required: true
+            },
+            archivos: {
                 required: true
             }
         },
         messages: {
             archivoEntrada: {
-                required: "No se ha seleccionado ningun archivo"
+                required: "No ha seleccionado el archivo de entrada"
+            },
+            archivos: {
+                required: "No ha seleccionado los informes y resultados"
             }
         }
     });
