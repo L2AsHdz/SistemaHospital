@@ -37,7 +37,7 @@ public class ExamenDAOImpl implements ExamenDAO {
     @Override
     public void create(Examen examen) {
         String sql = "INSERT INTO examen (codigoPaciente, codigoTipoExamen, codigoMedico, "
-                + "orden, fecha, hora, estado, solicitoMedico, total) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                + "orden, fecha, hora, estado, total) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, examen.getCodigoPaciente());
@@ -47,8 +47,7 @@ public class ExamenDAOImpl implements ExamenDAO {
             ps.setString(5, examen.getFecha().toString());
             ps.setString(6, examen.getHora().toString());
             ps.setInt(7, examen.getEstado());
-            ps.setInt(8, examen.getSolicitoMedico());
-            ps.setFloat(9, examen.getTotal());
+            ps.setFloat(8, examen.getTotal());
             ps.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);
@@ -73,7 +72,6 @@ public class ExamenDAOImpl implements ExamenDAO {
                     examen.setFecha(LocalDate.parse(rs.getString("fecha")));
                     examen.setHora(LocalTime.parse(rs.getString("hora")));
                     examen.setEstado(rs.getInt("estado"));
-                    examen.setSolicitoMedico(rs.getInt("solicitoMedico"));
                     examen.setTotal(rs.getFloat("total"));
                 }
             }

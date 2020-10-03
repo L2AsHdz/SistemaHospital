@@ -49,7 +49,6 @@ public class ExamenServlet extends HttpServlet {
         switch (accion) {
             case "listar" -> {
                 List<TipoExamen> tiposExamen = tipoExamenDAO.getListado();
-                HttpSession sesion = request.getSession();
                 request.setAttribute("tiposExamen", tiposExamen);
                 request.getRequestDispatcher("paciente/agendarExamen.jsp").forward(request, response);
             }
@@ -68,7 +67,6 @@ public class ExamenServlet extends HttpServlet {
                 String codMedico1 = request.getParameter("medico");
                 String codMedico2 = request.getParameter("medicoO");
                 String codigoMedico = codMedico1 == null ? codMedico2 : codMedico1;
-                int solicitoMedico = codigoMedico.isEmpty() ? 0 : 1;
                 String codigoExamen = request.getParameter("codigo");
                 String fecha = request.getParameter("fecha");
                 String hora = request.getParameter("hora");
@@ -79,7 +77,7 @@ public class ExamenServlet extends HttpServlet {
                 } catch (IOException | ServletException | NullPointerException e) {
                 }
                 
-                Examen examen = new Examen(codPaciente, codigoExamen, codigoMedico, orden, fecha, hora, 0, solicitoMedico, costo);
+                Examen examen = new Examen(codPaciente, codigoExamen, codigoMedico, orden, fecha, hora, 0, costo);
                 
                 examenDAO.create(examen);
                 response.sendRedirect("paciente/inicioPaciente.jsp");

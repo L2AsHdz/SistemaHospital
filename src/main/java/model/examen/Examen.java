@@ -21,7 +21,6 @@ public class Examen {
     private LocalDate fecha;
     private LocalTime hora;
     private int estado;
-    private int solicitoMedico;
     private float total;
 
     public Examen() {
@@ -29,9 +28,9 @@ public class Examen {
 
     public Examen(String codigo, String codigoPaciente, String codigoTipoExamen,
             String codigoMedico, String orden, String fecha, String hora, int estado,
-            int solicitoMedico, float total) {
+            float total) {
         this.codigo = Integer.parseInt(codigo);
-        setDatos(codigoPaciente, codigoTipoExamen, codigoMedico, fecha, hora, estado, solicitoMedico, total);
+        setDatos(codigoPaciente, codigoTipoExamen, codigoMedico, fecha, hora, estado, total);
         
         if (!orden.trim().isEmpty()) {
             try {
@@ -45,9 +44,9 @@ public class Examen {
 
     public Examen(String codigoPaciente, String codigoTipoExamen,
             String codigoMedico, InputStream orden, String fecha, String hora, int estado,
-            int solicitoMedico, float total) {
+            float total) {
         this.orden = orden;
-        setDatos(codigoPaciente, codigoTipoExamen, codigoMedico, fecha, hora, estado, solicitoMedico, total);
+        setDatos(codigoPaciente, codigoTipoExamen, codigoMedico, fecha, hora, estado, total);
     }
 
     public int getCodigo() {
@@ -114,14 +113,6 @@ public class Examen {
         this.estado = estado;
     }
 
-    public int getSolicitoMedico() {
-        return solicitoMedico;
-    }
-
-    public void setSolicitoMedico(int solicitoMedico) {
-        this.solicitoMedico = solicitoMedico;
-    }
-
     public float getTotal() {
         return total;
     }
@@ -131,12 +122,10 @@ public class Examen {
     }
 
     private void setDatos(String codigoPaciente, String codigoTipoExamen,
-            String codigoMedico, String fecha, String hora, int estado,
-            int solicitoMedico, float total) {
+            String codigoMedico, String fecha, String hora, int estado, float total) {
         this.codigoPaciente = codigoPaciente;
         this.codigoTipoExamen = codigoTipoExamen;
         this.codigoMedico = codigoMedico.trim().isEmpty() ? null : codigoMedico;
-        this.solicitoMedico = solicitoMedico;
         this.estado = estado;
         this.total = total;
 
