@@ -93,7 +93,7 @@ CREATE TABLE  turno (
     ON UPDATE RESTRICT);
 
 CREATE TABLE  examen (
-  codigo VARCHAR(15) NOT NULL,
+  codigo INT AUTO_INCREMENT NOT NULL,
   codigoPaciente VARCHAR(20) NOT NULL,
   codigoLaboratorista VARCHAR(20) NOT NULL,
   codigoTipoExamen VARCHAR(10) NOT NULL,
@@ -126,7 +126,7 @@ CREATE TABLE  examen (
     ON UPDATE RESTRICT);
 
 CREATE TABLE  consulta (
-  codigo VARCHAR(15) NOT NULL,
+  codigo INT AUTO_INCREMENT NOT NULL,
   codigoPaciente VARCHAR(20) NOT NULL,
   codigoMedico VARCHAR(20) NOT NULL,
   idEspecialidad INT NOT NULL,
@@ -152,7 +152,7 @@ CREATE TABLE  consulta (
     ON UPDATE RESTRICT);
 
 CREATE TABLE  resultado (
-  codigoExamen VARCHAR(15) NOT NULL,
+  codigoExamen INT NOT NULL,
   resultado MEDIUMBLOB NOT NULL,
   fecha DATE NOT NULL,
   hora TIME NOT NULL,
@@ -165,7 +165,7 @@ CREATE TABLE  resultado (
 
 
 CREATE TABLE  informe (
-  codigoConsulta VARCHAR(15) NOT NULL,
+  codigoConsulta INT NOT NULL,
   informe VARCHAR(1200) NOT NULL,
   fecha DATE NOT NULL,
   hora TIME NOT NULL,

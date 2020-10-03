@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import model.examen.Examen;
 
@@ -35,19 +37,19 @@ public class ExamenDAOImpl implements ExamenDAO {
 
     @Override
     public void create(Examen examen) {
-        String sql = "INSERT INTO examen VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO examen (codigoPaciente, codigoLaboratorista, codigoTipoExamen, "
+                + "codigoMedico, orden, fecha, hora, estado, total) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
-            ps.setString(1, examen.getCodigo());
-            ps.setString(2, examen.getCodigoPaciente());
-            ps.setString(3, examen.getCodigoLaboratorista());
-            ps.setString(4, examen.getCodigoTipoExamen());
-            ps.setString(5, examen.getCodigoMedico());
-            ps.setBinaryStream(6, examen.getOrden());
-            ps.setString(7, examen.getFecha().toString());
-            ps.setString(8, examen.getHora().toString());
-            ps.setInt(9, examen.getEstado());
-            ps.setFloat(10, examen.getTotal());
+            ps.setString(1, examen.getCodigoPaciente());
+            ps.setString(2, examen.getCodigoLaboratorista());
+            ps.setString(3, examen.getCodigoTipoExamen());
+            ps.setString(4, examen.getCodigoMedico());
+            ps.setBinaryStream(5, examen.getOrden());
+            ps.setString(6, examen.getFecha().toString());
+            ps.setString(7, examen.getHora().toString());
+            ps.setInt(8, examen.getEstado());
+            ps.setFloat(9, examen.getTotal());
             ps.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);
@@ -64,8 +66,16 @@ public class ExamenDAOImpl implements ExamenDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     examen = new Examen();
-                    examen.setCodigo(codigo);
-                    InputStream is = rs.getBinaryStream("orden");
+                    examen.setCodigo(Integer.parseInt(codigo));
+                    examen.setCodigoPaciente(rs.getString("codigoPaciente"));
+                    examen.setCodigoLaboratorista(rs.getString("codigoLaboratorista"));
+                    examen.setCodigoTipoExamen(rs.getString("codigoTipoExamen"));
+                    examen.setCodigoMedico(rs.getString("codigoMedico"));
+                    examen.setOrden(rs.getBinaryStream("orden"));
+                    examen.setFecha(LocalDate.parse(rs.getString("fecha")));
+                    examen.setHora(LocalTime.parse(rs.getString("hora")));
+                    examen.setEstado(rs.getInt("estado"));
+                    examen.setTotal(rs.getFloat("total"));
                     //faltan los demas atributos
                 }
             }
@@ -90,7 +100,7 @@ public class ExamenDAOImpl implements ExamenDAO {
         String sql = "SELECT codigo FROM examen where codigo = ?";
         boolean flag = false;
         try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
-            ps.setString(1, codigo);
+            ps.setInt(1, Integer.parseInt(codigo));
             try ( ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     flag = true;

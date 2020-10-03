@@ -159,6 +159,8 @@ public class Validaciones {
             throw new FileInputException(etiqueta + ": La fecha no tiene un formato valido");
         } else if (!isHora(hora)) {
             throw new FileInputException(etiqueta + ": La hora no tiene un formato valido");
+        } else if (!isInt(codigo)) {
+            throw new FileInputException(etiqueta + ": El codigo debe ser numerico");
         } else if (!orden.trim().isEmpty() && !exists(orden)) {
             throw new FileInputException(etiqueta + ": No se encontro el archivo de la orden: " + orden);
         } else if (!exists(resultado)) {
@@ -187,6 +189,8 @@ public class Validaciones {
             throw new FileInputException(etiqueta + ": La fecha no tiene un formato correcto");
         } else if (!isHora(hora)) {
             throw new FileInputException(etiqueta + ": La hora no tiene un formato correcto");
+        } else if (!isInt(codigo)) {
+            throw new FileInputException(etiqueta + ": El codigo debe ser numerico");
         } else if (consultaDAO.exists(codigo)) {
             throw new FileInputException(etiqueta + ": Ya existe una consulta registrada con ese codigo");
         } else if (!pacienteDAO.exists(paciente)) {
@@ -209,6 +213,8 @@ public class Validaciones {
             throw new FileInputException(etiqueta + ": La fecha no tiene un formato valido");
         } else if (!isHora(hora)) {
             throw new FileInputException(etiqueta + ": La hora no tiene un formato valido");
+        } else if (!isInt(codigo)) {
+            throw new FileInputException(etiqueta + ": El codigo debe ser numerico");
         } else if (informeDAO.exists(codigo)) {
             throw new FileInputException(etiqueta + ": El reporte ya esta registrado en el sistema");
         } else if (!pacienteDAO.exists(paciente)) {
@@ -231,7 +237,7 @@ public class Validaciones {
     //Verifica si la cadena es un entero
     public static boolean isInt(String i) {
         try {
-            Long.parseLong(i);
+            Integer.parseInt(i);
             return true;
         } catch (NumberFormatException e) {
             return false;

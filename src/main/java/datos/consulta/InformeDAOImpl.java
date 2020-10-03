@@ -37,7 +37,7 @@ public class InformeDAOImpl implements InformeDAO {
         String sql = "INSERT INTO informe VALUES (?, ?, ?, ?)";
 
         try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
-            ps.setString(1, informe.getCodigoConsulta());
+            ps.setInt(1, informe.getCodigoConsulta());
             ps.setString(2, informe.getInforme());
             ps.setString(3, informe.getFecha().toString());
             ps.setString(4, informe.getHora().toString());
@@ -67,7 +67,7 @@ public class InformeDAOImpl implements InformeDAO {
         String sql = "SELECT codigoConsulta FROM informe where codigoConsulta = ?";
         boolean flag = false;
         try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
-            ps.setString(1, codigo);
+            ps.setInt(1, Integer.parseInt(codigo));
             try ( ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     flag = true;

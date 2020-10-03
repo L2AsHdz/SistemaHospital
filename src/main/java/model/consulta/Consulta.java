@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
  */
 public class Consulta {
     
-    private String codigo;
+    private int codigo;
     private String codigoMedico;
     private String codigoPaciente;
     private int idEspecialidad;
@@ -24,7 +24,7 @@ public class Consulta {
 
     public Consulta(String codigo, String codigoMedico, String codigoPaciente, int idEspecialidad, 
             String fecha, String hora, int estado, float total) {
-        this.codigo = codigo;
+        this.codigo = Integer.parseInt(codigo);
         this.codigoMedico = codigoMedico;
         this.codigoPaciente = codigoPaciente;
         this.idEspecialidad = idEspecialidad;
@@ -56,11 +56,11 @@ public class Consulta {
         }
     }
 
-    public String getCodigo() {
+    public int getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(String codigo) {
+    public void setCodigo(int codigo) {
         this.codigo = codigo;
     }
 

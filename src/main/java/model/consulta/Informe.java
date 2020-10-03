@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
  */
 public class Informe {
     
-    private String codigoConsulta;
+    private int codigoConsulta;
     private String informe;
     private LocalDate fecha;
     private LocalTime hora;
@@ -19,7 +19,7 @@ public class Informe {
     }
 
     public Informe(String codigoConsulta, String informe, String fecha, String hora) {
-        this.codigoConsulta = codigoConsulta;
+        this.codigoConsulta = Integer.parseInt(codigoConsulta);
         this.informe = informe;
         
         try {
@@ -47,11 +47,11 @@ public class Informe {
         }
     }
 
-    public String getCodigoConsulta() {
+    public int getCodigoConsulta() {
         return codigoConsulta;
     }
 
-    public void setCodigoConsulta(String codigoConsulta) {
+    public void setCodigoConsulta(int codigoConsulta) {
         this.codigoConsulta = codigoConsulta;
     }
 

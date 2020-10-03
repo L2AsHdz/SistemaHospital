@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
  */
 public class Resultado {
 
-    private String codigoExamen;
+    private int codigoExamen;
     private InputStream resultado;
     private LocalDate fecha;
     private LocalTime hora;
@@ -22,7 +22,7 @@ public class Resultado {
     }
 
     public Resultado(String codigoExamen, String resultado, String fecha, String hora) {
-        this.codigoExamen = codigoExamen;
+        this.codigoExamen = Integer.parseInt(codigoExamen);
         
         try {
             this.resultado = new FileInputStream("/home/asael/uploads/datosEntrada/" + resultado);
@@ -54,11 +54,11 @@ public class Resultado {
         }
     }
 
-    public String getCodigoExamen() {
+    public int getCodigoExamen() {
         return codigoExamen;
     }
 
-    public void setCodigoExamen(String codigoExamen) {
+    public void setCodigoExamen(int codigoExamen) {
         this.codigoExamen = codigoExamen;
     }
 

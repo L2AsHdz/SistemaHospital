@@ -37,7 +37,7 @@ public class ResultadoDAOImpl implements ResultadoDAO {
         String sql = "INSERT INTO resultado VALUES (?, ?, ?, ?)";
 
         try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
-            ps.setString(1, resultado.getCodigoExamen());
+            ps.setInt(1, resultado.getCodigoExamen());
             ps.setBinaryStream(2, resultado.getResultado());
             ps.setString(3, resultado.getFecha().toString());
             ps.setString(4, resultado.getHora().toString());
@@ -67,7 +67,7 @@ public class ResultadoDAOImpl implements ResultadoDAO {
         String sql = "SELECT codigoExamen FROM resultado where codigoExamen = ?";
         boolean flag = false;
         try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
-            ps.setString(1, codigo);
+            ps.setInt(1, Integer.parseInt(codigo));
             try ( ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     flag = true;
