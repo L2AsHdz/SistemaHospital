@@ -1,6 +1,6 @@
 package web.consulta;
 
-import datos.CRUD;
+import datos.consulta.ConsultaDAO;
 import datos.consulta.ConsultaDAOImpl;
 import datos.especialidad.EspecialidadDAO;
 import datos.especialidad.EspecialidadDAOImpl;
@@ -28,7 +28,7 @@ public class ConsultaServlet extends HttpServlet {
 
     private final EspecialidadDAO especialDAO = EspecialidadDAOImpl.getEspecialidadDAO();
     private final MedicoDAO medicoDAO = MedicoDAOImpl.getMedicoDAO();
-    private final CRUD<Consulta> consultaDAO = ConsultaDAOImpl.getconsultaDAO();
+    private final ConsultaDAO consultaDAO = ConsultaDAOImpl.getconsultaDAO();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -78,19 +78,28 @@ public class ConsultaServlet extends HttpServlet {
             case "agendar" -> {
                 Paciente paciente = (Paciente) request.getSession().getAttribute("user");
                 String codPaciente = paciente.getCodigo();
-                String codigo = "holi";//Hay que obtener el codigo automaticamente
                 String codMedico = request.getParameter("codigoMedico");
                 String fecha = request.getParameter("fecha");
                 String hora = request.getParameter("hora");
                 int idEspecialidad = Integer.parseInt(request.getParameter("idEspecialidad"));
                 float costo = Float.parseFloat(request.getParameter("costo"));
 
-                Consulta consulta = new Consulta(codigo, codMedico, codPaciente, idEspecialidad, fecha, hora, 0, costo);
-                
-                //Falta verificar que no haya una consulta en esa hora
-                consultaDAO.create(consulta);
-                
-                response.sendRedirect("paciente/agendarConsulta.jsp");
+                Consulta consulta = new Consulta(codMedico, codPaciente, idEspecialidad, fecha, hora, 0, costo);
+
+                if (consultaDAO.isAvailable(codMedico, hora, fecha)) {
+                    consultaDAO.create(consulta);
+                    response.sendRedirect("paciente/agendarConsulta.jsp");
+                } else {
+                    String especialidad = request.getParameter("especialidad");
+                    request.setAttribute("agendar", true);
+                    request.setAttribute("fecha", fecha);
+                    request.setAttribute("horaC", hora);
+                    request.setAttribute("medico", medicoDAO.getObject(codMedico));
+                    request.setAttribute("especialidad", especialDAO.getObject(especialidad));
+                    request.setAttribute("error", "El medico ya tiene una consulta agendada para esa hora");
+                    request.getRequestDispatcher("paciente/agendarConsulta.jsp").forward(request, response);
+                }
+
             }
         }
     }

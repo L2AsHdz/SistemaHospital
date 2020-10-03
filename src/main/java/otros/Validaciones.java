@@ -163,6 +163,8 @@ public class Validaciones {
             throw new FileInputException(etiqueta + ": El codigo debe ser numerico");
         } else if (!orden.trim().isEmpty() && !exists(orden)) {
             throw new FileInputException(etiqueta + ": No se encontro el archivo de la orden: " + orden);
+        } else if (!orden.trim().isEmpty() && medico.trim().isEmpty()) {
+            throw new FileInputException(etiqueta + ": Esta la orden pero no el codigo del medico");
         } else if (!exists(resultado)) {
             throw new FileInputException(etiqueta + ": No se encontro el archivo del informe: " + resultado);
         } else if (resultadoDAO.exists(codigo)) {

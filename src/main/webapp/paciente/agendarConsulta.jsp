@@ -110,6 +110,12 @@
             <div class="container-fluid mt-4">
                 <div class="row d-flex justify-content-center">
                     <div class="col-xl-4">
+                        <c:if test="${error != null}">
+                            <div class="alert alert-danger alert-dismissible mt-2">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                ${error}
+                            </div>
+                        </c:if>
                         <div class="card">
                             <div class="card-header">
                                 <h5>Agendar</h5>
@@ -141,11 +147,11 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="hora">*Hora:</label>
-                                        <input type="time" class="form-control" name="hora" id="hora" autofocus>
+                                        <input type="time" class="form-control" name="hora" id="hora" value="${horaC}">
                                     </div>
                                     <div class="form-group">
                                         <label for="fecha">*Fecha:</label>
-                                        <input type="date" class="form-control" name="fecha">
+                                        <input type="date" class="form-control" name="fecha" value="${fecha}">
                                     </div>
                                     <div>
                                         <button type="submit" class="btn btn-primary btn-block">Agendar</button>

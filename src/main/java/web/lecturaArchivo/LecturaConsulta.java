@@ -1,6 +1,6 @@
 package web.lecturaArchivo;
 
-import datos.CRUD;
+import datos.consulta.ConsultaDAO;
 import datos.consulta.ConsultaDAOImpl;
 import datos.especialidad.EspecialidadDAO;
 import datos.especialidad.EspecialidadDAOImpl;
@@ -18,7 +18,7 @@ import static otros.Validaciones.validarConsulta;
  */
 public class LecturaConsulta {
 
-    private static final CRUD<Consulta> consultaDAO = ConsultaDAOImpl.getconsultaDAO();
+    private static final ConsultaDAO consultaDAO = ConsultaDAOImpl.getconsultaDAO();
     private static final EspecialidadDAO especialidadDAO = EspecialidadDAOImpl.getEspecialidadDAO();
 
     public static void leerConsulta(Document doc) throws FileInputException {
@@ -37,13 +37,18 @@ public class LecturaConsulta {
                 String fecha = getTextNode(consulta, "FECHA");
                 String hora = getTextNode(consulta, "HORA");
 
-                validarConsulta(codigo, paciente, medico, especialidad, fecha, hora, i);
-                int idEspecialidad = especialidadDAO.getIdEspecialidad(especialidad);
-                consultaDAO.create(new Consulta(codigo, medico, paciente, idEspecialidad,
-                        fecha, hora, 0, especialidadDAO.getCosto(idEspecialidad)));
-
+                try {
+                    validarConsulta(codigo, paciente, medico, especialidad, fecha, hora, i);
+                    int idEspecialidad = especialidadDAO.getIdEspecialidad(especialidad);
+                    consultaDAO.create(new Consulta(codigo, medico, paciente, idEspecialidad,
+                            fecha, hora, 0, especialidadDAO.getCosto(idEspecialidad)));
+                } catch (FileInputException e) {
+                    throw e;
+                }
             }
         }
+        
+        consultaDAO.setNextCodigo(consultaDAO.getLastCodigo());
     }
 
     private static String getTextNode(Element element, String tagName) {

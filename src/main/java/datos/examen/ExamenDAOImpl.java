@@ -1,7 +1,6 @@
 package datos.examen;
 
 import datos.Conexion;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -110,6 +109,34 @@ public class ExamenDAOImpl implements ExamenDAO {
             ex.printStackTrace(System.out);
         }
         return flag;
+    }
+
+    @Override
+    public int getLastCodigo() {
+        String sql = "SELECT codigo FROM examen ORDER BY codigo DESC LIMIT 1";
+        int codigo = -1;
+        try (PreparedStatement ps = conexion.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()) {
+
+            if (rs.next()) {
+                codigo = rs.getInt("codigo") + 1;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        }
+        return codigo;
+    }
+
+    @Override
+    public void setNextCodigo(int codigo) {
+        String sql = "ALTER TABLE examen AUTO_INCREMENT = ?";
+
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setInt(1, codigo);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        }
     }
     
 }

@@ -25,35 +25,12 @@ public class Consulta {
     public Consulta(String codigo, String codigoMedico, String codigoPaciente, int idEspecialidad, 
             String fecha, String hora, int estado, float total) {
         this.codigo = Integer.parseInt(codigo);
-        this.codigoMedico = codigoMedico;
-        this.codigoPaciente = codigoPaciente;
-        this.idEspecialidad = idEspecialidad;
-        this.estado = estado;
-        this.total = total;
-        
-        try {
-            this.hora = LocalTime.parse(hora, DateTimeFormatter.ofPattern("HH:mm"));
-        } catch (Exception e) {
-            try {
-                this.hora = LocalTime.parse(hora, DateTimeFormatter.ofPattern("H:mm"));
-            } catch (Exception ex) {
-                ex.printStackTrace(System.out);
-            }
-        }
-
-        try {
-            this.fecha = LocalDate.parse(fecha);
-        } catch (Exception e) {
-            try {
-                this.fecha = LocalDate.parse(fecha, DateTimeFormatter.ofPattern("yyyy-M-d"));
-            } catch (Exception ex) {
-                try {
-                    this.fecha = LocalDate.parse(fecha, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-                } catch (Exception exx) {
-                    exx.printStackTrace(System.out);
-                }
-            }
-        }
+        setDatos(codigoMedico, codigoPaciente, idEspecialidad, fecha, hora, estado, total);
+    }
+    
+    public Consulta(String codigoMedico, String codigoPaciente, int idEspecialidad, 
+            String fecha, String hora, int estado, float total) {
+        setDatos(codigoMedico, codigoPaciente, idEspecialidad, fecha, hora, estado, total);
     }
 
     public int getCodigo() {
@@ -118,5 +95,38 @@ public class Consulta {
 
     public void setTotal(float total) {
         this.total = total;
+    }
+    
+    private void setDatos(String codigoMedico, String codigoPaciente, int idEspecialidad, 
+            String fecha, String hora, int estado, float total) {
+        this.codigoMedico = codigoMedico;
+        this.codigoPaciente = codigoPaciente;
+        this.idEspecialidad = idEspecialidad;
+        this.estado = estado;
+        this.total = total;
+        
+        try {
+            this.hora = LocalTime.parse(hora, DateTimeFormatter.ofPattern("HH:mm"));
+        } catch (Exception e) {
+            try {
+                this.hora = LocalTime.parse(hora, DateTimeFormatter.ofPattern("H:mm"));
+            } catch (Exception ex) {
+                ex.printStackTrace(System.out);
+            }
+        }
+
+        try {
+            this.fecha = LocalDate.parse(fecha);
+        } catch (Exception e) {
+            try {
+                this.fecha = LocalDate.parse(fecha, DateTimeFormatter.ofPattern("yyyy-M-d"));
+            } catch (Exception ex) {
+                try {
+                    this.fecha = LocalDate.parse(fecha, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+                } catch (Exception exx) {
+                    exx.printStackTrace(System.out);
+                }
+            }
+        }
     }
 }

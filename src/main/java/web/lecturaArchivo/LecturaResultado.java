@@ -1,6 +1,7 @@
 package web.lecturaArchivo;
 
 import datos.CRUD;
+import datos.examen.ExamenDAO;
 import datos.examen.ExamenDAOImpl;
 import datos.examen.ResultadoDAOImpl;
 import datos.examen.TipoExamenDAO;
@@ -21,7 +22,7 @@ import static otros.Validaciones.validarResultado;
 public class LecturaResultado {
 
     private static final TipoExamenDAO tipoExamenDAO = TipoExamenDAOImpl.getTipoExamenDAO();
-    private static final CRUD<Examen> examenDAO = ExamenDAOImpl.getExamenDAO();
+    private static final ExamenDAO examenDAO = ExamenDAOImpl.getExamenDAO();
     private static final CRUD<Resultado> resultadoDAO = ResultadoDAOImpl.getResultadoDAO();
 
     public static void leerResultado(Document doc) throws FileInputException {
@@ -50,6 +51,8 @@ public class LecturaResultado {
                 resultadoDAO.create(new Resultado(codigo, resultado, fecha, hora));
             }
         }
+        
+        examenDAO.setNextCodigo(examenDAO.getLastCodigo());
     }
 
     private static String getTextNode(Element element, String tagName) {

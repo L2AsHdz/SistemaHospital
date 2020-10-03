@@ -68,7 +68,7 @@ public class ConsultaDAOImpl implements ConsultaDAO {
 
     @Override
     public boolean exists(String codigo) {
-        String sql = "SELECT codigo FROM consulta where codigo = ?";
+        String sql = "SELECT codigo FROM consulta WHERE codigo = ?";
         boolean flag = false;
         try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setInt(1, Integer.parseInt(codigo));
@@ -84,7 +84,7 @@ public class ConsultaDAOImpl implements ConsultaDAO {
     }
 
     @Override
-    public int getIdConsulta() {
+    public int getLastCodigo() {
         String sql = "SELECT codigo FROM consulta ORDER BY codigo DESC LIMIT 1";
         int codigo = 1;
         try (PreparedStatement ps = conexion.prepareStatement(sql);
@@ -101,16 +101,33 @@ public class ConsultaDAOImpl implements ConsultaDAO {
 
     @Override
     public void setNextCodigo(int codigo) {
-        String sql = "ALTER TABLE pedido AUTO_INCREMENT = ?";
+        String sql = "ALTER TABLE consulta AUTO_INCREMENT = ?";
 
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setInt(1, codigo);
             ps.executeUpdate();
-            System.out.println("Se actualizo el auto increment");
         } catch (SQLException ex) {
-            System.out.println("No se actualizo el auto increment");
             ex.printStackTrace(System.out);
         }
+    }
+
+    @Override
+    public boolean isAvailable(String codMedico, String hora, String fecha) {
+        String sql = "SELECT codigo FROM consulta WHERE codigoMedico = ? AND hora = ? AND fecha = ?";
+        boolean flag = true;
+        try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, codMedico);
+            ps.setString(2, hora);
+            ps.setString(3, fecha);
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    flag = false;
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        }
+        return flag;
     }
     
 }
