@@ -11,7 +11,7 @@
                     <a class="nav-link" href="${pageContext.request.contextPath}/ConsultaServlet?accion=add">Agendar Consulta</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Agendar Examen</a>
+                    <a class="nav-link" href="${pageContext.request.contextPath}/ExamenServlet?accion=listar">Agendar Examen</a>
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="#">Historial medico</a>

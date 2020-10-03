@@ -43,11 +43,12 @@ public class LecturaResultado {
                 String resultado = getTextNode(resultadoE, "INFORME");
                 String fecha = getTextNode(resultadoE, "FECHA");
                 String hora = getTextNode(resultadoE, "HORA");
+                int solicitoMedico = medico.trim().isEmpty() ? 0 : 1;
 
                 validarResultado(codigo, paciente, examen, medico, laboratorista,
                         orden, resultado, fecha, hora, i);
                 examenDAO.create(new Examen(codigo, paciente, examen, medico, orden, 
-                        fecha, hora, 1, tipoExamenDAO.getCosto(examen)));
+                        fecha, hora, 1, solicitoMedico, tipoExamenDAO.getCosto(examen)));
                 resultadoDAO.create(new Resultado(codigo, laboratorista, resultado, fecha, hora));
             }
         }

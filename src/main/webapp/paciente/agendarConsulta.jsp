@@ -20,7 +20,6 @@
         <!-- Barra de navegacion -->
         <jsp:include page="/WEB-INF/paciente/navBarPaciente.jsp"/>
 
-        <!-- Filtro de busqueda -->
         <div class="container-fluid">
             <div class="row mt-3 mb-3 ml-1">
                 <div class="col-xl-10">

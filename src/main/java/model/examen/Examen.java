@@ -21,20 +21,18 @@ public class Examen {
     private LocalDate fecha;
     private LocalTime hora;
     private int estado;
+    private int solicitoMedico;
     private float total;
 
     public Examen() {
     }
 
-    public Examen(String codigo, String codigoPaciente, String codigoTipoExamen, 
-            String codigoMedico, String orden, String fecha, String hora, int estado, float total) {
+    public Examen(String codigo, String codigoPaciente, String codigoTipoExamen,
+            String codigoMedico, String orden, String fecha, String hora, int estado,
+            int solicitoMedico, float total) {
         this.codigo = Integer.parseInt(codigo);
-        this.codigoPaciente = codigoPaciente;
-        this.codigoTipoExamen = codigoTipoExamen;
-        this.codigoMedico = codigoMedico.trim().isEmpty() ? null: codigoMedico;
-        this.estado = estado;
-        this.total = total;
-
+        setDatos(codigoPaciente, codigoTipoExamen, codigoMedico, fecha, hora, estado, solicitoMedico, total);
+        
         if (!orden.trim().isEmpty()) {
             try {
                 this.orden = new FileInputStream("/home/asael/uploads/datosEntrada/" + orden);
@@ -43,29 +41,13 @@ public class Examen {
             }
 
         }
-        try {
-            this.hora = LocalTime.parse(hora, DateTimeFormatter.ofPattern("HH:mm"));
-        } catch (Exception e) {
-            try {
-                this.hora = LocalTime.parse(hora, DateTimeFormatter.ofPattern("H:mm"));
-            } catch (Exception ex) {
-                ex.printStackTrace(System.out);
-            }
-        }
+    }
 
-        try {
-            this.fecha = LocalDate.parse(fecha);
-        } catch (Exception e) {
-            try {
-                this.fecha = LocalDate.parse(fecha, DateTimeFormatter.ofPattern("yyyy-M-d"));
-            } catch (Exception ex) {
-                try {
-                    this.fecha = LocalDate.parse(fecha, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-                } catch (Exception exx) {
-                    exx.printStackTrace(System.out);
-                }
-            }
-        }
+    public Examen(String codigoPaciente, String codigoTipoExamen,
+            String codigoMedico, InputStream orden, String fecha, String hora, int estado,
+            int solicitoMedico, float total) {
+        this.orden = orden;
+        setDatos(codigoPaciente, codigoTipoExamen, codigoMedico, fecha, hora, estado, solicitoMedico, total);
     }
 
     public int getCodigo() {
@@ -132,11 +114,55 @@ public class Examen {
         this.estado = estado;
     }
 
+    public int getSolicitoMedico() {
+        return solicitoMedico;
+    }
+
+    public void setSolicitoMedico(int solicitoMedico) {
+        this.solicitoMedico = solicitoMedico;
+    }
+
     public float getTotal() {
         return total;
     }
 
     public void setTotal(float total) {
         this.total = total;
+    }
+
+    private void setDatos(String codigoPaciente, String codigoTipoExamen,
+            String codigoMedico, String fecha, String hora, int estado,
+            int solicitoMedico, float total) {
+        this.codigoPaciente = codigoPaciente;
+        this.codigoTipoExamen = codigoTipoExamen;
+        this.codigoMedico = codigoMedico.trim().isEmpty() ? null : codigoMedico;
+        this.solicitoMedico = solicitoMedico;
+        this.estado = estado;
+        this.total = total;
+
+        
+        try {
+            this.hora = LocalTime.parse(hora, DateTimeFormatter.ofPattern("HH:mm"));
+        } catch (Exception e) {
+            try {
+                this.hora = LocalTime.parse(hora, DateTimeFormatter.ofPattern("H:mm"));
+            } catch (Exception ex) {
+                ex.printStackTrace(System.out);
+            }
+        }
+
+        try {
+            this.fecha = LocalDate.parse(fecha);
+        } catch (Exception e) {
+            try {
+                this.fecha = LocalDate.parse(fecha, DateTimeFormatter.ofPattern("yyyy-M-d"));
+            } catch (Exception ex) {
+                try {
+                    this.fecha = LocalDate.parse(fecha, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+                } catch (Exception exx) {
+                    exx.printStackTrace(System.out);
+                }
+            }
+        }
     }
 }
