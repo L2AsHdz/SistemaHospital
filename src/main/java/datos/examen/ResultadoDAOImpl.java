@@ -5,8 +5,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import model.examen.Resultado;
+import model.examen.ResultadoDTO;
 
 /**
  *
@@ -78,6 +82,39 @@ public class ResultadoDAOImpl implements ResultadoDAO {
             ex.printStackTrace(System.out);
         }
         return flag;
+    }
+
+    @Override
+    public List<Resultado> getListResultadoByPaciente(String codPaciente) {
+        String sql = "SELECT m.nombre medico, l.nombre laboratorista, te.nombre tipoExamen, "
+                + "e.fecha, e.hora, r.resultado, e.total FROM resultado r INNER JOIN examen e "
+                + "ON r.codigoExamen=e.codigo LEFT JOIN medico m ON e.codigoMedico=m.codigo "
+                + "INNER JOIN laboratorista l ON r.codigoLaboratorista=l.codigo INNER JOIN "
+                + "tipoExamen te ON e.codigoTipoExamen=te.codigo WHERE e.codigoPaciente = ? "
+                + "ORDER BY e.fecha";
+        List<Resultado> resultados = null;
+
+        try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, codPaciente);
+            try ( ResultSet rs = ps.executeQuery()) {
+                resultados = new ArrayList();
+
+                while (rs.next()) {
+                    ResultadoDTO resultado = new ResultadoDTO();
+                    resultado.setMedico(rs.getString("medico"));
+                    resultado.setLaboratorista(rs.getString("laboratorista"));
+                    resultado.setTipoExamen(rs.getString(rs.getString("tipoExamen")));
+                    resultado.setFecha(LocalDate.parse("fecha"));
+                    resultado.setHora(LocalTime.parse("hora"));
+                    resultado.setResultado(rs.getBinaryStream("resultado"));
+                    resultado.setCosto(rs.getFloat("total"));
+                    resultados.add(resultado);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return resultados;
     }
     
 }
