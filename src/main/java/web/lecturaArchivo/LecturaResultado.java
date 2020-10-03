@@ -46,9 +46,9 @@ public class LecturaResultado {
 
                 validarResultado(codigo, paciente, examen, medico, laboratorista,
                         orden, resultado, fecha, hora, i);
-                examenDAO.create(new Examen(codigo, paciente, laboratorista, examen,
-                        medico, orden, fecha, hora, 1, tipoExamenDAO.getCosto(examen)));
-                resultadoDAO.create(new Resultado(codigo, resultado, fecha, hora));
+                examenDAO.create(new Examen(codigo, paciente, examen, medico, orden, 
+                        fecha, hora, 1, tipoExamenDAO.getCosto(examen)));
+                resultadoDAO.create(new Resultado(codigo, laboratorista, resultado, fecha, hora));
             }
         }
         

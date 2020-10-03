@@ -15,7 +15,6 @@ public class Examen {
 
     private int codigo;
     private String codigoPaciente;
-    private String codigoLaboratorista;
     private String codigoTipoExamen;
     private String codigoMedico;
     private InputStream orden;
@@ -27,12 +26,10 @@ public class Examen {
     public Examen() {
     }
 
-    public Examen(String codigo, String codigoPaciente, String codigoLaboratorista,
-            String codigoTipoExamen, String codigoMedico, String orden, String fecha,
-            String hora, int estado, float total) {
+    public Examen(String codigo, String codigoPaciente, String codigoTipoExamen, 
+            String codigoMedico, String orden, String fecha, String hora, int estado, float total) {
         this.codigo = Integer.parseInt(codigo);
         this.codigoPaciente = codigoPaciente;
-        this.codigoLaboratorista = codigoLaboratorista;
         this.codigoTipoExamen = codigoTipoExamen;
         this.codigoMedico = codigoMedico.trim().isEmpty() ? null: codigoMedico;
         this.estado = estado;
@@ -85,14 +82,6 @@ public class Examen {
 
     public void setCodigoPaciente(String codigoPaciente) {
         this.codigoPaciente = codigoPaciente;
-    }
-
-    public String getCodigoLaboratorista() {
-        return codigoLaboratorista;
-    }
-
-    public void setCodigoLaboratorista(String codigoLaboratorista) {
-        this.codigoLaboratorista = codigoLaboratorista;
     }
 
     public String getCodigoTipoExamen() {

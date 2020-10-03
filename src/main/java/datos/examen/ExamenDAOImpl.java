@@ -36,19 +36,18 @@ public class ExamenDAOImpl implements ExamenDAO {
 
     @Override
     public void create(Examen examen) {
-        String sql = "INSERT INTO examen (codigoPaciente, codigoLaboratorista, codigoTipoExamen, "
-                + "codigoMedico, orden, fecha, hora, estado, total) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO examen (codigoPaciente, codigoTipoExamen, codigoMedico, "
+                + "orden, fecha, hora, estado, total) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, examen.getCodigoPaciente());
-            ps.setString(2, examen.getCodigoLaboratorista());
-            ps.setString(3, examen.getCodigoTipoExamen());
-            ps.setString(4, examen.getCodigoMedico());
-            ps.setBinaryStream(5, examen.getOrden());
-            ps.setString(6, examen.getFecha().toString());
-            ps.setString(7, examen.getHora().toString());
-            ps.setInt(8, examen.getEstado());
-            ps.setFloat(9, examen.getTotal());
+            ps.setString(2, examen.getCodigoTipoExamen());
+            ps.setString(3, examen.getCodigoMedico());
+            ps.setBinaryStream(4, examen.getOrden());
+            ps.setString(5, examen.getFecha().toString());
+            ps.setString(6, examen.getHora().toString());
+            ps.setInt(7, examen.getEstado());
+            ps.setFloat(8, examen.getTotal());
             ps.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);
@@ -67,7 +66,6 @@ public class ExamenDAOImpl implements ExamenDAO {
                     examen = new Examen();
                     examen.setCodigo(Integer.parseInt(codigo));
                     examen.setCodigoPaciente(rs.getString("codigoPaciente"));
-                    examen.setCodigoLaboratorista(rs.getString("codigoLaboratorista"));
                     examen.setCodigoTipoExamen(rs.getString("codigoTipoExamen"));
                     examen.setCodigoMedico(rs.getString("codigoMedico"));
                     examen.setOrden(rs.getBinaryStream("orden"));
@@ -75,7 +73,6 @@ public class ExamenDAOImpl implements ExamenDAO {
                     examen.setHora(LocalTime.parse(rs.getString("hora")));
                     examen.setEstado(rs.getInt("estado"));
                     examen.setTotal(rs.getFloat("total"));
-                    //faltan los demas atributos
                 }
             }
         } catch (SQLException ex) {

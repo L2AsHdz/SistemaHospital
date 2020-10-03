@@ -95,7 +95,6 @@ CREATE TABLE  turno (
 CREATE TABLE  examen (
   codigo INT AUTO_INCREMENT NOT NULL,
   codigoPaciente VARCHAR(20) NOT NULL,
-  codigoLaboratorista VARCHAR(20) NOT NULL,
   codigoTipoExamen VARCHAR(10) NOT NULL,
   codigoMedico VARCHAR(20) NULL,
   orden MEDIUMBLOB NULL,
@@ -107,11 +106,6 @@ CREATE TABLE  examen (
   CONSTRAINT FK_EXAMEN_TO_CODIGO_PACIENTE
     FOREIGN KEY (codigoPaciente)
     REFERENCES paciente (codigo)
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT,
-  CONSTRAINT FK_EXAMEN_TO_CODIGO_LABORATORISTA
-    FOREIGN KEY (codigoLaboratorista)
-    REFERENCES laboratorista (codigo)
     ON DELETE RESTRICT
     ON UPDATE RESTRICT,
   CONSTRAINT FK_EXAMEN_TO_TIPO_EXAMEN
@@ -153,6 +147,7 @@ CREATE TABLE  consulta (
 
 CREATE TABLE  resultado (
   codigoExamen INT NOT NULL,
+  codigoLaboratorista VARCHAR(20) NOT NULL,
   resultado MEDIUMBLOB NOT NULL,
   fecha DATE NOT NULL,
   hora TIME NOT NULL,
@@ -160,6 +155,11 @@ CREATE TABLE  resultado (
   CONSTRAINT FK_CODIGO_EXAMEN
     FOREIGN KEY (codigoExamen)
     REFERENCES examen (codigo)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT,
+  CONSTRAINT FK_RESULTADO_TO_CODIGO_LABORATORISTA
+    FOREIGN KEY (codigoLaboratorista)
+    REFERENCES laboratorista (codigo)
     ON DELETE RESTRICT
     ON UPDATE RESTRICT);
 

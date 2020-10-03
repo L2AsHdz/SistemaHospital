@@ -34,13 +34,14 @@ public class ResultadoDAOImpl implements ResultadoDAO {
 
     @Override
     public void create(Resultado resultado) {
-        String sql = "INSERT INTO resultado VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO resultado VALUES (?, ?, ?, ?, ?)";
 
         try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setInt(1, resultado.getCodigoExamen());
-            ps.setBinaryStream(2, resultado.getResultado());
-            ps.setString(3, resultado.getFecha().toString());
-            ps.setString(4, resultado.getHora().toString());
+            ps.setString(2, resultado.getCodigoLaboratorista());
+            ps.setBinaryStream(3, resultado.getResultado());
+            ps.setString(4, resultado.getFecha().toString());
+            ps.setString(5, resultado.getHora().toString());
             ps.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);
