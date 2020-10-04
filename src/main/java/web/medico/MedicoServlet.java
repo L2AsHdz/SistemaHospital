@@ -27,7 +27,7 @@ public class MedicoServlet extends HttpServlet {
     private final CRUD<Medico> medicoDAO = MedicoDAOImpl.getMedicoDAO();
     private final CRUD<Especialidad> especialidadDAO = EspecialidadDAOImpl.getEspecialidadDAO();
     private final CRUD<AsignacionEspecialidad> asignacionDAO = AsignacionEspecialidadDAOImpl.getAsignacionEsDAO();
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String accion = request.getParameter("accion");
@@ -42,7 +42,7 @@ public class MedicoServlet extends HttpServlet {
         String fechaInicioLabores = request.getParameter("fechaLabores");
         String password = request.getParameter("password");
         String[] checkEsp = request.getParameterValues("checkEsp");
-        
+
         Medico medico = new Medico(noColegiado, telefono, correo, horaInicio, horaFinal, fechaInicioLabores, codigo, nombre, cui, password);
 
         switch (accion) {
@@ -82,6 +82,9 @@ public class MedicoServlet extends HttpServlet {
             List<Especialidad> especialidades = especialidadDAO.getListado();
             request.setAttribute("especialidades", especialidades);
             request.getRequestDispatcher("admin/formMedico.jsp").forward(request, response);
+        } else if (accion != null && accion.equals("logout")) {
+            request.getSession().invalidate();
+            response.sendRedirect("index.jsp");
         } else {
             redirect(request, response);
         }

@@ -162,5 +162,34 @@ public class ConsultaDAOImpl implements ConsultaDAO {
         }
         return consultas;
     }
+
+    @Override
+    public List<Consulta> getConsultasPendientesToday(String codMedico) {
+        String sql = "SELECT c.codigo, p.nombre paciente, e.nombre especialidad, c.fecha, "
+                + "c.hora FROM consulta c INNER JOIN paciente p ON c.codigoPaciente=p.codigo "
+                + "INNER JOIN especialidad e ON c.idEspecialidad=e.id WHERE c.codigoMedico = ? "
+                + "AND c.estado = 0 AND c.fecha = CAST(NOW() AS DATE) ORDER BY c.hora";
+        List<Consulta> consultas = null;
+
+        try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, codMedico);
+            try ( ResultSet rs = ps.executeQuery()) {
+                consultas = new ArrayList();
+
+                while (rs.next()) {
+                    Consulta consulta = new Consulta();
+                    consulta.setCodigo(rs.getInt("codigo"));
+                    consulta.setNombrePaciente(rs.getString("paciente"));
+                    consulta.setNombreEspecialidad(rs.getString("especialidad"));
+                    consulta.setFecha(LocalDate.parse(rs.getString("fecha")));
+                    consulta.setHora(LocalTime.parse(rs.getString("hora")));
+                    consultas.add(consulta);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return consultas;
+    }
     
 }

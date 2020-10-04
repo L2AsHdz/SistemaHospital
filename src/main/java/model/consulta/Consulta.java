@@ -14,6 +14,7 @@ public class Consulta {
     private String codigoMedico;
     private String nombreMedico;
     private String codigoPaciente;
+    private String nombrePaciente;
     private int idEspecialidad;
     private String nombreEspecialidad;
     private LocalDate fecha;
@@ -81,6 +82,14 @@ public class Consulta {
 
     public void setNombreEspecialidad(String nombreEspecialidad) {
         this.nombreEspecialidad = nombreEspecialidad;
+    }
+
+    public String getNombrePaciente() {
+        return nombrePaciente;
+    }
+
+    public void setNombrePaciente(String nombrePaciente) {
+        this.nombrePaciente = nombrePaciente;
     }
 
     public LocalDate getFecha() {

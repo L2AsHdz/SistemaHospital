@@ -1,7 +1,7 @@
 <div>
     <nav class="navbar navbar-expand-xl fixed-top bg-dark navbar-dark">
         <a href="${pageContext.request.contextPath}/admin/inicioAdmin.jsp" class="navbar-brand">
-            <i class="fas fa-hospital"></i>
+            <i class="fas fa-hospital-symbol"></i>
             Sistema Hospital
         </a>
 
