@@ -191,5 +191,18 @@ public class ConsultaDAOImpl implements ConsultaDAO {
         }
         return consultas;
     }
+
+    @Override
+    public void setEstado(String codConsulta, int estado) {
+        String sql = "UPDATE consulta SET estado = ? WHERE codigo = ?";
+
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setInt(1, estado);
+            ps.setInt(2, Integer.parseInt(codConsulta));
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        }
+    }
     
 }

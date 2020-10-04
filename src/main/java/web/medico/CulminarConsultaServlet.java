@@ -1,7 +1,9 @@
 package web.medico;
 
+import datos.CRUD;
 import datos.consulta.ConsultaDAO;
 import datos.consulta.ConsultaDAOImpl;
+import datos.consulta.InformeDAOImpl;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -11,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.consulta.Consulta;
+import model.consulta.Informe;
 import model.usuario.Medico;
 
 /**
@@ -22,14 +25,23 @@ import model.usuario.Medico;
 public class CulminarConsultaServlet extends HttpServlet {
     
     private final ConsultaDAO consultaDAO = ConsultaDAOImpl.getconsultaDAO();
+    private final CRUD<Informe> informeDAO = InformeDAOImpl.getInformeDAO();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String accion = request.getParameter("accion");
         switch (accion) {
             case "finalizar" -> {
-                System.out.println("holi: " + request.getParameter("codConsulta"));
-                response.sendRedirect("medico/inicioMedico.jsp");
+                String codigoConsulta = request.getParameter("codConsulta");
+                String contenidoInforme = request.getParameter("informe");
+                String fecha = request.getParameter("fecha");
+                String hora = request.getParameter("hora");
+                
+                Informe informe = new Informe(codigoConsulta, contenidoInforme, fecha, hora);
+                
+                informeDAO.create(informe);
+                consultaDAO.setEstado(codigoConsulta, 1);
+                response.sendRedirect(request.getContextPath()+"/CulminarConsultaServlet?accion=listar");
             }
         }
     }

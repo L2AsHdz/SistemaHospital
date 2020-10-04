@@ -52,8 +52,10 @@
                                                 <td>${consulta.fecha}</td>
                                                 <td>${consulta.hora}</td>
                                                 <td>
-                                                    <a class="btn btn-secondary" data-toggle="modal" data-target="#modal-informe" onclick="$('#codConsulta').val(${consulta.codigo})">
-                                                        <i class="fas fa-eye"></i> Agregar informe
+                                                    <a class="btn btn-secondary" data-toggle="modal" data-target="#modal-informe" 
+                                                       data-controls-modal="modal-informe" data-backdrop="static" data-keyboard="false"
+                                                       onclick="$('#codConsulta').val(${consulta.codigo})">
+                                                        <i class="fas fa-align-justify"></i> Agregar informe
                                                     </a>
                                                 </td>
                                             </tr>
@@ -71,14 +73,14 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <button type="button" form="form-informe" class="close" data-dismiss="modal" onclick="$('#limpiar').click()">&times;</button>
                         <h5>Agregar informe:</h5>
                         <form action="${pageContext.request.contextPath}/CulminarConsultaServlet?accion=finalizar"
                               id="form-informe"  method="POST">
                             <input type="text" class="form-control d-none" name="codConsulta" id="codConsulta">
                             <div class="form-group">
                                 <label for="informe">*Informe</label>
-                                <textarea type="textarea" rows="5" class="form-control" name="informe"></textarea>
+                                <textarea type="textarea" rows="5" class="form-control" name="informe" id="textInforme"></textarea>
                             </div>
                             <div class="form-group">
                                 <label for="hora">*Hora:</label>
@@ -89,7 +91,8 @@
                                 <input type="date" class="form-control" name="fecha">
                             </div>
                             <div>
-                                <button id="boton" type="submit" class="btn btn-primary btn-block">Finalizar</button>
+                                <button type="submit" class="btn btn-primary btn-block">Finalizar</button>
+                                <button id="limpiar" type="reset" class="btn btn-primary d-none">Limpiar</button>
                             </div>
                         </form>
                     </div>

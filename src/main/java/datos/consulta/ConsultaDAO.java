@@ -11,6 +11,7 @@ import model.consulta.Consulta;
 public interface ConsultaDAO extends CRUD<Consulta> {
     int getLastCodigo();
     void setNextCodigo(int codigo);
+    void setEstado(String codConsulta, int estado);
     boolean isAvailable(String codMedico, String hora, String fecha);
     List<Consulta> getConsultasPendientes(String codPaciente);
     List<Consulta> getConsultasPendientesToday(String codMedico);
