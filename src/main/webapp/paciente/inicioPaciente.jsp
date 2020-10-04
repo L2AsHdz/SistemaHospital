@@ -18,7 +18,7 @@
     <body>
         <!-- Barra de navegacion -->
         <jsp:include page="/WEB-INF/paciente/navBarPaciente.jsp"/>
-        
+
         <!--JS--> 
         <jsp:include page="/WEB-INF/extras/extrasJS.jsp"/>
     </body>

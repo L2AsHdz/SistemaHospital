@@ -85,7 +85,7 @@ public class InformeDAOImpl implements InformeDAO {
 
     @Override
     public List<Informe> getListInformeByPaciente(String codPaciente) {
-        String sql = "SELECT m.nombre medico, e.nombre especialidad, c.fecha, c.hora, i.informe, "
+        String sql = "SELECT c.codigo, m.nombre medico, e.nombre especialidad, c.fecha, c.hora, i.informe, "
                 + "c.total FROM informe i INNER JOIN consulta c ON i.codigoConsulta=c.codigo "
                 + "INNER JOIN medico m ON c.codigoMedico=m.codigo INNER JOIN especialidad e ON "
                 + "c.idEspecialidad=e.id WHERE c.codigoPaciente = ? ORDER BY c.fecha";
@@ -98,6 +98,7 @@ public class InformeDAOImpl implements InformeDAO {
 
                 while (rs.next()) {
                     InformeDTO informe = new InformeDTO();
+                    informe.setCodigoConsulta(rs.getInt("codigo"));
                     informe.setMedico(rs.getString("medico"));
                     informe.setEspecialidad(rs.getString("especialidad"));
                     informe.setFecha(LocalDate.parse(rs.getString("fecha")));

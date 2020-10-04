@@ -86,7 +86,7 @@ public class ResultadoDAOImpl implements ResultadoDAO {
 
     @Override
     public List<Resultado> getListResultadoByPaciente(String codPaciente) {
-        String sql = "SELECT m.nombre medico, l.nombre laboratorista, te.nombre tipoExamen, "
+        String sql = "SELECT e.codigo, m.nombre medico, l.nombre laboratorista, te.nombre tipoExamen, "
                 + "e.fecha, e.hora, r.resultado, e.total FROM resultado r INNER JOIN examen e "
                 + "ON r.codigoExamen=e.codigo LEFT JOIN medico m ON e.codigoMedico=m.codigo "
                 + "INNER JOIN laboratorista l ON r.codigoLaboratorista=l.codigo INNER JOIN "
@@ -101,11 +101,12 @@ public class ResultadoDAOImpl implements ResultadoDAO {
 
                 while (rs.next()) {
                     ResultadoDTO resultado = new ResultadoDTO();
+                    resultado.setCodigoExamen(rs.getInt("codigo"));
                     resultado.setMedico(rs.getString("medico"));
                     resultado.setLaboratorista(rs.getString("laboratorista"));
-                    resultado.setTipoExamen(rs.getString(rs.getString("tipoExamen")));
-                    resultado.setFecha(LocalDate.parse("fecha"));
-                    resultado.setHora(LocalTime.parse("hora"));
+                    resultado.setTipoExamen(rs.getString("tipoExamen"));
+                    resultado.setFecha(LocalDate.parse(rs.getString("fecha")));
+                    resultado.setHora(LocalTime.parse(rs.getString("hora")));
                     resultado.setResultado(rs.getBinaryStream("resultado"));
                     resultado.setCosto(rs.getFloat("total"));
                     resultados.add(resultado);
