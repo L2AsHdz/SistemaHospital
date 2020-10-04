@@ -5,6 +5,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import model.consulta.Consulta;
 
@@ -128,6 +131,36 @@ public class ConsultaDAOImpl implements ConsultaDAO {
             ex.printStackTrace(System.out);
         }
         return flag;
+    }
+
+    @Override
+    public List<Consulta> getConsultasPendientes(String codPaciente) {
+        String sql = "SELECT c.codigo, m.nombre medico, e.nombre especialidad, c.fecha, "
+                + "c.hora, c.total FROM consulta c INNER JOIN medico m ON c.codigoMedico=m.codigo "
+                + "INNER JOIN especialidad e ON c.idEspecialidad=e.id WHERE c.codigoPaciente = ? AND "
+                + "c.estado = 0 ORDER BY c.fecha";
+        List<Consulta> consultas = null;
+
+        try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, codPaciente);
+            try ( ResultSet rs = ps.executeQuery()) {
+                consultas = new ArrayList();
+
+                while (rs.next()) {
+                    Consulta consulta = new Consulta();
+                    consulta.setCodigo(rs.getInt("codigo"));
+                    consulta.setNombreMedico(rs.getString("medico"));
+                    consulta.setNombreEspecialidad(rs.getString("especialidad"));
+                    consulta.setFecha(LocalDate.parse(rs.getString("fecha")));
+                    consulta.setHora(LocalTime.parse(rs.getString("hora")));
+                    consulta.setTotal(rs.getFloat("total"));
+                    consultas.add(consulta);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return consultas;
     }
     
 }

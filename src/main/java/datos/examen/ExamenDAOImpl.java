@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import model.examen.Examen;
 
@@ -134,6 +135,36 @@ public class ExamenDAOImpl implements ExamenDAO {
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);
         }
+    }
+
+    @Override
+    public List<Examen> getExamenesPendientes(String codPaciente) {
+        String sql = "SELECT e.codigo, m.nombre medico, te.nombre tipoExamen, e.fecha, e.hora, "
+                + "e.total FROM examen e LEFT JOIN medico m ON e.codigoMedico=m.codigo INNER JOIN "
+                + "tipoExamen te ON e.codigoTipoExamen=te.codigo WHERE e.codigoPaciente = ? e.estado = 0 "
+                + "ORDER BY e.fecha";
+        List<Examen> examenes = null;
+
+        try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, codPaciente);
+            try ( ResultSet rs = ps.executeQuery()) {
+                examenes = new ArrayList();
+
+                while (rs.next()) {
+                    Examen examen = new Examen();
+                    examen.setCodigo(rs.getInt("codigo"));
+                    examen.setNombreMedico(rs.getString("medico"));
+                    examen.setNombreTipoExamen(rs.getString("tipoExamen"));
+                    examen.setFecha(LocalDate.parse(rs.getString("fecha")));
+                    examen.setHora(LocalTime.parse(rs.getString("hora")));
+                    examen.setTotal(rs.getFloat("total"));
+                    examenes.add(examen);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return examenes;
     }
     
 }

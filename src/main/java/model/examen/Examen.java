@@ -16,7 +16,9 @@ public class Examen {
     private int codigo;
     private String codigoPaciente;
     private String codigoTipoExamen;
+    private String nombreTipoExamen;
     private String codigoMedico;
+    private String nombreMedico;
     private InputStream orden;
     private LocalDate fecha;
     private LocalTime hora;
@@ -79,6 +81,22 @@ public class Examen {
 
     public void setCodigoMedico(String codigoMedico) {
         this.codigoMedico = codigoMedico;
+    }
+
+    public String getNombreTipoExamen() {
+        return nombreTipoExamen;
+    }
+
+    public void setNombreTipoExamen(String nombreTipoExamen) {
+        this.nombreTipoExamen = nombreTipoExamen;
+    }
+
+    public String getNombreMedico() {
+        return nombreMedico;
+    }
+
+    public void setNombreMedico(String nombreMedico) {
+        this.nombreMedico = nombreMedico;
     }
 
     public InputStream getOrden() {

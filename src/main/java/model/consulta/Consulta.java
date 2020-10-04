@@ -12,8 +12,10 @@ public class Consulta {
     
     private int codigo;
     private String codigoMedico;
+    private String nombreMedico;
     private String codigoPaciente;
     private int idEspecialidad;
+    private String nombreEspecialidad;
     private LocalDate fecha;
     private LocalTime hora;
     private int estado;
@@ -63,6 +65,22 @@ public class Consulta {
 
     public void setIdEspecialidad(int idEspecialidad) {
         this.idEspecialidad = idEspecialidad;
+    }
+
+    public String getNombreMedico() {
+        return nombreMedico;
+    }
+
+    public void setNombreMedico(String nombreMedico) {
+        this.nombreMedico = nombreMedico;
+    }
+
+    public String getNombreEspecialidad() {
+        return nombreEspecialidad;
+    }
+
+    public void setNombreEspecialidad(String nombreEspecialidad) {
+        this.nombreEspecialidad = nombreEspecialidad;
     }
 
     public LocalDate getFecha() {
