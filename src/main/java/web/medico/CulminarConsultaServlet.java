@@ -25,7 +25,13 @@ public class CulminarConsultaServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        
+        String accion = request.getParameter("accion");
+        switch (accion) {
+            case "finalizar" -> {
+                System.out.println("holi: " + request.getParameter("codConsulta"));
+                response.sendRedirect("medico/inicioMedico.jsp");
+            }
+        }
     }
 
     @Override
@@ -39,10 +45,6 @@ public class CulminarConsultaServlet extends HttpServlet {
                 sesion.setAttribute("consultasToday", consultasToday);
                 response.sendRedirect("medico/culminarConsulta.jsp");
             }
-            case "subirInforme" -> {
-            }
         }
     }
-
-    
 }
