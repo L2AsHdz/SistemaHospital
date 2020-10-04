@@ -141,7 +141,7 @@ public class ExamenDAOImpl implements ExamenDAO {
     public List<Examen> getExamenesPendientes(String codPaciente) {
         String sql = "SELECT e.codigo, m.nombre medico, te.nombre tipoExamen, e.fecha, e.hora, "
                 + "e.total FROM examen e LEFT JOIN medico m ON e.codigoMedico=m.codigo INNER JOIN "
-                + "tipoExamen te ON e.codigoTipoExamen=te.codigo WHERE e.codigoPaciente = ? e.estado = 0 "
+                + "tipoExamen te ON e.codigoTipoExamen=te.codigo WHERE e.codigoPaciente = ? AND e.estado = 0 "
                 + "ORDER BY e.fecha";
         List<Examen> examenes = null;
 

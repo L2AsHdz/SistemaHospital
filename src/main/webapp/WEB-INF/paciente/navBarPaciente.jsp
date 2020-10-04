@@ -17,7 +17,7 @@
                     <a class="nav-link" href="${pageContext.request.contextPath}/HistorialMedicoServlet?accion=historial">Historial medico</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Pendientes</a>
+                    <a class="nav-link" href="${pageContext.request.contextPath}/HistorialMedicoServlet?accion=pendientes">Pendientes</a>
                 </li>
 
                 <li class="nav-item dropdown">

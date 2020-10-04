@@ -1,7 +1,11 @@
 package web.paciente;
 
+import datos.consulta.ConsultaDAO;
+import datos.consulta.ConsultaDAOImpl;
 import datos.consulta.InformeDAO;
 import datos.consulta.InformeDAOImpl;
+import datos.examen.ExamenDAO;
+import datos.examen.ExamenDAOImpl;
 import datos.examen.ResultadoDAO;
 import datos.examen.ResultadoDAOImpl;
 import java.io.IOException;
@@ -12,7 +16,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.consulta.Consulta;
 import model.consulta.Informe;
+import model.examen.Examen;
 import model.examen.Resultado;
 import model.usuario.Paciente;
 
@@ -23,9 +29,11 @@ import model.usuario.Paciente;
  */
 @WebServlet("/HistorialMedicoServlet")
 public class HistorialMedicoServlet extends HttpServlet {
-    
+
     private final InformeDAO informeDAO = InformeDAOImpl.getInformeDAO();
     private final ResultadoDAO resultadoDAO = ResultadoDAOImpl.getResultadoDAO();
+    private final ConsultaDAO consultaDAO = ConsultaDAOImpl.getconsultaDAO();
+    private final ExamenDAO examenDAO = ExamenDAOImpl.getExamenDAO();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -34,20 +42,26 @@ public class HistorialMedicoServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String accion = request.getParameter("accion");
-        
+        HttpSession sesion = request.getSession();
+        Paciente paciente = (Paciente) sesion.getAttribute("user");
+        String codPaciente = paciente.getCodigo();
+
         switch (accion) {
             case "historial" -> {
-                HttpSession sesion = request.getSession();
-                Paciente paciente = (Paciente) sesion.getAttribute("user");
-                String codPaciente = paciente.getCodigo();
                 List<Informe> informes = informeDAO.getListInformeByPaciente(codPaciente);
                 List<Resultado> resultados = resultadoDAO.getListResultadoByPaciente(codPaciente);
                 sesion.setAttribute("informes", informes);
                 sesion.setAttribute("resultados", resultados);
                 response.sendRedirect("paciente/historialMedico.jsp");
             }
+            case "pendientes" -> {
+                List<Consulta> consultasP = consultaDAO.getConsultasPendientes(codPaciente);
+                List<Examen> examenesP = examenDAO.getExamenesPendientes(codPaciente);
+                sesion.setAttribute("consultasP", consultasP);
+                sesion.setAttribute("examenesP", examenesP);
+                response.sendRedirect("paciente/pendientes.jsp");
+            }
         }
     }
 
-    
 }
