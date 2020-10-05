@@ -40,137 +40,158 @@
                 </div>
             </div>
 
+            <c:if test="${!empty(error)}">
+                <div class="row mt-2">
+                    <div class="col-xl-5">
+                        <div class="alert alert-danger alert-dismissible mt-2">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            ${error}
+                        </div>
+                    </div>
+                </div>
+            </c:if>
+
             <!-- Historial medico -->
             <!-- Consultas realizadas -->
-            <c:if test="${!empty(informes)}">
-                <div class="row my-5 pl-4">
-                    <div class="col-xl-10">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4>Consultas realizadas</h4>
-                            </div>
-                            <div class="card-body">
-                                <table class="table table-striped">
-                                    <thead class="thead-dark">
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Paciente</th>
-                                            <th>Medico</th>
-                                            <th>Especialidad</th>
-                                            <th>Fecha</th>
-                                            <th>Hora</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-                                        <c:forEach var="informe" items="${informes}" varStatus="status">
+            <div class="row my-5 pl-4">
+                <div class="col-xl-10">
+                    <c:choose>
+                        <c:when test="${!empty(informes)}">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Consultas realizadas</h4>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-striped">
+                                        <thead class="thead-dark">
                                             <tr>
-                                                <td>${status.count}</td>
-                                                <td>${informe.paciente}</td>
-                                                <td>${informe.medico}</td>
-                                                <td>${informe.especialidad}</td>
-                                                <td>${informe.fecha}</td>
-                                                <td>${informe.hora}</td>
-                                                <td>
-                                                    <a class="btn btn-info" data-toggle="modal" data-target="#modal-informe"
-                                                       onclick="$('#contenidoInforme').text('${informe.informe}')">
-                                                        <i class="fas fa-eye"></i> Ver informe
-                                                    </a>
-                                                </td>
+                                                <th>#</th>
+                                                <th>Paciente</th>
+                                                <th>Medico</th>
+                                                <th>Especialidad</th>
+                                                <th>Fecha</th>
+                                                <th>Hora</th>
+                                                <th></th>
                                             </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>	
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                                        </thead>
+                                        <tbody>
 
-                <div class="modal" id="modal-informe">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-body">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h5>Informe:</h5>
-                                <p id="contenidoInforme"></p>
+                                            <c:forEach var="informe" items="${informes}" varStatus="status">
+                                                <tr>
+                                                    <td>${status.count}</td>
+                                                    <td>${informe.paciente}</td>
+                                                    <td>${informe.medico}</td>
+                                                    <td>${informe.especialidad}</td>
+                                                    <td>${informe.fecha}</td>
+                                                    <td>${informe.hora}</td>
+                                                    <td>
+                                                        <a class="btn btn-info" data-toggle="modal" data-target="#modal-informe"
+                                                           onclick="$('#contenidoInforme').text('${informe.informe}')">
+                                                            <i class="fas fa-eye"></i> Ver informe
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>	
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                            <div class="modal" id="modal-informe">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h5>Informe:</h5>
+                                            <p id="contenidoInforme"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <c:if test="${buscado}">
+                                <h4>El paciente no tiene consultas</h4>
+                            </c:if>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
+            </div>
 
-            </c:if>
 
             <!-- examenes realizados -->
-            <c:if test="${!empty(resultados)}">
-                <div class="row my-5 pl-4">
-                    <div class="col-xl-10">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4>Examenes realizados</h4>
-                            </div>
-                            <div class="card-body">
-                                <table class="table table-striped">
-                                    <thead class="thead-dark">
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Paciente</th>
-                                            <th>Medico</th>
-                                            <th>Laboratorista</th>
-                                            <th>Examen</th>
-                                            <th>Fecha</th>
-                                            <th>Hora</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-                                        <c:forEach var="resultado" items="${resultados}" varStatus="status">
+            <div class="row my-5 pl-4">
+                <div class="col-xl-10">
+                    <c:choose>
+                        <c:when test="${!empty(resultados)}">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Examenes realizados</h4>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-striped">
+                                        <thead class="thead-dark">
                                             <tr>
-                                                <td>${status.count}</td>
-                                                <td>${resultado.paciente}</td>
-                                                <c:choose>
-                                                    <c:when test="${empty(resultado.medico)}">
-                                                        <td>Sin medico</td>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <td>${resultado.medico}</td>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                                <td>${resultado.laboratorista}</td>
-                                                <td>${resultado.tipoExamen}</td>
-                                                <td>${resultado.fecha}</td>
-                                                <td>${resultado.hora}</td>
-                                                <td>
-                                                    <a class="btn btn-info" data-toggle="modal" data-target="#modal-resultado">
-                                                        <i class="fas fa-eye"></i> Ver resultado
-                                                    </a>
-                                                </td>
+                                                <th>#</th>
+                                                <th>Paciente</th>
+                                                <th>Medico</th>
+                                                <th>Laboratorista</th>
+                                                <th>Examen</th>
+                                                <th>Fecha</th>
+                                                <th>Hora</th>
+                                                <th></th>
                                             </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>	
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                                        </thead>
+                                        <tbody>
 
-                <!-- Modal resultado -->
-                <div class="modal" id="modal-resultado">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-body">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h5>Resultado:</h5>
-                                Aqui ira la imagen
+                                            <c:forEach var="resultado" items="${resultados}" varStatus="status">
+                                                <tr>
+                                                    <td>${status.count}</td>
+                                                    <td>${resultado.paciente}</td>
+                                                    <c:choose>
+                                                        <c:when test="${empty(resultado.medico)}">
+                                                            <td>Sin medico</td>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <td>${resultado.medico}</td>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                    <td>${resultado.laboratorista}</td>
+                                                    <td>${resultado.tipoExamen}</td>
+                                                    <td>${resultado.fecha}</td>
+                                                    <td>${resultado.hora}</td>
+                                                    <td>
+                                                        <a class="btn btn-info" data-toggle="modal" data-target="#modal-resultado">
+                                                            <i class="fas fa-eye"></i> Ver resultado
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>	
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                            <!-- Modal resultado -->
+                            <div class="modal" id="modal-resultado">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h5>Resultado:</h5>
+                                            Aqui ira la imagen
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <c:if test="${buscado}">
+                                <h4>El paciente no tiene examenes</h4>
+                            </c:if>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
-            </c:if>
+            </div>
         </div>
-
-
 
         <!--JS--> 
         <jsp:include page="/WEB-INF/extras/extrasJS.jsp"/>

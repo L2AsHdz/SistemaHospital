@@ -23,95 +23,105 @@
         <jsp:include page="/WEB-INF/paciente/navBarPaciente.jsp"/>
 
         <!-- Consultas pendientes -->
-        <c:if test="${!empty(consultasP)}">
-            <div class="container-fluid my-5 pl-4">
-                <div class="row">
-                    <div class="col-xl-10">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4>Consultas pendientes</h4>
-                            </div>
-                            <div class="card-body">
-                                <table class="table table-striped">
-                                    <thead class="thead-dark">
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Medico</th>
-                                            <th>Especialidad</th>
-                                            <th>Fecha</th>
-                                            <th>Hora</th>
-                                            <th>Costo</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-                                        <c:forEach var="consulta" items="${consultasP}" varStatus="status">
+        <div class="container-fluid my-5 pl-4">
+            <div class="row">
+                <div class="col-xl-10">
+                    <c:choose>
+                        <c:when test="${!empty(consultasP)}">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Consultas pendientes</h4>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-striped">
+                                        <thead class="thead-dark">
                                             <tr>
-                                                <td>${status.count}</td>
-                                                <td>${consulta.nombreMedico}</td>
-                                                <td>${consulta.nombreEspecialidad}</td>
-                                                <td>${consulta.fecha}</td>
-                                                <td>${consulta.hora}</td>
-                                                <td><fmt:formatNumber value="${consulta.total}" type="currency" /></td>
+                                                <th>#</th>
+                                                <th>Medico</th>
+                                                <th>Especialidad</th>
+                                                <th>Fecha</th>
+                                                <th>Hora</th>
+                                                <th>Costo</th>
                                             </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>	
+                                        </thead>
+                                        <tbody>
+
+                                            <c:forEach var="consulta" items="${consultasP}" varStatus="status">
+                                                <tr>
+                                                    <td>${status.count}</td>
+                                                    <td>${consulta.nombreMedico}</td>
+                                                    <td>${consulta.nombreEspecialidad}</td>
+                                                    <td>${consulta.fecha}</td>
+                                                    <td>${consulta.hora}</td>
+                                                    <td><fmt:formatNumber value="${consulta.total}" type="currency" /></td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>	
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        </c:when>
+                        <c:otherwise>
+                            <h4>No hay consultas pendientes</h4>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
-        </c:if>
+        </div>
 
         <!-- Examenes pendientes -->
-        <c:if test="${!empty(examenesP)}">
-            <div class="container-fluid my-5 pl-4">
-                <div class="row">
-                    <div class="col-xl-10">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4>Examenes pendientes</h4>
-                            </div>
-                            <div class="card-body">
-                                <table class="table table-striped">
-                                    <thead class="thead-dark">
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Medico</th>
-                                            <th>Examen</th>
-                                            <th>Fecha</th>
-                                            <th>Hora</th>
-                                            <th>Costo</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-                                        <c:forEach var="examen" items="${examenesP}" varStatus="status">
+        <div class="container-fluid my-5 pl-4">
+            <div class="row">
+                <div class="col-xl-10">
+                    <c:choose>
+                        <c:when test="${!empty(examenesP)}">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Examenes pendientes</h4>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-striped">
+                                        <thead class="thead-dark">
                                             <tr>
-                                                <td>${status.count}</td>
-                                                <c:choose>
-                                                    <c:when test="${empty(examen.nombreMedico)}">
-                                                        <td>Sin medico</td>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <td>${examen.nombreMedico}</td>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                                <td>${examen.nombreTipoExamen}</td>
-                                                <td>${examen.fecha}</td>
-                                                <td>${examen.hora}</td>
-                                                <td><fmt:formatNumber value="${examen.total}" type="currency" /></td>
+                                                <th>#</th>
+                                                <th>Medico</th>
+                                                <th>Examen</th>
+                                                <th>Fecha</th>
+                                                <th>Hora</th>
+                                                <th>Costo</th>
                                             </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>	
+                                        </thead>
+                                        <tbody>
+
+                                            <c:forEach var="examen" items="${examenesP}" varStatus="status">
+                                                <tr>
+                                                    <td>${status.count}</td>
+                                                    <c:choose>
+                                                        <c:when test="${empty(examen.nombreMedico)}">
+                                                            <td>Sin medico</td>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <td>${examen.nombreMedico}</td>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                    <td>${examen.nombreTipoExamen}</td>
+                                                    <td>${examen.fecha}</td>
+                                                    <td>${examen.hora}</td>
+                                                    <td><fmt:formatNumber value="${examen.total}" type="currency" /></td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>	
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        </c:when>
+                        <c:otherwise>
+                            <h4>No hay examenes pendientes</h4>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
-        </c:if>
+        </div>
 
         <!--JS--> 
         <jsp:include page="/WEB-INF/extras/extrasJS.jsp"/>

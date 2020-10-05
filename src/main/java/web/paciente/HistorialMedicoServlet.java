@@ -8,6 +8,7 @@ import datos.examen.ExamenDAO;
 import datos.examen.ExamenDAOImpl;
 import datos.examen.ResultadoDAO;
 import datos.examen.ResultadoDAOImpl;
+import datos.paciente.PacienteDAOImpl;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -38,15 +39,21 @@ public class HistorialMedicoServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String accion = request.getParameter("accion");
-        
+
         switch (accion) {
             case "buscarHistorial" -> {
                 String codPaciente = request.getParameter("codPaciente");
-                List<Informe> informes = informeDAO.getListInformeByPaciente(codPaciente);
-                List<Resultado> resultados = resultadoDAO.getListResultadoByPaciente(codPaciente);
-                request.setAttribute("informes", informes);
-                request.setAttribute("resultados", resultados);
-                request.getRequestDispatcher("medico/historialMedico.jsp").forward(request, response);
+                if (PacienteDAOImpl.getPacienteDAO().exists(codPaciente)) {
+                    List<Informe> informes = informeDAO.getListInformeByPaciente(codPaciente);
+                    List<Resultado> resultados = resultadoDAO.getListResultadoByPaciente(codPaciente);
+                    request.setAttribute("buscado", true);
+                    request.setAttribute("informes", informes);
+                    request.setAttribute("resultados", resultados);
+                    request.getRequestDispatcher("medico/historialMedico.jsp").forward(request, response);
+                } else {
+                    request.setAttribute("error", "No existe un paciente con el codigo ingresado");
+                    request.getRequestDispatcher("medico/historialMedico.jsp").forward(request, response);
+                }
             }
         }
     }
