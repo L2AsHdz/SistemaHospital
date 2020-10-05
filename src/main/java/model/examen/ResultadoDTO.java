@@ -7,12 +7,21 @@ package model.examen;
  */
 public class ResultadoDTO extends Resultado {
     
+    private String paciente;
     private String tipoExamen;
     private String medico;
     private String laboratorista;
     private float costo;
 
     public ResultadoDTO() {
+    }
+
+    public String getPaciente() {
+        return paciente;
+    }
+
+    public void setPaciente(String paciente) {
+        this.paciente = paciente;
     }
 
     public String getTipoExamen() {

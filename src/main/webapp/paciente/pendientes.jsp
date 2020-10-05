@@ -35,6 +35,7 @@
                                 <table class="table table-striped">
                                     <thead class="thead-dark">
                                         <tr>
+                                            <th>#</th>
                                             <th>Medico</th>
                                             <th>Especialidad</th>
                                             <th>Fecha</th>
@@ -44,8 +45,9 @@
                                     </thead>
                                     <tbody>
 
-                                        <c:forEach var="consulta" items="${consultasP}">
+                                        <c:forEach var="consulta" items="${consultasP}" varStatus="status">
                                             <tr>
+                                                <td>${status.count}</td>
                                                 <td>${consulta.nombreMedico}</td>
                                                 <td>${consulta.nombreEspecialidad}</td>
                                                 <td>${consulta.fecha}</td>
@@ -75,6 +77,7 @@
                                 <table class="table table-striped">
                                     <thead class="thead-dark">
                                         <tr>
+                                            <th>#</th>
                                             <th>Medico</th>
                                             <th>Examen</th>
                                             <th>Fecha</th>
@@ -84,8 +87,9 @@
                                     </thead>
                                     <tbody>
 
-                                        <c:forEach var="examen" items="${examenesP}">
+                                        <c:forEach var="examen" items="${examenesP}" varStatus="status">
                                             <tr>
+                                                <td>${status.count}</td>
                                                 <c:choose>
                                                     <c:when test="${empty(examen.nombreMedico)}">
                                                         <td>Sin medico</td>

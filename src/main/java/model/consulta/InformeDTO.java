@@ -6,11 +6,20 @@ package model.consulta;
  * @author asael
  */
 public class InformeDTO extends Informe{
+    private String paciente;
     private String medico;
     private String especialidad;
     private float costo;
 
     public InformeDTO() {
+    }
+
+    public String getPaciente() {
+        return paciente;
+    }
+
+    public void setPaciente(String paciente) {
+        this.paciente = paciente;
     }
 
     public String getMedico() {

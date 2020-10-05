@@ -36,6 +36,7 @@
                                 <table class="table table-striped">
                                     <thead class="thead-dark">
                                         <tr>
+                                            <th>#</th>
                                             <th>Medico</th>
                                             <th>Especialidad</th>
                                             <th>Fecha</th>
@@ -46,8 +47,9 @@
                                     </thead>
                                     <tbody>
 
-                                        <c:forEach var="informe" items="${informes}">
+                                        <c:forEach var="informe" items="${informes}" varStatus="status">
                                             <tr>
+                                                <td>${status.count}</td>
                                                 <td>${informe.medico}</td>
                                                 <td>${informe.especialidad}</td>
                                                 <td>${informe.fecha}</td>
@@ -94,6 +96,7 @@
                                 <table class="table table-striped">
                                     <thead class="thead-dark">
                                         <tr>
+                                            <th>#</th>
                                             <th>Medico</th>
                                             <th>Laboratorista</th>
                                             <th>Examen</th>
@@ -105,9 +108,17 @@
                                     </thead>
                                     <tbody>
 
-                                        <c:forEach var="resultado" items="${resultados}">
+                                        <c:forEach var="resultado" items="${resultados}" varStatus="status">
                                             <tr>
-                                                <td>${resultado.medico}</td>
+                                                <td>${status.count}</td>
+                                                <c:choose>
+                                                    <c:when test="${empty(resultado.medico)}">
+                                                        <td>Sin medico</td>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <td>${resultado.medico}</td>
+                                                    </c:otherwise>
+                                                </c:choose>
                                                 <td>${resultado.laboratorista}</td>
                                                 <td>${resultado.tipoExamen}</td>
                                                 <td>${resultado.fecha}</td>

@@ -86,10 +86,10 @@ public class ResultadoDAOImpl implements ResultadoDAO {
 
     @Override
     public List<Resultado> getListResultadoByPaciente(String codPaciente) {
-        String sql = "SELECT e.codigo, m.nombre medico, l.nombre laboratorista, te.nombre tipoExamen, "
+        String sql = "SELECT e.codigo, p.nombre paciente, m.nombre medico, l.nombre laboratorista, te.nombre tipoExamen, "
                 + "e.fecha, e.hora, r.resultado, e.total FROM resultado r INNER JOIN examen e "
                 + "ON r.codigoExamen=e.codigo LEFT JOIN medico m ON e.codigoMedico=m.codigo "
-                + "INNER JOIN laboratorista l ON r.codigoLaboratorista=l.codigo INNER JOIN "
+                + "INNER JOIN paciente p ON e.codigoPaciente=p.codigo INNER JOIN laboratorista l ON r.codigoLaboratorista=l.codigo INNER JOIN "
                 + "tipoExamen te ON e.codigoTipoExamen=te.codigo WHERE e.codigoPaciente = ? "
                 + "ORDER BY e.fecha";
         List<Resultado> resultados = null;
@@ -102,6 +102,7 @@ public class ResultadoDAOImpl implements ResultadoDAO {
                 while (rs.next()) {
                     ResultadoDTO resultado = new ResultadoDTO();
                     resultado.setCodigoExamen(rs.getInt("codigo"));
+                    resultado.setPaciente(rs.getString("paciente"));
                     resultado.setMedico(rs.getString("medico"));
                     resultado.setLaboratorista(rs.getString("laboratorista"));
                     resultado.setTipoExamen(rs.getString("tipoExamen"));
