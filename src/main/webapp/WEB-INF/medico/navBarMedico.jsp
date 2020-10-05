@@ -21,7 +21,7 @@
 
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="${pageContext.request.contextPath}/medico/citasAgendadas.jsp">Citas agendadas en un intervalo de tiempo</a>
-                        <a class="dropdown-item" href="${pageContext.request.contextPath}/">Pacientes con mayor cantidad de informes</a>
+                        <a class="dropdown-item" href="${pageContext.request.contextPath}/medico/pacientesInformes.jsp">Pacientes con mayor cantidad de informes</a>
                     </div>
                 </li>
             </ul>

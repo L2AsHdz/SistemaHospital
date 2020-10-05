@@ -15,6 +15,7 @@ public class Paciente extends Usuario {
     private float peso;
     private String tipoSangre;
     private String correo;
+    private int informes;
 
     public Paciente() {
     }
@@ -89,5 +90,13 @@ public class Paciente extends Usuario {
 
     public void setCorreo(String correo) {
         this.correo = correo;
+    }
+
+    public int getInformes() {
+        return informes;
+    }
+
+    public void setInformes(int informes) {
+        this.informes = informes;
     }
 }

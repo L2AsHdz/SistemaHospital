@@ -1,6 +1,6 @@
 <%-- 
-    Document   : citasAgendadas
-    Created on : 5/10/2020, 01:09:07
+    Document   : pacientesInformes
+    Created on : 5/10/2020, 03:11:54
     Author     : asael
 --%>
 
@@ -24,9 +24,9 @@
             <div class="row">
                 <div class="col-xl-10">
                     <div class="mb-4">
-                        <h4>Consultas agendadas en un intervalo de tiempo</h4>
+                        <h4>Pacientes con mas informes en un intervalo de tiempo</h4>
                     </div>
-                    <form class="form-inline ml-3" action="${pageContext.request.contextPath}/ReportesMedicoServlet?accion=reporte1" method="POST"> 
+                    <form class="form-inline ml-3" action="${pageContext.request.contextPath}/ReportesMedicoServlet?accion=reporte2" method="POST"> 
                         <label class="mr-sm-4 font-weight-bold">
                             <h5>Intervalo de fecha:</h5>
                         </label>
@@ -43,32 +43,28 @@
             </div>
 
             <div class="row pt-4">
-                <div class="col-xl-10">
+                <div class="col-xl-6">
 
-                    <!-- Citas agendadas en un intervalo de tiempo -->
+                    <!-- Pacientes con mas informes en un intervalo de tiempo -->
                     <c:choose>
-                        <c:when test="${!empty(consultas)}">
+                        <c:when test="${!empty(pacientes)}">
                             <div class="card">
                                 <div class="card-body">
                                     <table class="table table-striped">
                                         <thead class="thead-dark">
                                             <tr>
-                                                <th>#</th>
-                                                <th>Paciente</th>
-                                                <th>Especialidad</th>
-                                                <th>Fecha</th>
-                                                <th>Hora</th>
+                                                <th>Codigo</th>
+                                                <th>nombre</th>
+                                                <th>Cant. Informes</th>
                                             </tr>
                                         </thead>
                                         <tbody>
 
-                                            <c:forEach var="consulta" items="${consultas}" varStatus="status">
+                                            <c:forEach var="paciente" items="${pacientes}">
                                                 <tr>
-                                                    <td>${status.count}</td>
-                                                    <td>${consulta.nombrePaciente}</td>
-                                                    <td>${consulta.nombreEspecialidad}</td>
-                                                    <td>${consulta.fecha}</td>
-                                                    <td>${consulta.hora}</td>
+                                                    <td>${paciente.codigo}</td>
+                                                    <td>${paciente.nombre}</td>
+                                                    <td>${paciente.informes}</td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>
@@ -78,7 +74,7 @@
                         </c:when>
                         <c:otherwise>
                             <c:if test="${buscado}">
-                                <h4>No hay consultas entre las fechas ingresadas</h4>
+                                <h4>No hay pacientes con informes entre las fechas ingresadas</h4>
                             </c:if>
                         </c:otherwise>
                     </c:choose>

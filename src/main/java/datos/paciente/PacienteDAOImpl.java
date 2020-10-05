@@ -128,5 +128,56 @@ public class PacienteDAOImpl implements PacienteDAO {
         }
         return flag;
     }
+
+    @Override
+    public List<Paciente> getPacientesConMasInformes(String fechaInicial, String fechaFinal, int opcion) {
+        String sql = "SELECT p.*, COUNT(i.codigoConsulta) informes FROM paciente p INNER JOIN consulta c "
+                + "ON p.codigo=c.codigoPaciente INNER JOIN informe i ON c.codigo=i.codigoConsulta ";
+        String interavalo = "WHERE i.fecha BETWEEN ? AND ? ";
+        String order = "GROUP BY c.codigoPaciente ORDER BY c.fecha, c.hora";
+        List<Paciente> pacientes = null;
+        PreparedStatement ps = null;
+
+        try {
+            switch (opcion) {
+                case 1 -> {
+                    ps = conexion.prepareStatement(sql + interavalo + order);
+                    ps.setString(1, fechaInicial);
+                    ps.setString(2, fechaFinal);
+                }
+                case 2 -> {
+                    ps = conexion.prepareStatement(sql + order);
+                }
+            }
+            try ( ResultSet rs = ps.executeQuery()) {
+                pacientes = new ArrayList();
+
+                while (rs.next()) {
+                    Paciente paciente = new Paciente();
+                    paciente.setCodigo(rs.getString("codigo"));
+                    paciente.setNombre(rs.getString("nombre"));
+                    paciente.setSexo(rs.getString("sexo"));
+                    paciente.setBirth(LocalDate.parse(rs.getString("birth")));
+                    paciente.setCUI(rs.getString("cui"));
+                    paciente.setTelefono(rs.getString("telefono"));
+                    paciente.setPeso(rs.getFloat("peso"));
+                    paciente.setTipoSangre(rs.getString("tipoSangre"));
+                    paciente.setCorreo(rs.getString("correo"));
+                    paciente.setPassword(rs.getString("password"));
+                    paciente.setInformes(rs.getInt("informes"));
+                    pacientes.add(paciente);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        } finally {
+            try {
+                ps.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace(System.out);
+            }
+        }
+        return pacientes;
+    }
     
 }
