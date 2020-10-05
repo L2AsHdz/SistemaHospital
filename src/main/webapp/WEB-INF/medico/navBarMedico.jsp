@@ -8,10 +8,10 @@
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/CulminarConsultaServlet?accion=listar">Culminar Consulta</a>
+                    <a class="nav-link" href="${pageContext.request.contextPath}/CulminarConsultaServlet?accion=listar">Consultas del dia</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/HistorialMedicoServlet?accion=historial">Buscar Historial Medico</a>
+                    <a class="nav-link" href="${pageContext.request.contextPath}/medico/historialMedico.jsp">Buscar Historial Medico</a>
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="#">Whatever</a>

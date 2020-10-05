@@ -17,20 +17,9 @@
         <jsp:include page="/WEB-INF/extras/extrasCSS.jsp"/>
     </head>
     <body>
-        <header class="py-2 bg-dark text-white">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-xl-6">
-                        <h1 class="ml-3">
-                            <i class="fas fa-hospital"></i>
-                            Sistema Hospital
-                        </h1>
-                    </div>
-                </div>
-            </div>
-        </header>
+        <jsp:include page="/WEB-INF/navBar.jsp"/>
 
-        <div class="container">
+        <div class="container mt-5">
             <div class="row">
                 <div class="col-xl-3"></div>
                 <div class="col-xl-6">

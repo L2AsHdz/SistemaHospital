@@ -18,17 +18,7 @@
     </head>
     <body>
 
-        <header class="py-2 bg-dark text-white">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-xl-6">
-                        <h1>
-                            <i class="fas fa-hospital ml-3"></i> Sistema Hospital
-                        </h1>
-                    </div>
-                </div>
-            </div>
-        </header>
+        <jsp:include page="/WEB-INF/navBar.jsp"/>
 
         <form id="form-paciente" action="${pageContext.request.contextPath}/PacienteServlet?accion=agregar" method="POST">
             <div class="container-fluid mb-5">
