@@ -1,6 +1,6 @@
 <%-- 
-    Document   : ultimosExamenes
-    Created on : 5/10/2020, 11:51:31
+    Document   : examenesPorTipo
+    Created on : 5/10/2020, 14:38:05
     Author     : asael
 --%>
 
@@ -22,16 +22,39 @@
         <!-- Barra de navegacion -->
         <jsp:include page="/WEB-INF/paciente/navBarPaciente.jsp"/>
 
+
+
         <!-- ultimos 5 xamenes realizados -->
-        <div class="container-fluid my-5 pl-4">
+        <div class="container-fluid mt-4 pl-4">
             <div class="row">
+                <div class="col-xl-10 tipo">
+                    <div class="mb-4">
+                        <h4>Examenes realizados por tipo</h4>
+                    </div>
+                    <form id="form-examenesT" class="form-inline ml-3" action="${pageContext.request.contextPath}/ReportesPacienteServlet?accion=reporte2" method="POST"> 
+                        <label for="codTipoExamen" class="mr-sm-2">Tipo de examen:</label>
+                        <select class="form-control mb-2 mr-sm-2" name="codTipoExamen">
+                            <c:forEach var="tipo" items="${tiposExamen}">
+                                <option value="${tipo.codigo}">${tipo.nombre}</option>
+                            </c:forEach>
+                        </select>
+                        <label for="fechaInicial" class="mr-sm-2">Fecha inicial:</label>
+                        <input type="date" class="form-control mb-2 mr-sm-2"  name="fechaInicial" value="${fechaInicial}">
+                        <label for="fechaFinal" class="mr-sm-2">Fecha final:</label>
+                        <input type="date" class="form-control mb-2 mr-sm-2" name="fechaFinal" value="${fechaFinal}">
+                        <button type="reset" class="btn btn-secondary mb-2 ml-2">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                        <button type="submit" class="btn btn-primary mb-2 ml-2">Ver examenes</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="row mt-4">
                 <div class="col-xl-10">
                     <c:choose>
-                        <c:when test="${!empty(lastResultados)}">
+                        <c:when test="${!empty(resultadosByTipo)}">
                             <div class="card">
-                                <div class="card-header">
-                                    <h4>Ultimos 5 examenes realizados</h4>
-                                </div>
                                 <div class="card-body">
                                     <table class="table table-striped">
                                         <thead class="thead-dark">
@@ -48,7 +71,7 @@
                                         </thead>
                                         <tbody>
 
-                                            <c:forEach var="resultado" items="${lastResultados}" varStatus="status">
+                                            <c:forEach var="resultado" items="${resultadosByTipo}" varStatus="status">
                                                 <tr>
                                                     <td>${status.count}</td>
                                                     <c:choose>
@@ -90,7 +113,9 @@
 
                         </c:when>
                         <c:otherwise>
-                            <h4>No hay examenes realizados</h4>
+                            <c:if test="${buscado}">
+                                <h4 class="mt-4">No hay examenes que cumplan con los datos ingresados</h4>
+                            </c:if>
                         </c:otherwise>
                     </c:choose>
                 </div>

@@ -17,13 +17,13 @@ import model.examen.ResultadoDTO;
  * @author asael
  */
 public class ResultadoDAOImpl implements ResultadoDAO {
-    
+
     private static ResultadoDAOImpl resultadoDAO = null;
     private Connection conexion = Conexion.getConexion();
-    
+
     private ResultadoDAOImpl() {
     }
-    
+
     public static ResultadoDAOImpl getResultadoDAO() {
         if (resultadoDAO == null) {
             resultadoDAO = new ResultadoDAOImpl();
@@ -151,5 +151,61 @@ public class ResultadoDAOImpl implements ResultadoDAO {
         }
         return resultados;
     }
-    
+
+    @Override
+    public List<Resultado> getResultadosbyTipoExamen(String codPaciente, String codTipoExamen,
+            String fechaInicial, String fechaFinal, int opcion) {
+        String sql = "SELECT e.codigo, m.nombre medico, l.nombre laboratorista, te.nombre tipoExamen, "
+                + "e.fecha, e.hora, r.resultado, e.total FROM resultado r INNER JOIN examen e ON "
+                + "r.codigoExamen=e.codigo LEFT JOIN medico m ON e.codigoMedico=m.codigo INNER JOIN "
+                + "laboratorista l ON r.codigoLaboratorista=l.codigo INNER JOIN tipoExamen te ON "
+                + "e.codigoTipoExamen=te.codigo WHERE e.codigoPaciente = ? AND e.codigoTipoExamen = ? ";
+        String interavalo = "AND (e.fecha BETWEEN ? AND ?)";
+        String order = "ORDER BY e.fecha, e.hora";
+        List<Resultado> resultados = null;
+        PreparedStatement ps = null;
+
+        try {
+            switch (opcion) {
+                case 1 -> {
+                    ps = conexion.prepareStatement(sql + interavalo + order);
+                    ps.setString(1, codPaciente);
+                    ps.setString(2, codTipoExamen);
+                    ps.setString(3, fechaInicial);
+                    ps.setString(4, fechaFinal);
+                }
+                case 2 -> {
+                    ps = conexion.prepareStatement(sql + order);
+                    ps.setString(1, codPaciente);
+                    ps.setString(2, codTipoExamen);
+                }
+            }
+            try ( ResultSet rs = ps.executeQuery()) {
+                resultados = new ArrayList();
+
+                while (rs.next()) {
+                    ResultadoDTO resultado = new ResultadoDTO();
+                    resultado.setCodigoExamen(rs.getInt("codigo"));
+                    resultado.setMedico(rs.getString("medico"));
+                    resultado.setLaboratorista(rs.getString("laboratorista"));
+                    resultado.setTipoExamen(rs.getString("tipoExamen"));
+                    resultado.setFecha(LocalDate.parse(rs.getString("fecha")));
+                    resultado.setHora(LocalTime.parse(rs.getString("hora")));
+                    resultado.setResultado(rs.getBinaryStream("resultado"));
+                    resultado.setCosto(rs.getFloat("total"));
+                    resultados.add(resultado);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        } finally {
+            try {
+                ps.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace(System.out);
+            }
+        }
+        return resultados;
+    }
+
 }
