@@ -118,5 +118,38 @@ public class ResultadoDAOImpl implements ResultadoDAO {
         }
         return resultados;
     }
+
+    @Override
+    public List<Resultado> getLastFiveResultados(String codPaciente) {
+        String sql = "SELECT e.codigo, m.nombre medico, l.nombre laboratorista, te.nombre tipoExamen, "
+                + "e.fecha, e.hora, r.resultado, e.total FROM resultado r INNER JOIN examen e ON "
+                + "r.codigoExamen=e.codigo LEFT JOIN medico m ON e.codigoMedico=m.codigo INNER JOIN "
+                + "laboratorista l ON r.codigoLaboratorista=l.codigo INNER JOIN tipoExamen te ON "
+                + "e.codigoTipoExamen=te.codigo WHERE e.codigoPaciente = ? ORDER BY e.fecha, e.hora DESC LIMIT 5";
+        List<Resultado> resultados = null;
+
+        try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, codPaciente);
+            try ( ResultSet rs = ps.executeQuery()) {
+                resultados = new ArrayList();
+
+                while (rs.next()) {
+                    ResultadoDTO resultado = new ResultadoDTO();
+                    resultado.setCodigoExamen(rs.getInt("codigo"));
+                    resultado.setMedico(rs.getString("medico"));
+                    resultado.setLaboratorista(rs.getString("laboratorista"));
+                    resultado.setTipoExamen(rs.getString("tipoExamen"));
+                    resultado.setFecha(LocalDate.parse(rs.getString("fecha")));
+                    resultado.setHora(LocalTime.parse(rs.getString("hora")));
+                    resultado.setResultado(rs.getBinaryStream("resultado"));
+                    resultado.setCosto(rs.getFloat("total"));
+                    resultados.add(resultado);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return resultados;
+    }
     
 }

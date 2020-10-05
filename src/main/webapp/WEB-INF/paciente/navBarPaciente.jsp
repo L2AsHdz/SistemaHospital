@@ -26,7 +26,7 @@
                     </a>
 
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Reporte 1</a>
+                        <a class="dropdown-item" href="${pageContext.request.contextPath}/ReportesPacienteServlet?accion=reporte1">Ultimos 5 examenes realizados</a>
                         <a class="dropdown-item" href="#">Reporte 2</a>
                     </div>
                 </li>

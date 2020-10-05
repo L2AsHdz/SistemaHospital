@@ -10,4 +10,5 @@ import model.examen.Resultado;
  */
 public interface ResultadoDAO extends CRUD<Resultado> {
     List<Resultado> getListResultadoByPaciente(String codPaciente);
+    List<Resultado> getLastFiveResultados(String codPaciente);
 }
