@@ -1,9 +1,12 @@
 package web.paciente;
 
 import datos.CRUD;
+import datos.consulta.InformeDAO;
+import datos.consulta.InformeDAOImpl;
 import datos.examen.ResultadoDAO;
 import datos.examen.ResultadoDAOImpl;
 import datos.examen.TipoExamenDAOImpl;
+import datos.medico.MedicoDAOImpl;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -12,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.consulta.Informe;
 import model.examen.Resultado;
 import model.examen.TipoExamen;
 import model.usuario.Paciente;
@@ -26,6 +30,7 @@ public class ReportesPacienteServlet extends HttpServlet {
 
     private final ResultadoDAO resultadoDAO = ResultadoDAOImpl.getResultadoDAO();
     private final CRUD<TipoExamen> tipoExamenDAO = TipoExamenDAOImpl.getTipoExamenDAO();
+    private final InformeDAO informeDAO = InformeDAOImpl.getInformeDAO();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -47,13 +52,38 @@ public class ReportesPacienteServlet extends HttpServlet {
                 } else {
                     resultados = resultadoDAO.getResultadosbyTipoExamen(paciente.getCodigo(), codTipoExamen, fechaInicial, fechaFinal, 2);
                 }
-                
+
                 request.setAttribute("tiposExamen", tiposExamen);
                 request.setAttribute("fechaInicial", fechaInicial);
                 request.setAttribute("fechaFinal", fechaFinal);
                 request.setAttribute("resultadosByTipo", resultados);
                 request.setAttribute("buscado", true);
                 request.getRequestDispatcher("paciente/examenesPorTipo.jsp").forward(request, response);
+            }
+            case "reporte4" -> {
+                String codMedico = request.getParameter("codMedico");
+                String fechaInicial = request.getParameter("fechaInicial");
+                String fechaFinal = request.getParameter("fechaFinal");
+
+                if (MedicoDAOImpl.getMedicoDAO().exists(codMedico)) {
+                    List<Informe> informes;
+                    if (!fechaInicial.trim().isEmpty() && !fechaFinal.trim().isEmpty()) {
+                        informes = informeDAO.getInformesByMedico(paciente.getCodigo(), codMedico, fechaInicial, fechaFinal, 1);
+                    } else {
+                        informes = informeDAO.getInformesByMedico(paciente.getCodigo(), codMedico, fechaInicial, fechaFinal, 2);
+                    }
+
+                    request.setAttribute("codMedico", codMedico);
+                    request.setAttribute("fechaInicial", fechaInicial);
+                    request.setAttribute("fechaFinal", fechaFinal);
+                    request.setAttribute("consultasByMedico", informes);
+                    request.setAttribute("buscado", true);
+                    request.getRequestDispatcher("paciente/consultasPorMedico.jsp").forward(request, response);
+
+                } else {
+                    request.setAttribute("error", "No existe un medico con el codigo ingresado");
+                    request.getRequestDispatcher("paciente/consultasPorMedico.jsp").forward(request, response);
+                }
             }
         }
     }

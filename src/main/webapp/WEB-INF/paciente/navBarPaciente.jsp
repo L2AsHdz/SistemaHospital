@@ -28,6 +28,8 @@
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="${pageContext.request.contextPath}/ReportesPacienteServlet?accion=reporte1">Ultimos 5 examenes realizados</a>
                         <a class="dropdown-item" href="${pageContext.request.contextPath}/ReportesPacienteServlet?accion=listarTipos">Examenes realizados por tipo</a>
+                        <a class="dropdown-item" href="${pageContext.request.contextPath}/ReportesPacienteServlet?accion=reporte3">Ultimas 5 consultas realizadas</a>
+                        <a class="dropdown-item" href="${pageContext.request.contextPath}/paciente/consultasPorMedico.jsp">Consultas realizados con un medico</a>
                     </div>
                 </li>
             </ul>

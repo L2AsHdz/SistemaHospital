@@ -10,4 +10,5 @@ import model.consulta.Informe;
  */
 public interface InformeDAO extends CRUD<Informe> {
     List<Informe> getListInformeByPaciente(String codPaciente);
+    List<Informe> getInformesByMedico(String codPaciente, String codMedico, String fechaInicial, String fechaFinal, int opcion);
 }

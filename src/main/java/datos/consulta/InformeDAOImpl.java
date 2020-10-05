@@ -115,4 +115,58 @@ public class InformeDAOImpl implements InformeDAO {
         return informes;
     }
 
+    @Override
+    public List<Informe> getInformesByMedico(String codPaciente, String codMedico, String fechaInicial, String fechaFinal, int opcion) {
+        String sql = "SELECT c.codigo, p.nombre paciente, m.nombre medico, e.nombre especialidad, c.fecha, c.hora, i.informe, "
+                + "c.total FROM informe i INNER JOIN consulta c ON i.codigoConsulta=c.codigo "
+                + "INNER JOIN paciente p ON c.codigoPaciente=p.codigo INNER JOIN medico m ON c.codigoMedico=m.codigo INNER JOIN especialidad e ON "
+                + "c.idEspecialidad=e.id WHERE c.codigoPaciente = ? AND c.codigoMedico = ? ";
+        String interavalo = "AND (c.fecha BETWEEN ? AND ?)";
+        String order = "ORDER BY c.fecha, c.hora";
+        List<Informe> informes = null;
+        PreparedStatement ps = null;
+
+        try {
+            switch (opcion) {
+                case 1 -> {
+                    ps = conexion.prepareStatement(sql + interavalo + order);
+                    ps.setString(1, codPaciente);
+                    ps.setString(2, codMedico);
+                    ps.setString(3, fechaInicial);
+                    ps.setString(4, fechaFinal);
+                }
+                case 2 -> {
+                    ps = conexion.prepareStatement(sql + order);
+                    ps.setString(1, codPaciente);
+                    ps.setString(2, codMedico);
+                }
+            }
+            try ( ResultSet rs = ps.executeQuery()) {
+                informes = new ArrayList();
+
+                while (rs.next()) {
+                    InformeDTO informe = new InformeDTO();
+                    informe.setCodigoConsulta(rs.getInt("codigo"));
+                    informe.setPaciente(rs.getString("paciente"));
+                    informe.setMedico(rs.getString("medico"));
+                    informe.setEspecialidad(rs.getString("especialidad"));
+                    informe.setFecha(LocalDate.parse(rs.getString("fecha")));
+                    informe.setHora(LocalTime.parse(rs.getString("hora")));
+                    informe.setInforme(rs.getString("informe"));
+                    informe.setCosto(rs.getFloat("total"));
+                    informes.add(informe);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        } finally {
+            try {
+                ps.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace(System.out);
+            }
+        }
+        return informes;
+    }
+
 }
