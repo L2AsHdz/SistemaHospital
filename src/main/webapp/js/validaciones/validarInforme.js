@@ -9,6 +9,12 @@ $('document').ready(function () {
             },
             informe: {
                 required: true
+            },
+            nuevaHora: {
+                required: true
+            },
+            nuevaFecha: {
+                required: true
             }
         },
         messages: {
@@ -20,6 +26,12 @@ $('document').ready(function () {
             },
             informe: {
                 required: "No ha escrito el informe de la consulta"
+            },
+            nuevaHora: {
+                required: "No ha ingresado una hora para la nueva consulta"
+            },
+            nuevaFecha: {
+                required: "No ha ingresado una fecha para la nueva consulta"
             }
         }
     });

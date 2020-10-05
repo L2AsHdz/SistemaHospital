@@ -4,6 +4,8 @@ import datos.CRUD;
 import datos.consulta.ConsultaDAO;
 import datos.consulta.ConsultaDAOImpl;
 import datos.consulta.InformeDAOImpl;
+import datos.especialidad.EspecialidadDAO;
+import datos.especialidad.EspecialidadDAOImpl;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -26,21 +28,37 @@ public class CulminarConsultaServlet extends HttpServlet {
     
     private final ConsultaDAO consultaDAO = ConsultaDAOImpl.getconsultaDAO();
     private final CRUD<Informe> informeDAO = InformeDAOImpl.getInformeDAO();
+    private final EspecialidadDAO especialDAO = EspecialidadDAOImpl.getEspecialidadDAO();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String accion = request.getParameter("accion");
+        HttpSession sesion = request.getSession();
+        Medico medico = (Medico) sesion.getAttribute("user");
         switch (accion) {
             case "finalizar" -> {
                 String codigoConsulta = request.getParameter("codConsulta");
                 String contenidoInforme = request.getParameter("informe");
                 String fecha = request.getParameter("fecha");
                 String hora = request.getParameter("hora");
+                String nuevaHora = request.getParameter("nuevaHora");
+                String nuevaFecha = request.getParameter("nuevaFecha");
                 
                 Informe informe = new Informe(codigoConsulta, contenidoInforme, fecha, hora);
                 
                 informeDAO.create(informe);
                 consultaDAO.setEstado(codigoConsulta, 1);
+                
+                
+                if (!nuevaFecha.isEmpty() && !nuevaHora.isEmpty()) {
+                    String codPaciente = consultaDAO.getObject(codigoConsulta).getCodigoPaciente();
+                    int idEspecialidad = consultaDAO.getObject(codigoConsulta).getIdEspecialidad();
+                    float total = especialDAO.getCosto(idEspecialidad);
+                    
+                    Consulta consulta = new Consulta(medico.getCodigo(), codPaciente, idEspecialidad, nuevaFecha, nuevaHora, 0, total);
+                    
+                    consultaDAO.create(consulta);
+                }
                 response.sendRedirect(request.getContextPath()+"/CulminarConsultaServlet?accion=listar");
             }
         }

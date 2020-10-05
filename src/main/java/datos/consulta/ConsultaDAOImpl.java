@@ -55,8 +55,29 @@ public class ConsultaDAOImpl implements ConsultaDAO {
     }
 
     @Override
-    public Consulta getObject(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Consulta getObject(String codigo) {
+        String sql = "SELECT * FROM consulta WHERE codigo = ?";
+
+        Consulta consulta = null;
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setInt(1, Integer.parseInt(codigo));
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    consulta = new Consulta();
+                    consulta.setCodigo(rs.getInt("codigo"));
+                    consulta.setCodigoMedico(rs.getString("codigoMedico"));
+                    consulta.setCodigoPaciente(rs.getString("codigoPaciente"));
+                    consulta.setIdEspecialidad(rs.getInt("idEspecialidad"));
+                    consulta.setFecha(LocalDate.parse(rs.getString("fecha")));
+                    consulta.setHora(LocalTime.parse(rs.getString("hora")));
+                    consulta.setEstado(rs.getInt("estado"));
+                    consulta.setTotal(rs.getFloat("total"));
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        }
+        return consulta;
     }
 
     @Override
@@ -165,7 +186,7 @@ public class ConsultaDAOImpl implements ConsultaDAO {
 
     @Override
     public List<Consulta> getConsultasPendientesToday(String codMedico) {
-        String sql = "SELECT c.codigo, p.nombre paciente, e.nombre especialidad, c.fecha, "
+        String sql = "SELECT c.codigo, c.codigoPaciente, c.idEspecialidad, p.nombre paciente, e.nombre especialidad, c.fecha, "
                 + "c.hora FROM consulta c INNER JOIN paciente p ON c.codigoPaciente=p.codigo "
                 + "INNER JOIN especialidad e ON c.idEspecialidad=e.id WHERE c.codigoMedico = ? "
                 + "AND c.estado = 0 AND c.fecha = CAST(NOW() AS DATE) ORDER BY c.hora";
@@ -179,7 +200,9 @@ public class ConsultaDAOImpl implements ConsultaDAO {
                 while (rs.next()) {
                     Consulta consulta = new Consulta();
                     consulta.setCodigo(rs.getInt("codigo"));
+                    consulta.setCodigoPaciente(rs.getString("codigoPaciente"));
                     consulta.setNombrePaciente(rs.getString("paciente"));
+                    consulta.setIdEspecialidad(rs.getInt("idEspecialidad"));
                     consulta.setNombreEspecialidad(rs.getString("especialidad"));
                     consulta.setFecha(LocalDate.parse(rs.getString("fecha")));
                     consulta.setHora(LocalTime.parse(rs.getString("hora")));

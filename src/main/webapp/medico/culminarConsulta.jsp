@@ -54,7 +54,7 @@
                                                 <td>
                                                     <a class="btn btn-secondary" data-toggle="modal" data-target="#modal-informe" 
                                                        data-controls-modal="modal-informe" data-backdrop="static" data-keyboard="false"
-                                                       onclick="$('#codConsulta').val(${consulta.codigo})">
+                                                       onclick="$('#codConsulta').val(${consulta.codigo});$('#agendar').hide()">
                                                         <i class="fas fa-align-justify"></i> Agregar informe
                                                     </a>
                                                 </td>
@@ -72,11 +72,11 @@
         <div class="modal" id="modal-informe">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-body">
-                        <button type="button" form="form-informe" class="close" data-dismiss="modal" onclick="$('#limpiar').click()">&times;</button>
-                        <h5>Agregar informe:</h5>
-                        <form action="${pageContext.request.contextPath}/CulminarConsultaServlet?accion=finalizar"
-                              id="form-informe"  method="POST">
+                    <form action="${pageContext.request.contextPath}/CulminarConsultaServlet?accion=finalizar"
+                          id="form-informe"  method="POST">
+                        <div class="modal-body">
+                            <button type="button" form="form-informe" class="close" data-dismiss="modal" onclick="$('#limpiar').click()">&times;</button>
+                            <h5>Agregar informe:</h5>
                             <input type="text" class="form-control d-none" name="codConsulta" id="codConsulta">
                             <div class="form-group">
                                 <label for="informe">*Informe</label>
@@ -91,11 +91,23 @@
                                 <input type="date" class="form-control" name="fecha">
                             </div>
                             <div>
+                                <button type="button" class="btn btn-secondary btn-block" onclick="$('#agendar').show()">Agendar nueva consulta</button>
+                            </div>
+                            <div id="agendar">
+                                <div class="form-group mt-3">
+                                    <label for="hora">*Hora:</label>
+                                    <input type="time" class="form-control" name="nuevaHora" id="hora">
+                                </div>
+                                <div class="form-group">
+                                    <label for="fecha">*Fecha:</label>
+                                    <input type="date" class="form-control" name="nuevaFecha">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
                                 <button type="submit" class="btn btn-primary btn-block">Finalizar</button>
                                 <button id="limpiar" type="reset" class="btn btn-primary d-none">Limpiar</button>
                             </div>
-                        </form>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
