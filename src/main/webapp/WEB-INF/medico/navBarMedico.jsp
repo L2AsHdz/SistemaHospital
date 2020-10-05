@@ -13,9 +13,6 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="${pageContext.request.contextPath}/medico/historialMedico.jsp">Buscar Historial Medico</a>
                 </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Whatever</a>
-                </li>
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
@@ -23,8 +20,8 @@
                     </a>
 
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Reporte 1</a>
-                        <a class="dropdown-item" href="#">Reporte 2</a>
+                        <a class="dropdown-item" href="${pageContext.request.contextPath}/medico/citasAgendadas.jsp">Citas agendadas en un intervalo de tiempo</a>
+                        <a class="dropdown-item" href="${pageContext.request.contextPath}/">Pacientes con mayor cantidad de informes</a>
                     </div>
                 </li>
             </ul>

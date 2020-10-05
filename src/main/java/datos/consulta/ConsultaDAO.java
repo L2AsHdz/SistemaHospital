@@ -15,4 +15,5 @@ public interface ConsultaDAO extends CRUD<Consulta> {
     boolean isAvailable(String codMedico, String hora, String fecha);
     List<Consulta> getConsultasPendientes(String codPaciente);
     List<Consulta> getConsultasPendientesToday(String codMedico);
+    List<Consulta> getConsultasAgendadasByIntevalo(String codMedico, String fechaInicial, String fechaFinal, int opcion);
 }

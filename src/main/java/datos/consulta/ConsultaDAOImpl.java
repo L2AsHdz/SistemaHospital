@@ -16,13 +16,13 @@ import model.consulta.Consulta;
  * @author asael
  */
 public class ConsultaDAOImpl implements ConsultaDAO {
-    
+
     private static ConsultaDAOImpl consultaDAO = null;
     private Connection conexion = Conexion.getConexion();
-    
+
     private ConsultaDAOImpl() {
     }
-    
+
     public static ConsultaDAOImpl getconsultaDAO() {
         if (consultaDAO == null) {
             consultaDAO = new ConsultaDAOImpl();
@@ -59,9 +59,9 @@ public class ConsultaDAOImpl implements ConsultaDAO {
         String sql = "SELECT * FROM consulta WHERE codigo = ?";
 
         Consulta consulta = null;
-        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+        try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setInt(1, Integer.parseInt(codigo));
-            try (ResultSet rs = ps.executeQuery()) {
+            try ( ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     consulta = new Consulta();
                     consulta.setCodigo(rs.getInt("codigo"));
@@ -111,8 +111,7 @@ public class ConsultaDAOImpl implements ConsultaDAO {
     public int getLastCodigo() {
         String sql = "SELECT codigo FROM consulta ORDER BY codigo DESC LIMIT 1";
         int codigo = 1;
-        try (PreparedStatement ps = conexion.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery()) {
+        try ( PreparedStatement ps = conexion.prepareStatement(sql);  ResultSet rs = ps.executeQuery()) {
 
             if (rs.next()) {
                 codigo = rs.getInt("codigo") + 1;
@@ -127,7 +126,7 @@ public class ConsultaDAOImpl implements ConsultaDAO {
     public void setNextCodigo(int codigo) {
         String sql = "ALTER TABLE consulta AUTO_INCREMENT = ?";
 
-        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+        try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setInt(1, codigo);
             ps.executeUpdate();
         } catch (SQLException ex) {
@@ -219,7 +218,7 @@ public class ConsultaDAOImpl implements ConsultaDAO {
     public void setEstado(String codConsulta, int estado) {
         String sql = "UPDATE consulta SET estado = ? WHERE codigo = ?";
 
-        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+        try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setInt(1, estado);
             ps.setInt(2, Integer.parseInt(codConsulta));
             ps.executeUpdate();
@@ -227,5 +226,53 @@ public class ConsultaDAOImpl implements ConsultaDAO {
             ex.printStackTrace(System.out);
         }
     }
-    
+
+    @Override
+    public List<Consulta> getConsultasAgendadasByIntevalo(String codMedico, String fechaInicial, String fechaFinal, int opcion) {
+        String sql = "SELECT c.codigo, p.nombre paciente, e.nombre especialidad, c.fecha, c.hora FROM consulta c "
+                + "INNER JOIN paciente p ON c.codigoPaciente=p.codigo INNER JOIN especialidad e "
+                + "ON c.idEspecialidad=e.id WHERE c.codigoMedico = ? AND c.estado = 0 ";
+        String interavalo = "AND (c.fecha BETWEEN ? AND ?) ";
+        String order = "ORDER BY c.fecha, c.hora";
+        List<Consulta> consultas = null;
+        PreparedStatement ps = null;
+
+        try {
+            switch (opcion) {
+                case 1 -> {
+                    ps = conexion.prepareStatement(sql + interavalo + order);
+                    ps.setString(1, codMedico);
+                    ps.setString(2, fechaInicial);
+                    ps.setString(3, fechaFinal);
+                }
+                case 2 -> {
+                    ps = conexion.prepareStatement(sql + order);
+                    ps.setString(1, codMedico);
+                }
+            }
+            try ( ResultSet rs = ps.executeQuery()) {
+                consultas = new ArrayList();
+
+                while (rs.next()) {
+                    Consulta consulta = new Consulta();
+                    consulta.setCodigo(rs.getInt("codigo"));
+                    consulta.setNombrePaciente(rs.getString("paciente"));
+                    consulta.setNombreEspecialidad(rs.getString("especialidad"));
+                    consulta.setFecha(LocalDate.parse(rs.getString("fecha")));
+                    consulta.setHora(LocalTime.parse(rs.getString("hora")));
+                    consultas.add(consulta);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        } finally {
+            try {
+                ps.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace(System.out);
+            }
+        }
+        return consultas;
+    }
+
 }
