@@ -26,8 +26,12 @@
                     </a>
 
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Reporte 1</a>
-                        <a class="dropdown-item" href="#">Reporte 2</a>
+                        <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/medicosConMasInformes.jsp">Los 10 medicos con mas informes</a>
+                        <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/ingresosPorMedico.jsp">Ingresos por medico</a>
+                        <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/medicosConMenosConsultas.jsp">Los 5 medicos con menos consultas</a>
+                        <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/examenesMasDemandados.jsp">Examenes mas demandados</a>
+                        <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/examenesSolicitadosPorMedico.jsp">Medicos que mas han solicitado examenes</a>
+                        <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/ingresosPorPaciente.jsp">Ingresos por paciente</a>
                     </div>
                 </li>
             </ul>

@@ -6,3 +6,18 @@ SELECT m.* FROM medico m INNER JOIN asignacionEspecialidad ae ON m.codigo=ae.cod
 
 Medicos filtrado por nombre
 SELECT * FROM medico WHERE nombre like %nombre%;
+
+SELECT m.*, COUNT(i.codigoConsulta) informes FROM medico m INNER JOIN consulta c ON m.codigo=c.codigoMedico INNER JOIN informe i ON c.codigo=i.codigoConsulta WHERE i.fecha BETWEEN '2020-10-01' AND '2020-10-28' GROUP BY c.codigoMedico ORDER BY informes DESC LIMIT 10;
+
+SELECT m.*, SUM(c.total) ingresos FROM medico m INNER JOIN consulta c ON m.codigo=c.codigoMedico GROUP BY m.codigo ORDER BY ingresos DESC;
+
+SELECT m.*, COUNT(c.codigo) consultas FROM medico m INNER JOIN consulta c ON m.codigo=c.codigoMedico GROUP BY m.codigo ORDER BY consultas ASC LIMIT 5;
+
+SELECT te.*, COUNT(e.codigo) demandas FROM tipoExamen te INNER JOIN examen e ON te.codigo=e.codigoTipoExamen GROUP BY e.codigoTipoExamen ORDER BY demandas DESC;
+
+SELECT m.*, COUNT(e.codigo) examenes FROM medico m INNER JOIN examen e ON m.codigo=e.codigoMedico GROUP BY m.codigo ORDER BY examenes DESC;
+
+SELECT te.*, COUNT(e.codigo) examenes FROM tipoExamen te INNER JOIN examen e ON te.codigo=e.codigoTipoExamen WHERE e.codigoMedico='MED-684' GROUP BY e.codigoTipoExamen ORDER BY examenes DESC LIMIT 3;
+
+SELECT p.codigo, SUM(c.total) totalC FROM paciente p LEFT JOIN consulta c ON p.codigo=c.codigoPaciente GROUP BY p.codigo ORDER BY totalC DESC;
+SELECT p.codigo, SUM(e.total) totalE FROM paciente p LEFT JOIN examen e ON p.codigo=e.codigoPaciente GROUP BY p.codigo ORDER BY totalE DESC;
