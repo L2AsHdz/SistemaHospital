@@ -27,7 +27,7 @@
 
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/medicosConMasInformes.jsp">Los 10 medicos con mas informes</a>
-                        <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/ingresosPorMedico.jsp">Ingresos por medico</a>
+                        <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/ingresosPorMedico.jsp">Ingresos obtenidos por medico</a>
                         <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/medicosConMenosConsultas.jsp">Los 5 medicos con menos consultas</a>
                         <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/examenesMasDemandados.jsp">Examenes mas demandados</a>
                         <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/examenesSolicitadosPorMedico.jsp">Medicos que mas han solicitado examenes</a>

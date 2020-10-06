@@ -18,7 +18,7 @@ import model.usuario.Medico;
  */
 @WebServlet("/ReportesAdminServlet")
 public class ReportesAdminServlet extends HttpServlet {
-    
+
     private final MedicoDAO medicoDAO = MedicoDAOImpl.getMedicoDAO();
 
     @Override
@@ -35,10 +35,10 @@ public class ReportesAdminServlet extends HttpServlet {
         String accion = request.getParameter("accion");
         String fechaInicial = request.getParameter("fechaInicial");
         String fechaFinal = request.getParameter("fechaFinal");
-        
+        List<Medico> medicos;
+
         switch (accion) {
             case "reporte1" -> {
-                List<Medico> medicos;
 
                 if (!fechaFinal.trim().isEmpty() && !fechaInicial.trim().isEmpty()) {
                     medicos = medicoDAO.getMedicosConMasinformes(fechaInicial, fechaFinal, 1);
@@ -50,6 +50,18 @@ public class ReportesAdminServlet extends HttpServlet {
                 request.setAttribute("medicosInformes", medicos);
                 request.setAttribute("buscado", true);
                 request.getRequestDispatcher("admin/medicosConMasInformes.jsp").forward(request, response);
+            }
+            case "reporte2" -> {
+                if (!fechaFinal.trim().isEmpty() && !fechaInicial.trim().isEmpty()) {
+                    medicos = medicoDAO.getIngresosDeMedicos(fechaInicial, fechaFinal, 1);
+                } else {
+                    medicos = medicoDAO.getIngresosDeMedicos(fechaInicial, fechaFinal, 2);
+                }
+                request.setAttribute("fechaInicial", fechaInicial);
+                request.setAttribute("fechaFinal", fechaFinal);
+                request.setAttribute("medicosIngresos", medicos);
+                request.setAttribute("buscado", true);
+                request.getRequestDispatcher("admin/ingresosPorMedico.jsp").forward(request, response);
             }
         }
     }
