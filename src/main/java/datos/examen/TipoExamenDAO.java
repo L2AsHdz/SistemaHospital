@@ -1,6 +1,7 @@
 package datos.examen;
 
 import datos.CRUD;
+import java.util.List;
 import model.examen.TipoExamen;
 
 /**
@@ -10,4 +11,5 @@ import model.examen.TipoExamen;
 public interface TipoExamenDAO extends CRUD<TipoExamen>{
     String getCodigoByNombre(String nombre);
     float getCosto(String codigo);
+    List<TipoExamen> getExamenesDemandados(String fechaInicial, String fechaFinal, int opcion);
 }

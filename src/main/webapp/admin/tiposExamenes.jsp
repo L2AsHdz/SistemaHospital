@@ -55,8 +55,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-
-                                    <!--Iteramos los elementos de la lista de clientes-->
                                     <c:forEach var="tipoExamen" items="${tiposExamen}">
                                         <tr>
                                             <td>${tipoExamen.codigo}</td>

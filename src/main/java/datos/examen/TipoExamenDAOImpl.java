@@ -14,13 +14,13 @@ import model.examen.TipoExamen;
  * @author asael
  */
 public class TipoExamenDAOImpl implements TipoExamenDAO {
-    
+
     private static TipoExamenDAOImpl tipoExamenDAO = null;
     private Connection conexion = Conexion.getConexion();
-    
+
     private TipoExamenDAOImpl() {
     }
-    
+
     public static TipoExamenDAOImpl getTipoExamenDAO() {
         if (tipoExamenDAO == null) {
             tipoExamenDAO = new TipoExamenDAOImpl();
@@ -33,8 +33,7 @@ public class TipoExamenDAOImpl implements TipoExamenDAO {
         String sql = "SELECT * FROM tipoExamen";
         List<TipoExamen> tiposExamen = null;
 
-        try ( PreparedStatement declaracion = conexion.prepareStatement(sql);  
-                ResultSet rs = declaracion.executeQuery()) {
+        try ( PreparedStatement declaracion = conexion.prepareStatement(sql);  ResultSet rs = declaracion.executeQuery()) {
             tiposExamen = new ArrayList();
 
             while (rs.next()) {
@@ -75,9 +74,9 @@ public class TipoExamenDAOImpl implements TipoExamenDAO {
         String sql = "SELECT * FROM tipoExamen WHERE codigo = ?";
 
         TipoExamen tipoExamen = null;
-        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+        try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, codigo);
-            try (ResultSet rs = ps.executeQuery()) {
+            try ( ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     tipoExamen = new TipoExamen();
                     tipoExamen.setCodigo(codigo);
@@ -98,7 +97,7 @@ public class TipoExamenDAOImpl implements TipoExamenDAO {
     public void update(TipoExamen tipoExamen) {
         String sql = "UPDATE tipoExamen SET nombre = ?, requiereOrden = ?, descripcion = ?,"
                 + "costo = ?, tipoInforme = ? WHERE codigo = ?";
-        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+        try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, tipoExamen.getNombre());
             ps.setInt(2, tipoExamen.getRequiereOrden());
             ps.setString(3, tipoExamen.getDescripcion());
@@ -169,5 +168,49 @@ public class TipoExamenDAOImpl implements TipoExamenDAO {
         }
         return costo;
     }
-    
+
+    @Override
+    public List<TipoExamen> getExamenesDemandados(String fechaInicial, String fechaFinal, int opcion) {
+        String sql = "SELECT te.*, COUNT(e.codigo) demandas FROM tipoExamen te INNER JOIN examen e ON "
+                + "te.codigo=e.codigoTipoExamen ";
+        String intervalo = "WHERE (e.fecha BETWEEN ? AND ?) ";
+        String order = "GROUP BY e.codigoTipoExamen ORDER BY demandas DESC";
+        List<TipoExamen> tiposExamen = null;
+        PreparedStatement ps = null;
+
+        try {
+            switch (opcion) {
+                case 1 -> {
+                    ps = conexion.prepareStatement(sql + intervalo + order);
+                    ps.setString(1, fechaInicial);
+                    ps.setString(2, fechaFinal);
+                }
+                case 2 -> {
+                    ps = conexion.prepareStatement(sql + order);
+                }
+            }
+            try ( ResultSet rs = ps.executeQuery()) {
+                tiposExamen = new ArrayList();
+
+                while (rs.next()) {
+                    TipoExamen tipoExamen = new TipoExamen();
+                tipoExamen.setCodigo(rs.getString("codigo"));
+                tipoExamen.setNombre(rs.getString("nombre"));
+                tipoExamen.setCosto(rs.getFloat("costo"));
+                tipoExamen.setDemandas(rs.getInt("demandas"));
+                tiposExamen.add(tipoExamen);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        } finally {
+            try {
+                ps.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace(System.out);
+            }
+        }
+        return tiposExamen;
+    }
+
 }

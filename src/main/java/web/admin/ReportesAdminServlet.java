@@ -1,5 +1,7 @@
 package web.admin;
 
+import datos.examen.TipoExamenDAO;
+import datos.examen.TipoExamenDAOImpl;
 import datos.medico.MedicoDAO;
 import datos.medico.MedicoDAOImpl;
 import java.io.IOException;
@@ -9,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.examen.TipoExamen;
 import model.usuario.Medico;
 
 /**
@@ -20,6 +23,7 @@ import model.usuario.Medico;
 public class ReportesAdminServlet extends HttpServlet {
 
     private final MedicoDAO medicoDAO = MedicoDAOImpl.getMedicoDAO();
+    private final TipoExamenDAO tipoExamenDAO = TipoExamenDAOImpl.getTipoExamenDAO();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -36,6 +40,7 @@ public class ReportesAdminServlet extends HttpServlet {
         String fechaInicial = request.getParameter("fechaInicial");
         String fechaFinal = request.getParameter("fechaFinal");
         List<Medico> medicos;
+        List<TipoExamen> tiposExamen;
 
         switch (accion) {
             case "reporte1" -> {
@@ -45,7 +50,7 @@ public class ReportesAdminServlet extends HttpServlet {
                 } else {
                     medicos = medicoDAO.getMedicosConMasinformes(fechaInicial, fechaFinal, 2);
                 }
-                sendDatosReportesMedicos(fechaInicial, fechaFinal, "medicosInformes", medicos, 
+                sendDatosReportesMedicos(fechaInicial, fechaFinal, "medicosInformes", medicos,
                         "admin/medicosConMasInformes.jsp", request, response);
             }
             case "reporte2" -> {
@@ -54,7 +59,7 @@ public class ReportesAdminServlet extends HttpServlet {
                 } else {
                     medicos = medicoDAO.getIngresosDeMedicos(fechaInicial, fechaFinal, 2);
                 }
-                sendDatosReportesMedicos(fechaInicial, fechaFinal, "medicosIngresos", medicos, 
+                sendDatosReportesMedicos(fechaInicial, fechaFinal, "medicosIngresos", medicos,
                         "admin/ingresosPorMedico.jsp", request, response);
             }
             case "reporte3" -> {
@@ -63,8 +68,20 @@ public class ReportesAdminServlet extends HttpServlet {
                 } else {
                     medicos = medicoDAO.getMedicosConMenosConsultas(fechaInicial, fechaFinal, 2);
                 }
-                sendDatosReportesMedicos(fechaInicial, fechaFinal, "medicosConsultas", medicos, 
+                sendDatosReportesMedicos(fechaInicial, fechaFinal, "medicosConsultas", medicos,
                         "admin/medicosConMenosConsultas.jsp", request, response);
+            }
+            case "reporte4" -> {
+                if (!fechaFinal.trim().isEmpty() && !fechaInicial.trim().isEmpty()) {
+                    tiposExamen = tipoExamenDAO.getExamenesDemandados(fechaInicial, fechaFinal, 1);
+                } else {
+                    tiposExamen = tipoExamenDAO.getExamenesDemandados(fechaInicial, fechaFinal, 2);
+                }
+                request.setAttribute("fechaInicial", fechaInicial);
+                request.setAttribute("fechaFinal", fechaFinal);
+                request.setAttribute("examenesDemandados", tiposExamen);
+                request.setAttribute("buscado", true);
+                request.getRequestDispatcher("admin/examenesMasDemandados.jsp").forward(request, response);
             }
         }
     }

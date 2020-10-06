@@ -14,6 +14,7 @@ public class TipoExamen implements Serializable {
     private String descripcion;
     private float costo;
     private String tipoInforme;
+    private int demandas;
 
     public TipoExamen() {
     }
@@ -81,5 +82,13 @@ public class TipoExamen implements Serializable {
         } else {
             return "No";
         }
+    }
+
+    public int getDemandas() {
+        return demandas;
+    }
+
+    public void setDemandas(int demandas) {
+        this.demandas = demandas;
     }
 }
