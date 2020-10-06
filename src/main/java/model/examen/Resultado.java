@@ -3,6 +3,7 @@ package model.examen;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -11,7 +12,7 @@ import java.time.format.DateTimeFormatter;
  *
  * @author asael
  */
-public class Resultado {
+public class Resultado implements Serializable {
 
     private int codigoExamen;
     private String codigoLaboratorista;

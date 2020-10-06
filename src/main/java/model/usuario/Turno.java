@@ -1,10 +1,12 @@
 package model.usuario;
 
+import java.io.Serializable;
+
 /**
  *
  * @author asael
  */
-public class Turno {
+public class Turno implements Serializable{
 
     private String codigoLaboratorista;
     private Dia dia;

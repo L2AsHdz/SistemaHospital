@@ -1,10 +1,12 @@
 package model.usuario;
 
+import java.io.Serializable;
+
 /**
  *
  * @author asael
  */
-public class Admin extends Usuario {
+public class Admin extends Usuario implements Serializable {
 
     public Admin() {
     }

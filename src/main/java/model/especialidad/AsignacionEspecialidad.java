@@ -1,10 +1,12 @@
 package model.especialidad;
 
+import java.io.Serializable;
+
 /**
  *
  * @author asael
  */
-public class AsignacionEspecialidad {
+public class AsignacionEspecialidad implements Serializable {
 
     private String codigoMedico;
     private int idEspecialidad;

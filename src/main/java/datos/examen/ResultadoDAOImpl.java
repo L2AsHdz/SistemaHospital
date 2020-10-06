@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.http.HttpServletResponse;
 import model.examen.Resultado;
 import model.examen.ResultadoDTO;
 
@@ -206,6 +207,28 @@ public class ResultadoDAOImpl implements ResultadoDAO {
             }
         }
         return resultados;
+    }
+
+    @Override
+    public void getFileResultado(int codExamen, HttpServletResponse response) {
+        String sql = "SELECT resultado FROM resultado WHERE codigoExamen = ?";
+        
+        try (PreparedStatement ps = conexion.prepareStatement(sql)){
+            ps.setInt(1, codExamen);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    byte[] input = rs.getBytes("resultado");
+                    response.setContentType("image/*");
+                    response.setContentLength(input.length);
+                    response.getOutputStream().write(input);
+                } else {
+                    System.out.println("error");
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace(System.out);
+        }
     }
 
 }

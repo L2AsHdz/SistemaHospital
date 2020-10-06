@@ -1,5 +1,6 @@
 package model.usuario;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -7,7 +8,7 @@ import java.time.format.DateTimeFormatter;
  *
  * @author asael
  */
-public class Paciente extends Usuario {
+public class Paciente extends Usuario implements Serializable{
 
     private String sexo;
     private LocalDate birth;

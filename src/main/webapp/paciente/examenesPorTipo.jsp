@@ -88,7 +88,8 @@
                                                     <td>${resultado.hora}</td>
                                                     <td><fmt:formatNumber value="${resultado.costo}" type="currency" /></td>
                                                     <td>
-                                                        <a class="btn btn-info" data-toggle="modal" data-target="#modal-resultado">
+                                                        <a class="btn btn-info" data-toggle="modal" data-target="#modal-resultado"
+                                                            onclick="$('#content-resultado').attr('src','${pageContext.request.contextPath}/images/${resultado.codigoExamen}')">
                                                             <i class="fas fa-eye"></i> Ver resultado
                                                         </a>
                                                     </td>
@@ -100,12 +101,12 @@
                             </div>
 
                             <div class="modal" id="modal-resultado">
-                                <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-dialog modal-lg modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-body">
                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                             <h5>Resultado:</h5>
-                                            Aqui ira la imagen
+                                            <img id="content-resultado" style="width:100%; height:100%;">
                                         </div>
                                     </div>
                                 </div>

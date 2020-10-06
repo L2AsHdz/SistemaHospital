@@ -1,11 +1,13 @@
 package model.examen;
 
+import java.io.Serializable;
+
 /**
  * @date 3/10/2020
  * @time 14:01:08
  * @author asael
  */
-public class ResultadoDTO extends Resultado {
+public class ResultadoDTO extends Resultado implements Serializable {
     
     private String paciente;
     private String tipoExamen;

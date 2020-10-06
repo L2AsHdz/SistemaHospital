@@ -57,26 +57,27 @@
                                                     <td>${informe.hora}</td>
                                                     <td><fmt:formatNumber value="${informe.costo}" type="currency" /></td>
                                                     <td>
-                                                        <a class="btn btn-info" data-toggle="modal" data-target="#d${informe.codigoConsulta}">
+                                                        <a class="btn btn-info" data-toggle="modal" data-target="#modal-informe"
+                                                           onclick="$('#content-informe').text('${informe.informe}')">
                                                             <i class="fas fa-eye"></i> Ver informe
                                                         </a>
-
-                                                        <div class="modal" id="d${informe.codigoConsulta}">
-                                                            <div class="modal-dialog modal-dialog-centered">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-body">
-                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                        <h5>Informe:</h5>
-                                                                        ${informe.informe}
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>
                                     </table>	
+                                </div>
+                            </div>
+
+                            <div class="modal" id="modal-informe">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h5>Informe:</h5>
+                                            <p id="content-informe"></p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </c:when>
@@ -131,21 +132,10 @@
                                                     <td>${resultado.hora}</td>
                                                     <td><fmt:formatNumber value="${resultado.costo}" type="currency" /></td>
                                                     <td>
-                                                        <a class="btn btn-info" data-toggle="modal" data-target="#d${resultado.codigoExamen}">
+                                                        <a class="btn btn-info" data-toggle="modal" data-target="#modal-resultado"
+                                                           onclick="$('#content-resultado').attr('src','${pageContext.request.contextPath}/images/${resultado.codigoExamen}')">
                                                             <i class="fas fa-eye"></i> Ver resultado
                                                         </a>
-
-                                                        <div class="modal" id="d${resultado.codigoExamen}">
-                                                            <div class="modal-dialog modal-dialog-centered">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-body">
-                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                        <h5>Resultado:</h5>
-                                                                        Aqui ira la imagen
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
@@ -153,6 +143,19 @@
                                     </table>	
                                 </div>
                             </div>
+
+                            <div class="modal" id="modal-resultado">
+                                <div class="modal-dialog modal-lg modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h5>Resultado:</h5>
+                                            <img id="content-resultado" style="width:100%; height:100%;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </c:when>
                         <c:otherwise>
                             <h4>No hay examenes realizados</h4>

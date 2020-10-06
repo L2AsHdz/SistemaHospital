@@ -1,11 +1,13 @@
 package model.consulta;
 
+import java.io.Serializable;
+
 /**
  * @date 3/10/2020
  * @time 13:30:46
  * @author asael
  */
-public class InformeDTO extends Informe{
+public class InformeDTO extends Informe implements Serializable{
     private String paciente;
     private String medico;
     private String especialidad;

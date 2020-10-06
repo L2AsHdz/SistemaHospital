@@ -1,5 +1,6 @@
 package model.consulta;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -8,7 +9,7 @@ import java.time.format.DateTimeFormatter;
  *
  * @author asael
  */
-public class Consulta {
+public class Consulta implements Serializable {
     
     private int codigo;
     private String codigoMedico;
