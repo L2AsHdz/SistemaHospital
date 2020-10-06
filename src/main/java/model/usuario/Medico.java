@@ -19,6 +19,7 @@ public class Medico extends Usuario implements Serializable {
     private LocalTime horaFinal;
     private LocalDate fechaInicioLabores;
     private List<String> especialidades;
+    private int informes;
 
     public Medico() {
     }
@@ -120,5 +121,13 @@ public class Medico extends Usuario implements Serializable {
 
     public void setEspecialidades(List<String> especialidades) {
         this.especialidades = especialidades;
+    }
+
+    public int getInformes() {
+        return informes;
+    }
+
+    public void setInformes(int informes) {
+        this.informes = informes;
     }
 }

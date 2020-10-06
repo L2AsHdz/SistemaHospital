@@ -242,4 +242,57 @@ public class MedicoDAOImpl implements MedicoDAO {
         return medicos;
     }
 
+    @Override
+    public List<Medico> getMedicosConMasinformes(String fechaInicial, String fechaFinal, int opcion) {
+        String sql = "SELECT m.*, COUNT(i.codigoConsulta) informes FROM medico m INNER JOIN consulta c "
+                + "ON m.codigo=c.codigoMedico INNER JOIN informe i ON c.codigo=i.codigoConsulta "
+                + " ";
+        String intervalo = "WHERE (i.fecha BETWEEN ? AND ?) ";
+        String order = "GROUP BY c.codigoMedico ORDER BY informes DESC LIMIT 10";
+        List<Medico> medicos = null;
+        PreparedStatement ps = null;
+
+        try {
+            switch (opcion) {
+                case 1 -> {
+                    ps = conexion.prepareStatement(sql + intervalo + order);
+                    ps.setString(1, fechaInicial);
+                    ps.setString(2, fechaFinal);
+                }
+                case 2 -> {
+                    ps = conexion.prepareStatement(sql + order);
+                }
+            }
+            try ( ResultSet rs = ps.executeQuery()) {
+                medicos = new ArrayList();
+
+                while (rs.next()) {
+                    Medico medico = new Medico();
+                medico.setCodigo(rs.getString("codigo"));
+                medico.setNombre(rs.getString("nombre"));
+                medico.setNoColegiado(rs.getString("noColegiado"));
+                medico.setCUI(rs.getString("cui"));
+                medico.setTelefono(rs.getString("telefono"));
+                medico.setCorreo(rs.getString("correo"));
+                medico.setHoraInicio(LocalTime.parse(rs.getString("horaInicio")));
+                medico.setHoraFinal(LocalTime.parse(rs.getString("horaFinal")));
+                medico.setFechaInicioLabores(LocalDate.parse(rs.getString("fechaInicioLabores")));
+                medico.setPassword(rs.getString("password"));
+                medico.setEspecialidades(asignacionDAO.getEspecialidadesByCodMed(medico.getCodigo()));
+                medico.setInformes(rs.getInt("informes"));
+                medicos.add(medico);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        } finally {
+            try {
+                ps.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace(System.out);
+            }
+        }
+        return medicos;
+    }
+
 }
