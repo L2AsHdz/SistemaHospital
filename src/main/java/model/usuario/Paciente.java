@@ -17,6 +17,8 @@ public class Paciente extends Usuario implements Serializable{
     private String tipoSangre;
     private String correo;
     private int informes;
+    private float ingresosConsultas;
+    private float ingresosExamenes;
 
     public Paciente() {
     }
@@ -99,5 +101,21 @@ public class Paciente extends Usuario implements Serializable{
 
     public void setInformes(int informes) {
         this.informes = informes;
+    }
+
+    public float getIngresosConsultas() {
+        return ingresosConsultas;
+    }
+
+    public void setIngresosConsultas(float ingresosConsultas) {
+        this.ingresosConsultas = ingresosConsultas;
+    }
+
+    public float getIngresosExamenes() {
+        return ingresosExamenes;
+    }
+
+    public void setIngresosExamenes(float ingresosExamenes) {
+        this.ingresosExamenes = ingresosExamenes;
     }
 }

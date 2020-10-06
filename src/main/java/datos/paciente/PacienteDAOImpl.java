@@ -179,5 +179,93 @@ public class PacienteDAOImpl implements PacienteDAO {
         }
         return pacientes;
     }
+
+    @Override
+    public List<Paciente> getIngresosConsultasPorPaciete(String fechaInicial, String fechaFinal, int opcion) {
+        String sql = "SELECT p.*, SUM(c.total) ingresosC FROM paciente p INNER JOIN consulta c ON "
+                + "p.codigo=c.codigoPaciente ";
+        String interavalo = "WHERE c.fecha BETWEEN ? AND ? ";
+        String order = "GROUP BY p.codigo ORDER BY ingresosC DESC";
+        List<Paciente> pacientes = null;
+        PreparedStatement ps = null;
+
+        try {
+            switch (opcion) {
+                case 1 -> {
+                    ps = conexion.prepareStatement(sql + interavalo + order);
+                    ps.setString(1, fechaInicial);
+                    ps.setString(2, fechaFinal);
+                }
+                case 2 -> {
+                    ps = conexion.prepareStatement(sql + order);
+                }
+            }
+            try ( ResultSet rs = ps.executeQuery()) {
+                pacientes = new ArrayList();
+
+                while (rs.next()) {
+                    Paciente paciente = new Paciente();
+                    paciente.setCodigo(rs.getString("codigo"));
+                    paciente.setNombre(rs.getString("nombre"));
+                    paciente.setTelefono(rs.getString("telefono"));
+                    paciente.setIngresosConsultas(rs.getFloat("ingresosC"));
+                    pacientes.add(paciente);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        } finally {
+            try {
+                ps.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace(System.out);
+            }
+        }
+        return pacientes;
+    }
+
+    @Override
+    public List<Paciente> getIngresosExamenesPorPaciete(String fechaInicial, String fechaFinal, int opcion) {
+        String sql = "SELECT p.*, SUM(e.total) ingresosE FROM paciente p INNER JOIN examen e ON "
+                + "p.codigo=e.codigoPaciente ";
+        String interavalo = "WHERE e.fecha BETWEEN ? AND ? ";
+        String order = "GROUP BY p.codigo ORDER BY ingresosE DESC";
+        List<Paciente> pacientes = null;
+        PreparedStatement ps = null;
+
+        try {
+            switch (opcion) {
+                case 1 -> {
+                    ps = conexion.prepareStatement(sql + interavalo + order);
+                    ps.setString(1, fechaInicial);
+                    ps.setString(2, fechaFinal);
+                }
+                case 2 -> {
+                    ps = conexion.prepareStatement(sql + order);
+                }
+            }
+            try ( ResultSet rs = ps.executeQuery()) {
+                pacientes = new ArrayList();
+
+                while (rs.next()) {
+                    Paciente paciente = new Paciente();
+                    paciente.setCodigo(rs.getString("codigo"));
+                    paciente.setNombre(rs.getString("nombre"));
+                    paciente.setTelefono(rs.getString("telefono"));
+                    paciente.setIngresosExamenes(rs.getFloat("ingresosE"));
+                    pacientes.add(paciente);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        } finally {
+            try {
+                ps.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace(System.out);
+            }
+        }
+        return pacientes;
+    }
     
 }

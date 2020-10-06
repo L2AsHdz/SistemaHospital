@@ -10,4 +10,6 @@ import model.usuario.Paciente;
  */
 public interface PacienteDAO extends CRUD<Paciente> {
     List<Paciente> getPacientesConMasInformes(String fechaInicial, String fechaFinal, int opcion);
+    List<Paciente> getIngresosConsultasPorPaciete(String fechaInicial, String fechaFinal, int opcion);
+    List<Paciente> getIngresosExamenesPorPaciete(String fechaInicial, String fechaFinal, int opcion);
 }

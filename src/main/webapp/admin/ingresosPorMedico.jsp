@@ -39,7 +39,7 @@
                         <button type="reset" class="btn btn-secondary mb-2 ml-2" onclick="$('#fechaInicial').focus()">
                             <i class="fas fa-trash-alt"></i>
                         </button>
-                        <button type="submit" class="btn btn-primary mb-2 ml-2">Ver medicos</button>
+                        <button type="submit" class="btn btn-primary mb-2 ml-2">Ver ingresos</button>
                     </form>
                 </div>
             </div>
