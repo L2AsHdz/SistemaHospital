@@ -45,11 +45,8 @@ public class ReportesAdminServlet extends HttpServlet {
                 } else {
                     medicos = medicoDAO.getMedicosConMasinformes(fechaInicial, fechaFinal, 2);
                 }
-                request.setAttribute("fechaInicial", fechaInicial);
-                request.setAttribute("fechaFinal", fechaFinal);
-                request.setAttribute("medicosInformes", medicos);
-                request.setAttribute("buscado", true);
-                request.getRequestDispatcher("admin/medicosConMasInformes.jsp").forward(request, response);
+                sendDatosReportesMedicos(fechaInicial, fechaFinal, "medicosInformes", medicos, 
+                        "admin/medicosConMasInformes.jsp", request, response);
             }
             case "reporte2" -> {
                 if (!fechaFinal.trim().isEmpty() && !fechaInicial.trim().isEmpty()) {
@@ -57,12 +54,28 @@ public class ReportesAdminServlet extends HttpServlet {
                 } else {
                     medicos = medicoDAO.getIngresosDeMedicos(fechaInicial, fechaFinal, 2);
                 }
-                request.setAttribute("fechaInicial", fechaInicial);
-                request.setAttribute("fechaFinal", fechaFinal);
-                request.setAttribute("medicosIngresos", medicos);
-                request.setAttribute("buscado", true);
-                request.getRequestDispatcher("admin/ingresosPorMedico.jsp").forward(request, response);
+                sendDatosReportesMedicos(fechaInicial, fechaFinal, "medicosIngresos", medicos, 
+                        "admin/ingresosPorMedico.jsp", request, response);
+            }
+            case "reporte3" -> {
+                if (!fechaFinal.trim().isEmpty() && !fechaInicial.trim().isEmpty()) {
+                    medicos = medicoDAO.getMedicosConMenosConsultas(fechaInicial, fechaFinal, 1);
+                } else {
+                    medicos = medicoDAO.getMedicosConMenosConsultas(fechaInicial, fechaFinal, 2);
+                }
+                sendDatosReportesMedicos(fechaInicial, fechaFinal, "medicosConsultas", medicos, 
+                        "admin/medicosConMenosConsultas.jsp", request, response);
             }
         }
+    }
+
+    private void sendDatosReportesMedicos(String fechaInicial, String fechaFinal, String nombreLista,
+            List<Medico> medicos, String rutaJSP, HttpServletRequest request,
+            HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("fechaInicial", fechaInicial);
+        request.setAttribute("fechaFinal", fechaFinal);
+        request.setAttribute(nombreLista, medicos);
+        request.setAttribute("buscado", true);
+        request.getRequestDispatcher(rutaJSP).forward(request, response);
     }
 }

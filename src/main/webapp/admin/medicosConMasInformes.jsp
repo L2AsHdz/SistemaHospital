@@ -57,8 +57,6 @@
                                                 <th>nombre</th>
                                                 <th>No. Colegiado</th>
                                                 <th>CUI</th>
-                                                <th>Hora entrada</th>
-                                                <th>Hora salida</th>
                                                 <th>Cant. Informes</th>
                                             </tr>
                                         </thead>
@@ -70,8 +68,6 @@
                                                     <td>${medico.nombre}</td>
                                                     <td>${medico.noColegiado}</td>
                                                     <td>${medico.CUI}</td>
-                                                    <td>${medico.horaInicio}</td>
-                                                    <td>${medico.horaFinal}</td>
                                                     <td>${medico.informes}</td>
                                                 </tr>
                                             </c:forEach>

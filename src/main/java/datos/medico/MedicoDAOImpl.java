@@ -321,10 +321,52 @@ public class MedicoDAOImpl implements MedicoDAO {
                 medico.setNombre(rs.getString("nombre"));
                 medico.setNoColegiado(rs.getString("noColegiado"));
                 medico.setCUI(rs.getString("cui"));
-                medico.setTelefono(rs.getString("telefono"));
-                medico.setCorreo(rs.getString("correo"));
-                medico.setFechaInicioLabores(LocalDate.parse(rs.getString("fechaInicioLabores")));
                 medico.setIngresos(rs.getFloat("ingresos"));
+                medicos.add(medico);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        } finally {
+            try {
+                ps.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace(System.out);
+            }
+        }
+        return medicos;
+    }
+
+    @Override
+    public List<Medico> getMedicosConMenosConsultas(String fechaInicial, String fechaFinal, int opcion) {
+        String sql = "SELECT m.*, COUNT(c.codigo) consultas FROM medico m INNER JOIN consulta c "
+                + "ON m.codigo=c.codigoMedico "
+                + " ";
+        String intervalo = "WHERE (c.fecha BETWEEN ? AND ?) ";
+        String order = "GROUP BY m.codigo ORDER BY consultas ASC LIMIT 5";
+        List<Medico> medicos = null;
+        PreparedStatement ps = null;
+
+        try {
+            switch (opcion) {
+                case 1 -> {
+                    ps = conexion.prepareStatement(sql + intervalo + order);
+                    ps.setString(1, fechaInicial);
+                    ps.setString(2, fechaFinal);
+                }
+                case 2 -> {
+                    ps = conexion.prepareStatement(sql + order);
+                }
+            }
+            try ( ResultSet rs = ps.executeQuery()) {
+                medicos = new ArrayList();
+
+                while (rs.next()) {
+                    Medico medico = new Medico();
+                medico.setCodigo(rs.getString("codigo"));
+                medico.setNombre(rs.getString("nombre"));
+                medico.setNoColegiado(rs.getString("noColegiado"));
+                medico.setConsultas(rs.getInt("consultas"));
                 medicos.add(medico);
                 }
             }

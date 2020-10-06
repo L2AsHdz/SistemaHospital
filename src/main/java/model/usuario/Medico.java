@@ -21,6 +21,7 @@ public class Medico extends Usuario implements Serializable {
     private List<String> especialidades;
     private int informes;
     private float ingresos;
+    private int consultas;
 
     public Medico() {
     }
@@ -138,5 +139,13 @@ public class Medico extends Usuario implements Serializable {
 
     public void setIngresos(float ingresos) {
         this.ingresos = ingresos;
+    }
+
+    public int getConsultas() {
+        return consultas;
+    }
+
+    public void setConsultas(int consultas) {
+        this.consultas = consultas;
     }
 }
