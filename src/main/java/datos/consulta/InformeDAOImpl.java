@@ -169,4 +169,35 @@ public class InformeDAOImpl implements InformeDAO {
         return informes;
     }
 
+    @Override
+    public List<Informe> getLastFiveInformes(String codPaciente) {
+        String sql = "SELECT c.codigo, m.nombre medico, e.nombre especialidad, c.fecha, c.hora, i.informe, "
+                + "c.total FROM informe i INNER JOIN consulta c ON i.codigoConsulta=c.codigo "
+                + "INNER JOIN medico m ON c.codigoMedico=m.codigo INNER JOIN especialidad e ON "
+                + "c.idEspecialidad=e.id WHERE c.codigoPaciente = ? ORDER BY c.fecha, c.hora DESC LIMIT 5";
+        List<Informe> informes = null;
+
+        try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, codPaciente);
+            try ( ResultSet rs = ps.executeQuery()) {
+                informes = new ArrayList();
+
+                while (rs.next()) {
+                    InformeDTO informe = new InformeDTO();
+                    informe.setCodigoConsulta(rs.getInt("codigo"));
+                    informe.setMedico(rs.getString("medico"));
+                    informe.setEspecialidad(rs.getString("especialidad"));
+                    informe.setFecha(LocalDate.parse(rs.getString("fecha")));
+                    informe.setHora(LocalTime.parse(rs.getString("hora")));
+                    informe.setInforme(rs.getString("informe"));
+                    informe.setCosto(rs.getFloat("total"));
+                    informes.add(informe);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return informes;
+    }
+
 }

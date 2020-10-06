@@ -37,12 +37,12 @@ public class ReportesPacienteServlet extends HttpServlet {
         String accion = request.getParameter("accion");
         HttpSession sesion = request.getSession();
         Paciente paciente = (Paciente) sesion.getAttribute("user");
+        String fechaInicial = request.getParameter("fechaInicial");
+        String fechaFinal = request.getParameter("fechaFinal");
 
         switch (accion) {
             case "reporte2" -> {
                 String codTipoExamen = request.getParameter("codTipoExamen");
-                String fechaInicial = request.getParameter("fechaInicial");
-                String fechaFinal = request.getParameter("fechaFinal");
 
                 List<TipoExamen> tiposExamen = tipoExamenDAO.getListado();
                 List<Resultado> resultados;
@@ -62,8 +62,6 @@ public class ReportesPacienteServlet extends HttpServlet {
             }
             case "reporte4" -> {
                 String codMedico = request.getParameter("codMedico");
-                String fechaInicial = request.getParameter("fechaInicial");
-                String fechaFinal = request.getParameter("fechaFinal");
 
                 if (MedicoDAOImpl.getMedicoDAO().exists(codMedico)) {
                     List<Informe> informes;
@@ -104,6 +102,11 @@ public class ReportesPacienteServlet extends HttpServlet {
                 List<TipoExamen> tiposExamen = tipoExamenDAO.getListado();
                 request.setAttribute("tiposExamen", tiposExamen);
                 request.getRequestDispatcher("paciente/examenesPorTipo.jsp").forward(request, response);
+            }
+            case "reporte3" -> {
+                List<Informe> informes = informeDAO.getLastFiveInformes(paciente.getCodigo());
+                sesion.setAttribute("lastConsultas", informes);
+                response.sendRedirect("paciente/ultimasConsultas.jsp");
             }
         }
     }
