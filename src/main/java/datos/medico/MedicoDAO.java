@@ -13,4 +13,5 @@ public interface MedicoDAO extends CRUD<Medico> {
     List<Medico> getMedicosConMasinformes(String fechaInicial, String fechaFinal, int opcion);
     List<Medico> getIngresosDeMedicos(String fechaInicial, String fechaFinal, int opcion);
     List<Medico> getMedicosConMenosConsultas(String fechaInicial, String fechaFinal, int opcion);
+    List<Medico> getMedicosConMasSolicitudes(String fechaInicial, String fechaFinal, int opcion);
 }

@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import model.examen.TipoExamen;
 
 /**
  *
@@ -19,9 +20,11 @@ public class Medico extends Usuario implements Serializable {
     private LocalTime horaFinal;
     private LocalDate fechaInicioLabores;
     private List<String> especialidades;
+    private List<TipoExamen> examenesSolicitados;
     private int informes;
     private float ingresos;
     private int consultas;
+    private int examenes;
 
     public Medico() {
     }
@@ -125,6 +128,14 @@ public class Medico extends Usuario implements Serializable {
         this.especialidades = especialidades;
     }
 
+    public List<TipoExamen> getExamenesSolicitados() {
+        return examenesSolicitados;
+    }
+
+    public void setExamenesSolicitados(List<TipoExamen> examenesSolicitados) {
+        this.examenesSolicitados = examenesSolicitados;
+    }
+
     public int getInformes() {
         return informes;
     }
@@ -147,5 +158,13 @@ public class Medico extends Usuario implements Serializable {
 
     public void setConsultas(int consultas) {
         this.consultas = consultas;
+    }
+
+    public int getExamenes() {
+        return examenes;
+    }
+
+    public void setExamenes(int examenes) {
+        this.examenes = examenes;
     }
 }

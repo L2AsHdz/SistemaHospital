@@ -83,6 +83,15 @@ public class ReportesAdminServlet extends HttpServlet {
                 request.setAttribute("buscado", true);
                 request.getRequestDispatcher("admin/examenesMasDemandados.jsp").forward(request, response);
             }
+            case "reporte5" -> {
+                if (!fechaFinal.trim().isEmpty() && !fechaInicial.trim().isEmpty()) {
+                    medicos = medicoDAO.getMedicosConMasSolicitudes(fechaInicial, fechaFinal, 1);
+                } else {
+                    medicos = medicoDAO.getMedicosConMasSolicitudes(fechaInicial, fechaFinal, 2);
+                }
+                sendDatosReportesMedicos(fechaInicial, fechaFinal, "medicosExamenes", medicos, 
+                        "admin/examenesSolicitadosPorMedico.jsp", request, response);
+            }
         }
     }
 

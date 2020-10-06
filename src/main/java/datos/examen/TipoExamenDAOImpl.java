@@ -194,11 +194,57 @@ public class TipoExamenDAOImpl implements TipoExamenDAO {
 
                 while (rs.next()) {
                     TipoExamen tipoExamen = new TipoExamen();
-                tipoExamen.setCodigo(rs.getString("codigo"));
-                tipoExamen.setNombre(rs.getString("nombre"));
-                tipoExamen.setCosto(rs.getFloat("costo"));
-                tipoExamen.setDemandas(rs.getInt("demandas"));
-                tiposExamen.add(tipoExamen);
+                    tipoExamen.setCodigo(rs.getString("codigo"));
+                    tipoExamen.setNombre(rs.getString("nombre"));
+                    tipoExamen.setCosto(rs.getFloat("costo"));
+                    tipoExamen.setDemandas(rs.getInt("demandas"));
+                    tiposExamen.add(tipoExamen);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        } finally {
+            try {
+                ps.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace(System.out);
+            }
+        }
+        return tiposExamen;
+    }
+
+    @Override
+    public List<TipoExamen> getExamenesSolicitadosByMedico(String codMedico, String fechaInicial, String fechaFinal, int opcion) {
+        String sql = "SELECT te.*, COUNT(e.codigo) demandas FROM tipoExamen te INNER JOIN "
+                + "examen e ON te.codigo=e.codigoTipoExamen WHERE e.codigoMedico= ? ";
+        String intervalo = "AND (e.fecha BETWEEN ? AND ?) ";
+        String order = "GROUP BY e.codigoTipoExamen ORDER BY demandas DESC LIMIT 3";
+        List<TipoExamen> tiposExamen = null;
+        PreparedStatement ps = null;
+
+        try {
+            switch (opcion) {
+                case 1 -> {
+                    ps = conexion.prepareStatement(sql + intervalo + order);
+                    ps.setString(1, codMedico);
+                    ps.setString(2, fechaInicial);
+                    ps.setString(3, fechaFinal);
+                }
+                case 2 -> {
+                    ps = conexion.prepareStatement(sql + order);
+                    ps.setString(1, codMedico);
+                }
+            }
+            try ( ResultSet rs = ps.executeQuery()) {
+                tiposExamen = new ArrayList();
+
+                while (rs.next()) {
+                    TipoExamen tipoExamen = new TipoExamen();
+                    tipoExamen.setCodigo(rs.getString("codigo"));
+                    tipoExamen.setNombre(rs.getString("nombre"));
+                    tipoExamen.setCosto(rs.getFloat("costo"));
+                    tipoExamen.setDemandas(rs.getInt("demandas"));
+                    tiposExamen.add(tipoExamen);
                 }
             }
         } catch (SQLException e) {
