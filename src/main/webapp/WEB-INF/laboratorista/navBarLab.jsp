@@ -17,9 +17,9 @@
                     </a>
 
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="${pageContext.request.contextPath}/laboratorista/.jsp">Examenes realizados en el dia</a>
-                        <a class="dropdown-item" href="${pageContext.request.contextPath}/laboratorista/.jsp">Cantidad de examenes realizados por dia</a>
-                        <a class="dropdown-item" href="${pageContext.request.contextPath}/laboratorista/.jsp">Las 10 fechas con mas examenes realizados</a>
+                        <a class="dropdown-item" href="${pageContext.request.contextPath}/ReportesLabServlet?accion=reporte1">Examenes realizados en el dia</a>
+                        <a class="dropdown-item" href="${pageContext.request.contextPath}/ReportesLabServlet?accion=reporte2">Cantidad de examenes realizados por dia</a>
+                        <a class="dropdown-item" href="${pageContext.request.contextPath}/ReportesLabServlet?accion=reporte3">Las 10 fechas con mas examenes realizados</a>
                     </div>
                 </li>
             </ul>

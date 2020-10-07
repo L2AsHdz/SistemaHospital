@@ -231,4 +231,38 @@ public class ResultadoDAOImpl implements ResultadoDAO {
         }
     }
 
+    @Override
+    public List<Resultado> getResultadosRealizadosHoy(String codLaboratorista) {
+        String sql = "SELECT e.codigo, p.nombre paciente, m.nombre medico, te.nombre tipoExamen, "
+                + "r.fecha, r.hora, r.resultado, e.total FROM resultado r INNER JOIN examen e "
+                + "ON r.codigoExamen=e.codigo LEFT JOIN medico m ON e.codigoMedico=m.codigo "
+                + "INNER JOIN paciente p ON e.codigoPaciente=p.codigo INNER JOIN laboratorista l ON "
+                + "r.codigoLaboratorista=l.codigo INNER JOIN tipoExamen te ON e.codigoTipoExamen=te.codigo "
+                + "WHERE r.codigoLaboratorista = ? AND r.fecha = CAST(NOW() AS DATE) ORDER BY r.fecha, r.hora";
+        List<Resultado> resultados = null;
+
+        try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, codLaboratorista);
+            try ( ResultSet rs = ps.executeQuery()) {
+                resultados = new ArrayList();
+
+                while (rs.next()) {
+                    ResultadoDTO resultado = new ResultadoDTO();
+                    resultado.setCodigoExamen(rs.getInt("codigo"));
+                    resultado.setPaciente(rs.getString("paciente"));
+                    resultado.setMedico(rs.getString("medico"));
+                    resultado.setTipoExamen(rs.getString("tipoExamen"));
+                    resultado.setFecha(LocalDate.parse(rs.getString("fecha")));
+                    resultado.setHora(LocalTime.parse(rs.getString("hora")));
+                    resultado.setResultado(rs.getBinaryStream("resultado"));
+                    resultado.setCosto(rs.getFloat("total"));
+                    resultados.add(resultado);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return resultados;
+    }
+
 }
