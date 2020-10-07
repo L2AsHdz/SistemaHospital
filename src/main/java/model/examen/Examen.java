@@ -16,7 +16,9 @@ public class Examen implements Serializable {
 
     private int codigo;
     private String codigoPaciente;
+    private String nombrePaciente;
     private String codigoTipoExamen;
+    private String tipoInforme;
     private String nombreTipoExamen;
     private String codigoMedico;
     private String nombreMedico;
@@ -68,12 +70,28 @@ public class Examen implements Serializable {
         this.codigoPaciente = codigoPaciente;
     }
 
+    public String getNombrePaciente() {
+        return nombrePaciente;
+    }
+
+    public void setNombrePaciente(String nombrePaciente) {
+        this.nombrePaciente = nombrePaciente;
+    }
+
     public String getCodigoTipoExamen() {
         return codigoTipoExamen;
     }
 
     public void setCodigoTipoExamen(String codigoTipoExamen) {
         this.codigoTipoExamen = codigoTipoExamen;
+    }
+
+    public String getTipoInforme() {
+        return tipoInforme;
+    }
+
+    public void setTipoInforme(String tipoInforme) {
+        this.tipoInforme = tipoInforme;
     }
 
     public String getCodigoMedico() {

@@ -67,7 +67,7 @@
                                             <td>${laboratorista.telefono}</td>
                                             <td>${laboratorista.correo}</td>
                                             <td>${laboratorista.fechaInicioLabores}</td>
-                                            <td>${medico.tipoExamen}</td>
+                                            <td>${laboratorista.codigoTipoExamen}</td>
                                             <td>
                                                 <a class="btn btn-info" data-toggle="modal" data-target="#m${laboratorista.codigo}">
                                                     <i class="fas fa-eye"></i> Ver turnos

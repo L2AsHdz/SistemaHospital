@@ -1,6 +1,7 @@
 package datos.examen;
 
 import datos.Conexion;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,13 +17,13 @@ import model.examen.Examen;
  * @author asael
  */
 public class ExamenDAOImpl implements ExamenDAO {
-    
+
     private static ExamenDAOImpl examenDAO = null;
     private Connection conexion = Conexion.getConexion();
-    
+
     private ExamenDAOImpl() {
     }
-    
+
     public static ExamenDAOImpl getExamenDAO() {
         if (examenDAO == null) {
             examenDAO = new ExamenDAOImpl();
@@ -60,9 +61,9 @@ public class ExamenDAOImpl implements ExamenDAO {
         String sql = "SELECT * FROM tipoExamen WHERE codigo = ?";
 
         Examen examen = null;
-        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+        try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, codigo);
-            try (ResultSet rs = ps.executeQuery()) {
+            try ( ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     examen = new Examen();
                     examen.setCodigo(Integer.parseInt(codigo));
@@ -113,8 +114,7 @@ public class ExamenDAOImpl implements ExamenDAO {
     public int getLastCodigo() {
         String sql = "SELECT codigo FROM examen ORDER BY codigo DESC LIMIT 1";
         int codigo = -1;
-        try (PreparedStatement ps = conexion.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery()) {
+        try ( PreparedStatement ps = conexion.prepareStatement(sql);  ResultSet rs = ps.executeQuery()) {
 
             if (rs.next()) {
                 codigo = rs.getInt("codigo") + 1;
@@ -129,7 +129,7 @@ public class ExamenDAOImpl implements ExamenDAO {
     public void setNextCodigo(int codigo) {
         String sql = "ALTER TABLE examen AUTO_INCREMENT = ?";
 
-        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+        try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setInt(1, codigo);
             ps.executeUpdate();
         } catch (SQLException ex) {
@@ -166,5 +166,65 @@ public class ExamenDAOImpl implements ExamenDAO {
         }
         return examenes;
     }
-    
+
+    @Override
+    public List<Examen> getExamenesPendientesToday(String codTipoExamen) {
+        String sql = "SELECT e.codigo, p.nombre paciente, m.nombre medico, te.nombre tipoExamen, te.tipoInforme, e.fecha, e.hora, e.orden,"
+                + "e.total FROM examen e LEFT JOIN medico m ON e.codigoMedico=m.codigo INNER JOIN paciente p ON e.codigoPaciente=p.codigo "
+                + "INNER JOIN tipoExamen te ON e.codigoTipoExamen=te.codigo WHERE e.codigoTipoExamen = ? AND e.estado = 0 "
+                + "AND e.fecha = CAST(NOW() AS DATE) ORDER BY e.fecha";
+        List<Examen> examenes = null;
+
+        try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, codTipoExamen);
+            try ( ResultSet rs = ps.executeQuery()) {
+                examenes = new ArrayList();
+
+                while (rs.next()) {
+                    Examen examen = new Examen();
+                    examen.setCodigo(rs.getInt("codigo"));
+                    examen.setNombrePaciente(rs.getString("paciente"));
+                    examen.setNombreMedico(rs.getString("medico"));
+                    examen.setNombreTipoExamen(rs.getString("tipoExamen"));
+                    if (rs.getString("tipoInforme").equals("PDF")) {
+                        examen.setTipoInforme(".pdf");
+                    } else {
+                        examen.setTipoInforme("image/*");
+                    }
+                    examen.setFecha(LocalDate.parse(rs.getString("fecha")));
+                    examen.setHora(LocalTime.parse(rs.getString("hora")));
+                    examen.setOrden(rs.getBinaryStream("orden"));
+                    examen.setTotal(rs.getFloat("total"));
+                    examenes.add(examen);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return examenes;
+    }
+
+    @Override
+    public byte[] getOrdenByCodExamen(String codigoExamen) {
+        String sql = "SELECT orden FROM examen WHERE codigo = ?";
+        InputStream orden = null;
+        byte[] datosPDF = null;
+
+        try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, codigoExamen);
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    orden = rs.getBinaryStream("orden");
+
+                    int tamanoInput = orden.available();
+                    datosPDF = new byte[tamanoInput];
+                    orden.read(datosPDF, 0, tamanoInput);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace(System.out);
+        }
+        return datosPDF;
+    }
+
 }

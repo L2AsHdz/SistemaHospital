@@ -69,6 +69,7 @@ public class LaboratoristaServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String accion = request.getParameter("accion");
+        
         if (accion != null && accion.equals("editar")) {
             String codigo = request.getParameter("codigo");
             List<TipoExamen> tiposExamen = tipoExamenDAO.getListado();
@@ -76,10 +77,16 @@ public class LaboratoristaServlet extends HttpServlet {
             request.setAttribute("tiposExamen", tiposExamen);
             request.setAttribute("laboratorista", laboratorista);
             request.getRequestDispatcher("admin/formLaboratorista.jsp").forward(request, response);
+        
         } else if (accion != null && accion.equals("add")) {
             List<TipoExamen> tiposExamen = tipoExamenDAO.getListado();
             request.setAttribute("tiposExamen", tiposExamen);
             request.getRequestDispatcher("admin/formLaboratorista.jsp").forward(request, response);
+        
+        }else if (accion != null && accion.equals("logout")) {
+            request.getSession().invalidate();
+            response.sendRedirect("index.jsp");
+        
         } else {
             redirect(request, response);
         }

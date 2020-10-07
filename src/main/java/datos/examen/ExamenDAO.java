@@ -11,5 +11,7 @@ import model.examen.Examen;
 public interface ExamenDAO extends CRUD<Examen> {
     int getLastCodigo();
     void setNextCodigo(int codigo);
+    byte[] getOrdenByCodExamen(String codigoExamen);
     List<Examen> getExamenesPendientes(String codPaciente);
+    List<Examen> getExamenesPendientesToday(String codTipoExamen);
 }
