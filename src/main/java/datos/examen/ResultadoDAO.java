@@ -15,4 +15,5 @@ public interface ResultadoDAO extends CRUD<Resultado> {
     List<Resultado> getResultadosbyTipoExamen(String codPaciente, String codTipoExamen, String fechaInicial, String fechaFinal, int opcion);
     void getFileResultado(int codExamen, HttpServletResponse response);
     List<Resultado> getResultadosRealizadosHoy(String codLaboratorista);
+    List<Resultado> getResultadosRealizadosPorDia(String codLaboratorista, String fechaInicial, String fechaFinal, int opcion);
 }
