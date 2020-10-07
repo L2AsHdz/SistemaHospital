@@ -270,7 +270,7 @@ public class ResultadoDAOImpl implements ResultadoDAO {
         String sql = "SELECT r.fecha, COUNT(r.codigoExamen) cantRealizados FROM resultado r "
                 + "WHERE r.codigoLaboratorista = ? ";
         String intervalo = "AND (r.fecha BETWEEN ? AND ?)";
-        String group = "GROUP BY r.fecha";
+        String group = "GROUP BY r.fecha ORDER BY r.fecha, r.hora ASC";
         List<Resultado> resultados = null;
         PreparedStatement ps = null;
 
@@ -305,6 +305,30 @@ public class ResultadoDAOImpl implements ResultadoDAO {
             } catch (SQLException ex) {
                 ex.printStackTrace(System.out);
             }
+        }
+        return resultados;
+    }
+
+    @Override
+    public List<Resultado> getResultadosRealizadosPorDia(String codLaboratorista) {
+        String sql = "SELECT r.fecha, COUNT(r.codigoExamen) cantRealizados FROM resultado r "
+                + "WHERE r.codigoLaboratorista = ?  GROUP BY r.fecha ORDER BY cantRealizados DESC LIMIT 10";
+        List<Resultado> resultados = null;
+
+        try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, codLaboratorista);
+            try ( ResultSet rs = ps.executeQuery()) {
+                resultados = new ArrayList();
+
+                while (rs.next()) {
+                    ResultadoDTO resultado = new ResultadoDTO();
+                    resultado.setFecha(LocalDate.parse(rs.getString("fecha")));
+                    resultado.setCantRealizados(rs.getInt("cantRealizados"));
+                    resultados.add(resultado);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
         }
         return resultados;
     }

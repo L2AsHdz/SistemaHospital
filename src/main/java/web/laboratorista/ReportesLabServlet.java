@@ -60,6 +60,11 @@ public class ReportesLabServlet extends HttpServlet {
                 request.setAttribute("buscado", true);
                 request.getRequestDispatcher("laboratorista/cantExamenesPorDia.jsp").forward(request, response);
             }
+            case "reporte3" -> {
+                resultados = resultadoDAO.getResultadosRealizadosPorDia(lab.getCodigo());
+                request.setAttribute("cantResultados", resultados);
+                request.getRequestDispatcher("laboratorista/fechasConMasExamenes.jsp").forward(request, response);
+            }
         }
     }
 
