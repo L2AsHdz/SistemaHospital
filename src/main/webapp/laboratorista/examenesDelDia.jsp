@@ -79,7 +79,7 @@
                                 <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
                                         <form action="${pageContext.request.contextPath}/CulminarExamenServlet?accion=finalizar"
-                                              id="form-resultado"  method="POST">
+                                              id="form-resultado"  method="POST" enctype="multipart/form-data">
                                             <div class="modal-body">
                                                 <button type="button" form="form-informe" class="close" data-dismiss="modal" onclick="$('#limpiar').click()">&times;</button>
                                                 <h5>Agregar resultado:</h5>

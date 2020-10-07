@@ -25,7 +25,9 @@ public class PDF extends HttpServlet {
         response.setContentType("application/pdf");
 
         byte[] orden = examenDAO.getOrdenByCodExamen(codigoExamen);
-        response.getOutputStream().write(orden);
+        if (orden != null) {
+            response.getOutputStream().write(orden);
+        }
     }
 
 }

@@ -57,6 +57,15 @@ public class Resultado implements Serializable {
             }
         }
     }
+    
+    public Resultado(String codigoExamen, String codigoLaboratorista, InputStream resultado, 
+            String fecha, String hora){
+        this.codigoExamen = Integer.parseInt(codigoExamen);
+        this.codigoLaboratorista = codigoLaboratorista;
+        this.fecha=LocalDate.parse(fecha);
+        this.hora=LocalTime.parse(hora);
+        this.resultado=resultado;
+    }
 
     public int getCodigoExamen() {
         return codigoExamen;

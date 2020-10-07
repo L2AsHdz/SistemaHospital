@@ -227,4 +227,17 @@ public class ExamenDAOImpl implements ExamenDAO {
         return datosPDF;
     }
 
+    @Override
+    public void setEstado(String codExamen, int estado) {
+        String sql = "UPDATE examen SET estado = ? WHERE codigo = ?";
+
+        try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setInt(1, estado);
+            ps.setInt(2, Integer.parseInt(codExamen));
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        }
+    }
+
 }
