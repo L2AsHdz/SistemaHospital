@@ -109,7 +109,7 @@ public class PacienteDAOImpl implements PacienteDAO {
 
     @Override
     public void update(Paciente paciente) {
-        String sql = "UPDATE medico SET nombre = ?, birth = ?, cui = ?, telefono = ?,"
+        String sql = "UPDATE paciente SET nombre = ?, birth = ?, cui = ?, telefono = ?,"
                 + "correo = ?, peso = ? WHERE codigo = ?";
         try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, paciente.getNombre());
@@ -284,6 +284,21 @@ public class PacienteDAOImpl implements PacienteDAO {
             }
         }
         return pacientes;
+    }
+
+    @Override
+    public String getCodigo() {
+        String sql = "SELECT codigo FROM paciente ORDER BY CAST(codigo AS INT) DESC LIMIT 1";
+        Integer codigo = -1;
+        try ( PreparedStatement ps = conexion.prepareStatement(sql);  ResultSet rs = ps.executeQuery()) {
+
+            if (rs.next()) {
+                codigo = rs.getInt("codigo") + 1;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        }
+        return codigo.toString();
     }
 
 }

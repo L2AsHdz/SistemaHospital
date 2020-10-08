@@ -25,17 +25,7 @@
 
                 <div class="row">
                     <div class="col-xl-6">
-                        <c:if test="${error  != null}" >
-                            <div class="alert alert-danger alert-dismissible mt-2">
-                                <button type="button" class="close" data-dismiss="alert">×</button>
-                                ${error}
-                            </div>
-                        </c:if>
                         <h3 class="mt-2">Registro de pacientes</h3>
-                        <div class="form-group">
-                            <label for="codigo">*Codigo</label>
-                            <input type="text" class="form-control" name="codigo" value="${paciente.codigo}" autofocus>
-                        </div>
                         <div class="form-group">
                             <label for="nombre">*Nombre</label>
                             <input type="text" class="form-control" name="nombre" value="${paciente.nombre}">

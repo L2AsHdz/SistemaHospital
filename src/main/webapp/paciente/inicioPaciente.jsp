@@ -18,6 +18,8 @@
     <body>
         <!-- Barra de navegacion -->
         <jsp:include page="/WEB-INF/paciente/navBarPaciente.jsp"/>
+        
+        <h4>Su codigo de paciente es: ${user.codigo}</h4>
 
         <!--JS--> 
         <jsp:include page="/WEB-INF/extras/extrasJS.jsp"/>

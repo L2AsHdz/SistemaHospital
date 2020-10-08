@@ -1,6 +1,6 @@
 package web.paciente;
 
-import datos.CRUD;
+import datos.paciente.PacienteDAO;
 import datos.paciente.PacienteDAOImpl;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -20,12 +20,12 @@ import model.usuario.Paciente;
 @WebServlet("/PacienteServlet")
 public class PacienteServlet extends HttpServlet {
 
-    private final CRUD<Paciente> pacienteDAO = PacienteDAOImpl.getPacienteDAO();
+    private final PacienteDAO pacienteDAO = PacienteDAOImpl.getPacienteDAO();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String accion = request.getParameter("accion");
-        String codigo = request.getParameter("codigo");
+        String codigo = pacienteDAO.getCodigo();
         String nombre = request.getParameter("nombre");
         String sexo = request.getParameter("sexo");
         String birth = request.getParameter("birth");
@@ -40,17 +40,11 @@ public class PacienteServlet extends HttpServlet {
 
         switch (accion) {
             case "agregar" -> {
-                if (!pacienteDAO.exists(codigo)) {
-                    HttpSession sesion = request.getSession();
-                    pacienteDAO.create(paciente);
-                    sesion.setAttribute("user", paciente);
-                    sesion.setAttribute("tipoUser", 4);
-                    response.sendRedirect("paciente/inicioPaciente.jsp");
-                } else {
-                    request.setAttribute("paciente", paciente);
-                    request.setAttribute("error", "Ya existe un paciente con ese codigo");
-                    request.getRequestDispatcher("paciente/registro.jsp").forward(request, response);
-                }
+                HttpSession sesion = request.getSession();
+                pacienteDAO.create(paciente);
+                sesion.setAttribute("user", paciente);
+                sesion.setAttribute("tipoUser", 4);
+                response.sendRedirect("paciente/inicioPaciente.jsp");
             }
             case "perfil" -> {
                 paciente = (Paciente) request.getSession().getAttribute("user");
@@ -60,7 +54,7 @@ public class PacienteServlet extends HttpServlet {
                 paciente.setCorreo(correo);
                 paciente.setTelefono(telefono);
                 paciente.setPeso(Float.parseFloat(peso));
-                
+
                 pacienteDAO.update(paciente);
                 request.getSession().setAttribute("user", paciente);
                 response.sendRedirect("paciente/inicioPaciente.jsp");
