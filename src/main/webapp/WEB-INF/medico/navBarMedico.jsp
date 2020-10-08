@@ -32,7 +32,7 @@
                         ${user.nombre}
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Ver Perfil</a>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modalPerfil">Perfil</a>
                         <a class="dropdown-item" href="${pageContext.request.contextPath}/MedicoServlet?accion=logout">Cerrar sesion</a>
                     </div>
                 </li>
@@ -41,3 +41,43 @@
     </nav>
 </div>
 <div class="py-4 mb-2"></div>
+
+<div class="modal" id="modalPerfil">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modificar perfil</h5>
+                <button class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+
+            <form action="${pageContext.request.contextPath}/MedicoServlet?accion=perfil" method="POST">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="nombre">*Nombre</label>
+                        <input type="text" class="form-control" name="nombre" value="${user.nombre}">
+
+                    </div>
+                    <div class="form-group">
+                        <label for="cui">*CUI</label>
+                        <input type="text" class="form-control" name="cui" value="${user.CUI}">
+                    </div>
+                    <div class="form-group">
+                        <label for="telefono">*Telefono</label>
+                        <input type="text" class="form-control" name="telefono" value="${user.telefono}">
+                    </div>
+                    <div class="form-group">
+                        <label for="correo">*Correo</label>
+                        <input type="text" class="form-control" name="correo" value="${user.correo}">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Actualizar datos</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

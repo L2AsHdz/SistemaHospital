@@ -65,6 +65,18 @@ public class MedicoServlet extends HttpServlet {
                 redirect(request, response);
                 //mostrar mensaje de exito
             }
+            case "perfil" -> {
+                medico = (Medico) request.getSession().getAttribute("user");
+                medico.setNombre(nombre);
+                medico.setCUI(cui);
+                medico.setCorreo(correo);
+                medico.setTelefono(telefono);
+                
+                medicoDAO.update(medico);
+                request.getSession().setAttribute("user", medico);
+                response.sendRedirect("medico/inicioMedico.jsp");
+                
+            }
         }
     }
 
