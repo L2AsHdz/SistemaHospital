@@ -177,7 +177,7 @@ public class ConsultaDAOImpl implements ConsultaDAO {
         String sql = "SELECT c.codigo, m.nombre medico, e.nombre especialidad, c.fecha, "
                 + "c.hora, c.total FROM consulta c INNER JOIN medico m ON c.codigoMedico=m.codigo "
                 + "INNER JOIN especialidad e ON c.idEspecialidad=e.id WHERE c.codigoPaciente = ? AND "
-                + "c.estado = 0 ORDER BY c.fecha";
+                + "c.estado = 0 ORDER BY c.fecha, c.hora";
         List<Consulta> consultas = null;
 
         try ( PreparedStatement ps = conexion.prepareStatement(sql)) {

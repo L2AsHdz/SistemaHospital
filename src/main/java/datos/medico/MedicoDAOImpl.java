@@ -119,7 +119,7 @@ public class MedicoDAOImpl implements MedicoDAO {
     @Override
     public void update(Medico medico) {
         String sql = "UPDATE medico SET nombre = ?, noColegiado = ?, cui = ?, telefono = ?,"
-                + "correo = ?, horaInicio = ?, horaFinal = ?, fechaInicioLabores = ?, password = ? WHERE codigo = ?";
+                + "correo = ?, horaInicio = ?, horaFinal = ?, fechaInicioLabores = ? WHERE codigo = ?";
         try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, medico.getNombre());
             ps.setString(2, medico.getNoColegiado());
@@ -129,8 +129,7 @@ public class MedicoDAOImpl implements MedicoDAO {
             ps.setString(6, medico.getHoraInicio().toString());
             ps.setString(7, medico.getHoraFinal().toString());
             ps.setString(8, medico.getFechaInicioLabores().toString());
-            ps.setString(9, medico.getEncryptPassword());
-            ps.setString(10, medico.getCodigo());
+            ps.setString(9, medico.getCodigo());
             ps.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);

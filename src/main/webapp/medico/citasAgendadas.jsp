@@ -43,7 +43,7 @@
             </div>
 
             <div class="row pt-4">
-                <div class="col-xl-10">
+                <div class="col-xl-7">
 
                     <!-- Citas agendadas en un intervalo de tiempo -->
                     <c:choose>

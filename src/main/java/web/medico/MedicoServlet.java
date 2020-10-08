@@ -83,6 +83,7 @@ public class MedicoServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String accion = request.getParameter("accion");
+        
         if (accion != null && accion.equals("editar")) {
             String codigo = request.getParameter("codigo");
             List<Especialidad> especialidades = especialidadDAO.getListado();
@@ -90,13 +91,16 @@ public class MedicoServlet extends HttpServlet {
             request.setAttribute("especialidades", especialidades);
             request.setAttribute("medico", medico);
             request.getRequestDispatcher("admin/formMedico.jsp").forward(request, response);
+        
         } else if (accion != null && accion.equals("add")) {
             List<Especialidad> especialidades = especialidadDAO.getListado();
             request.setAttribute("especialidades", especialidades);
             request.getRequestDispatcher("admin/formMedico.jsp").forward(request, response);
+        
         } else if (accion != null && accion.equals("logout")) {
             request.getSession().invalidate();
             response.sendRedirect("index.jsp");
+        
         } else {
             redirect(request, response);
         }

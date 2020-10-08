@@ -152,7 +152,7 @@ public class PacienteDAOImpl implements PacienteDAO {
         String sql = "SELECT p.*, COUNT(i.codigoConsulta) informes FROM paciente p INNER JOIN consulta c "
                 + "ON p.codigo=c.codigoPaciente INNER JOIN informe i ON c.codigo=i.codigoConsulta ";
         String interavalo = "WHERE i.fecha BETWEEN ? AND ? ";
-        String order = "GROUP BY c.codigoPaciente ORDER BY c.fecha, c.hora";
+        String order = "GROUP BY c.codigoPaciente ORDER BY informes DESC";
         List<Paciente> pacientes = null;
         PreparedStatement ps = null;
 

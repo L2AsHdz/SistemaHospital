@@ -49,6 +49,16 @@
                     </form>
                 </div>
             </div>
+            <c:if test="${success}" >
+                <div class="row">
+                    <div class="col-xl-6">
+                        <div class="alert alert-success alert-dismissible mt-2">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            La consulta se agendo correctamente
+                        </div>
+                    </div>
+                </div>
+            </c:if>
         </div>
 
         <!-- Listado de medicos -->

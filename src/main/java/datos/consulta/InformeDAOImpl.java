@@ -88,7 +88,7 @@ public class InformeDAOImpl implements InformeDAO {
         String sql = "SELECT c.codigo, p.nombre paciente, m.nombre medico, e.nombre especialidad, c.fecha, c.hora, i.informe, "
                 + "c.total FROM informe i INNER JOIN consulta c ON i.codigoConsulta=c.codigo "
                 + "INNER JOIN paciente p ON c.codigoPaciente=p.codigo INNER JOIN medico m ON c.codigoMedico=m.codigo INNER JOIN especialidad e ON "
-                + "c.idEspecialidad=e.id WHERE c.codigoPaciente = ? ORDER BY c.fecha";
+                + "c.idEspecialidad=e.id WHERE c.codigoPaciente = ? ORDER BY c.fecha, c.hora";
         List<Informe> informes = null;
 
         try ( PreparedStatement ps = conexion.prepareStatement(sql)) {

@@ -110,7 +110,7 @@ public class LaboratoristaDAOImpl implements LaboratoristaDAO {
     @Override
     public void update(Laboratorista laboratorista) {
         String sql = "UPDATE laboratorista SET nombre = ?, registroSalud = ?, cui = ?, telefono = ?,"
-                + "correo = ?, codigoTipoExamen = ?, fechaInicioLabores = ?, password = ? WHERE codigo = ?";
+                + "correo = ?, codigoTipoExamen = ?, fechaInicioLabores = ? WHERE codigo = ?";
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, laboratorista.getNombre());
             ps.setString(2, laboratorista.getRegistroSalud());
@@ -119,8 +119,7 @@ public class LaboratoristaDAOImpl implements LaboratoristaDAO {
             ps.setString(5, laboratorista.getCorreo());
             ps.setString(6, laboratorista.getCodigoTipoExamen());
             ps.setString(7, laboratorista.getFechaInicioLabores().toString());
-            ps.setString(8, laboratorista.getEncryptPassword());
-            ps.setString(9, laboratorista.getCodigo());
+            ps.setString(8, laboratorista.getCodigo());
             ps.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);

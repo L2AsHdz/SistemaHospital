@@ -80,7 +80,8 @@ public class ExamenServlet extends HttpServlet {
                 Examen examen = new Examen(codPaciente, codigoExamen, codigoMedico, orden, fecha, hora, 0, costo);
                 
                 examenDAO.create(examen);
-                response.sendRedirect("paciente/inicioPaciente.jsp");
+                request.setAttribute("success", true);
+                request.getRequestDispatcher("paciente/inicioPaciente.jsp").forward(request, response);
             }
         }
     }

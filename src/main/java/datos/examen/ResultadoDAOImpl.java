@@ -92,7 +92,7 @@ public class ResultadoDAOImpl implements ResultadoDAO {
                 + "ON r.codigoExamen=e.codigo LEFT JOIN medico m ON e.codigoMedico=m.codigo "
                 + "INNER JOIN paciente p ON e.codigoPaciente=p.codigo INNER JOIN laboratorista l ON r.codigoLaboratorista=l.codigo INNER JOIN "
                 + "tipoExamen te ON e.codigoTipoExamen=te.codigo WHERE e.codigoPaciente = ? "
-                + "ORDER BY e.fecha";
+                + "ORDER BY e.fecha, e.hora";
         List<Resultado> resultados = null;
 
         try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
