@@ -251,7 +251,7 @@ public class ConsultaDAOImpl implements ConsultaDAO {
         String sql = "SELECT c.codigo, p.nombre paciente, e.nombre especialidad, c.fecha, c.hora FROM consulta c "
                 + "INNER JOIN paciente p ON c.codigoPaciente=p.codigo INNER JOIN especialidad e "
                 + "ON c.idEspecialidad=e.id WHERE c.codigoMedico = ? AND c.estado = 0 ";
-        String interavalo = "AND (c.fecha BETWEEN ? AND ?) ";
+        String intervalo = "AND (c.fecha BETWEEN ? AND ?) ";
         String order = "ORDER BY c.fecha, c.hora";
         List<Consulta> consultas = null;
         PreparedStatement ps = null;
@@ -259,7 +259,7 @@ public class ConsultaDAOImpl implements ConsultaDAO {
         try {
             switch (opcion) {
                 case 1 -> {
-                    ps = conexion.prepareStatement(sql + interavalo + order);
+                    ps = conexion.prepareStatement(sql + intervalo + order);
                     ps.setString(1, codMedico);
                     ps.setString(2, fechaInicial);
                     ps.setString(3, fechaFinal);
