@@ -3,6 +3,7 @@ package web.paciente;
 import datos.CRUD;
 import datos.paciente.PacienteDAOImpl;
 import java.io.IOException;
+import java.time.LocalDate;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -51,8 +52,18 @@ public class PacienteServlet extends HttpServlet {
                     request.getRequestDispatcher("paciente/registro.jsp").forward(request, response);
                 }
             }
-            case "editar" -> {
-
+            case "perfil" -> {
+                paciente = (Paciente) request.getSession().getAttribute("user");
+                paciente.setNombre(nombre);
+                paciente.setCUI(cui);
+                paciente.setBirth(LocalDate.parse(birth));
+                paciente.setCorreo(correo);
+                paciente.setTelefono(telefono);
+                paciente.setPeso(Float.parseFloat(peso));
+                
+                pacienteDAO.update(paciente);
+                request.getSession().setAttribute("user", paciente);
+                response.sendRedirect("paciente/inicioPaciente.jsp");
             }
         }
     }

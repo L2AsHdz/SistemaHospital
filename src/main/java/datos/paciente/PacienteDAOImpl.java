@@ -15,13 +15,13 @@ import model.usuario.Paciente;
  * @author asael
  */
 public class PacienteDAOImpl implements PacienteDAO {
-    
+
     private static PacienteDAOImpl pacienteDAO = null;
     private Connection conexion = Conexion.getConexion();
-    
+
     private PacienteDAOImpl() {
     }
-    
+
     public static PacienteDAOImpl getPacienteDAO() {
         if (pacienteDAO == null) {
             pacienteDAO = new PacienteDAOImpl();
@@ -34,17 +34,22 @@ public class PacienteDAOImpl implements PacienteDAO {
         String sql = "SELECT * FROM paciente";
         List<Paciente> pacientes = null;
 
-        try ( PreparedStatement declaracion = conexion.prepareStatement(sql);  
-                ResultSet rs = declaracion.executeQuery()) {
+        try ( PreparedStatement declaracion = conexion.prepareStatement(sql);  ResultSet rs = declaracion.executeQuery()) {
             pacientes = new ArrayList();
 
             while (rs.next()) {
                 Paciente paciente = new Paciente();
                 paciente.setCodigo(rs.getString("codigo"));
                 paciente.setNombre(rs.getString("nombre"));
+                paciente.setSexo(rs.getString("sexo"));
+                paciente.setBirth(LocalDate.parse(rs.getString("birth")));
                 paciente.setCUI(rs.getString("cui"));
+                paciente.setTelefono(rs.getString("telefono"));
+                paciente.setPeso(rs.getFloat("peso"));
+                paciente.setTipoSangre(rs.getString("tipoSangre"));
+                paciente.setCorreo(rs.getString("correo"));
                 paciente.setPassword(rs.getString("password"));
-                //faltan agregar los demas datos
+
                 pacientes.add(paciente);
             }
         } catch (SQLException e) {
@@ -76,12 +81,12 @@ public class PacienteDAOImpl implements PacienteDAO {
 
     @Override
     public Paciente getObject(String codigo) {
-         String sql = "SELECT * FROM paciente WHERE codigo = ?";
+        String sql = "SELECT * FROM paciente WHERE codigo = ?";
 
         Paciente paciente = null;
-        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+        try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, codigo);
-            try (ResultSet rs = ps.executeQuery()) {
+            try ( ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     paciente = new Paciente();
                     paciente.setCodigo(codigo);
@@ -103,8 +108,21 @@ public class PacienteDAOImpl implements PacienteDAO {
     }
 
     @Override
-    public void update(Paciente t) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void update(Paciente paciente) {
+        String sql = "UPDATE medico SET nombre = ?, birth = ?, cui = ?, telefono = ?,"
+                + "correo = ?, peso = ? WHERE codigo = ?";
+        try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, paciente.getNombre());
+            ps.setString(2, paciente.getBirth().toString());
+            ps.setString(3, paciente.getCUI());
+            ps.setString(4, paciente.getTelefono());
+            ps.setString(5, paciente.getCorreo());
+            ps.setFloat(6, paciente.getPeso());
+            ps.setString(7, paciente.getCodigo());
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        }
     }
 
     @Override
@@ -267,5 +285,5 @@ public class PacienteDAOImpl implements PacienteDAO {
         }
         return pacientes;
     }
-    
+
 }
