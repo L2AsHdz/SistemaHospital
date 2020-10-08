@@ -30,8 +30,8 @@
         </div>
 
         <form action="${pageContext.request.contextPath}/LecturaArchivo" method="POST" id="form-archivo" enctype="multipart/form-data">
-            <div class="containter-fluid pl-5">
-                <div class="row">
+            <div class="containter-fluid">
+                <div class="row pl-5">
                     <div class="col-xl-6">
                         <div class="my-2">
                             <label for="archivoEntrada" class="font-weight-bold">Seleccione el archivo de entrada:</label>
@@ -39,7 +39,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row pl-5">
                     <div class="col-xl-6">
                         <div class="mt-4 mb-2">
                             <label for="archivos" class="font-weight-bold">Seleccione los informes y resultados:</label>
@@ -47,7 +47,7 @@
                         </div>                        
                     </div>
                 </div>
-                <div class="row">
+                <div class="row pl-5">
                     <div class="col-xl-4"></div>
                     <div class="col-xl-2">
                         <button type="submit" class="btn btn-primary btn-block mt-2">Continuar</button>
