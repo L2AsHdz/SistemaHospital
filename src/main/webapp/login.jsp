@@ -53,6 +53,27 @@
             </div>
         </div>
 
+        <c:if test="${!empty(errores)}">
+            <div class="modal" id="modal-errores">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4>Ocurrieron los siguientes errores:</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <c:forEach var="error" items="${errores}">
+                                ${error}<br>
+                            </c:forEach>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-info" data-dismiss="modal">Aceptar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </c:if>
+
 
         <!--JS--> 
         <jsp:include page="/WEB-INF/extras/extrasJS.jsp"/>
@@ -60,5 +81,11 @@
         <!-- JQuery Validate -->
         <script src="${pageContext.request.contextPath}/js/jquery.validate.min.js"></script>
         <script src="${pageContext.request.contextPath}/js/validaciones/validarLogin.js"></script>
+
+        <script>
+                                $(document).ready(function () {
+                                    $('#modal-errores').modal('toggle');
+                                });
+        </script>
     </body>
 </html>

@@ -2,6 +2,8 @@ package web.lecturaArchivo;
 
 import datos.CRUD;
 import datos.admin.AdminDAOImpl;
+import java.util.ArrayList;
+import java.util.List;
 import model.usuario.Admin;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -18,8 +20,9 @@ public class LecturaAdmin {
 
     private static final CRUD<Admin> adminDAO = AdminDAOImpl.getAdminDAO();
 
-    public static void leerAdmin(Document doc) throws FileInputException {
+    public static List<String> leerAdmin(Document doc) {
         //nodos admin
+        List<String> errores = new ArrayList<>();
         NodeList admins = doc.getElementsByTagName("admin");
 
         for (int i = 0; i < admins.getLength(); i++) {
@@ -32,10 +35,15 @@ public class LecturaAdmin {
                 String nombre = getTextNode(admin, "NOMBRE");
                 String password = getTextNode(admin, "PASSWORD");
 
-                validarAdmin(codigo, nombre, cui, password, i);
-                adminDAO.create(new Admin(codigo, nombre, cui, password));
+                try {
+                    validarAdmin(codigo, nombre, cui, password, i);
+                    adminDAO.create(new Admin(codigo, nombre, cui, password));
+                } catch (FileInputException e) {
+                    errores.add(e.getMessage());
+                }
             }
         }
+        return errores;
     }
 
     private static String getTextNode(Element element, String tagName) {

@@ -9,6 +9,7 @@ import model.examen.Examen;
  * @author asael
  */
 public interface ExamenDAO extends CRUD<Examen> {
+    void create2(Examen examen);
     int getLastCodigo();
     void setNextCodigo(int codigo);
     void setEstado(String codExamen, int estado);

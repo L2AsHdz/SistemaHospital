@@ -2,6 +2,8 @@ package web.lecturaArchivo;
 
 import datos.CRUD;
 import datos.paciente.PacienteDAOImpl;
+import java.util.ArrayList;
+import java.util.List;
 import model.usuario.Paciente;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -18,7 +20,8 @@ public class LecturaPaciente {
 
     private static final CRUD<Paciente> pacienteDAO = PacienteDAOImpl.getPacienteDAO();
 
-    public static void leerPaciente(Document doc) throws FileInputException {
+    public static List<String> leerPaciente(Document doc) {
+        List<String> errores = new ArrayList<>();
         NodeList pacientes = doc.getElementsByTagName("paciente");
 
         for (int i = 0; i < pacientes.getLength(); i++) {
@@ -38,10 +41,15 @@ public class LecturaPaciente {
                 String correo = getTextNode(paciente, "CORREO");
                 String password = getTextNode(paciente, "PASSWORD");
 
-                validarPaciente(codigo, nombre, sexo, birth, cui, telefono, peso, sangre, correo, password, i);
-                pacienteDAO.create(new Paciente(sexo, birth, telefono, peso, sangre, correo, codigo, nombre, cui, password));
+                try {
+                    validarPaciente(codigo, nombre, sexo, birth, cui, telefono, peso, sangre, correo, password, i);
+                    pacienteDAO.create(new Paciente(sexo, birth, telefono, peso, sangre, correo, codigo, nombre, cui, password));
+                } catch (FileInputException e) {
+                    errores.add(e.getMessage());
+                }
             }
         }
+        return errores;
     }
 
     private static String getTextNode(Element element, String tagName) {

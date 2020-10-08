@@ -6,6 +6,8 @@ import datos.examen.ExamenDAOImpl;
 import datos.examen.ResultadoDAOImpl;
 import datos.examen.TipoExamenDAO;
 import datos.examen.TipoExamenDAOImpl;
+import java.util.ArrayList;
+import java.util.List;
 import model.examen.Examen;
 import model.examen.Resultado;
 import org.w3c.dom.Document;
@@ -25,7 +27,8 @@ public class LecturaResultado {
     private static final ExamenDAO examenDAO = ExamenDAOImpl.getExamenDAO();
     private static final CRUD<Resultado> resultadoDAO = ResultadoDAOImpl.getResultadoDAO();
 
-    public static void leerResultado(Document doc) throws FileInputException {
+    public static List<String> leerResultado(Document doc) {
+        List<String> errores = new ArrayList<>();
         NodeList resultados = doc.getElementsByTagName("resultado");
 
         for (int i = 0; i < resultados.getLength(); i++) {
@@ -44,15 +47,21 @@ public class LecturaResultado {
                 String fecha = getTextNode(resultadoE, "FECHA");
                 String hora = getTextNode(resultadoE, "HORA");
 
-                validarResultado(codigo, paciente, examen, medico, laboratorista,
-                        orden, resultado, fecha, hora, i);
-                examenDAO.create(new Examen(codigo, paciente, examen, medico, orden, 
-                        fecha, hora, 1, tipoExamenDAO.getCosto(examen)));
-                resultadoDAO.create(new Resultado(codigo, laboratorista, resultado, fecha, hora));
+                try {
+                    validarResultado(codigo, paciente, examen, medico, laboratorista,
+                            orden, resultado, fecha, hora, i);
+                    examenDAO.create2(new Examen(codigo, paciente, examen, medico, orden,
+                            fecha, hora, 1, tipoExamenDAO.getCosto(examen)));
+                    resultadoDAO.create(new Resultado(codigo, laboratorista, resultado, fecha, hora));
+                } catch (FileInputException e) {
+                    errores.add(e.getMessage());
+                }
             }
         }
-        
+
         examenDAO.setNextCodigo(examenDAO.getLastCodigo());
+        
+        return errores;
     }
 
     private static String getTextNode(Element element, String tagName) {

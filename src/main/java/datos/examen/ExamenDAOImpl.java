@@ -55,6 +55,26 @@ public class ExamenDAOImpl implements ExamenDAO {
             ex.printStackTrace(System.out);
         }
     }
+    
+    @Override
+    public void create2(Examen examen) {
+        String sql = "INSERT INTO examen VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setInt(1, examen.getCodigo());
+            ps.setString(2, examen.getCodigoPaciente());
+            ps.setString(3, examen.getCodigoTipoExamen());
+            ps.setString(4, examen.getCodigoMedico());
+            ps.setBinaryStream(5, examen.getOrden());
+            ps.setString(6, examen.getFecha().toString());
+            ps.setString(7, examen.getHora().toString());
+            ps.setInt(8, examen.getEstado());
+            ps.setFloat(9, examen.getTotal());
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        }
+    }
 
     @Override
     public Examen getObject(String codigo) {

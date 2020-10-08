@@ -2,6 +2,8 @@ package web.lecturaArchivo;
 
 import datos.CRUD;
 import datos.especialidad.EspecialidadDAOImpl;
+import java.util.ArrayList;
+import java.util.List;
 import model.especialidad.Especialidad;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -18,7 +20,8 @@ public class LecturaEspecialidad {
 
     private static final CRUD<Especialidad> especialidadDAO = EspecialidadDAOImpl.getEspecialidadDAO();
 
-    public static void leerEspecialidad(Document doc) throws FileInputException {
+    public static List<String> leerEspecialidad(Document doc) {
+        List<String> errores = new ArrayList<>();
         NodeList costosConsulta = doc.getElementsByTagName("consulta");
 
         for (int i = 0; i < costosConsulta.getLength(); i++) {
@@ -30,11 +33,15 @@ public class LecturaEspecialidad {
                 String nombre = getTextNode(costoConsulta, "TIPO");
                 String costo = getTextNode(costoConsulta, "COSTO");
 
-                validarEspecialidad(nombre, costo, i);
-                especialidadDAO.create(new Especialidad(nombre, costo));
-
+                try {
+                    validarEspecialidad(nombre, costo, i);
+                    especialidadDAO.create(new Especialidad(nombre, costo));
+                } catch (FileInputException e) {
+                    errores.add(e.getMessage());
+                }
             }
         }
+        return errores;
     }
 
     private static String getTextNode(Element element, String tagName) {

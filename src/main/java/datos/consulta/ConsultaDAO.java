@@ -9,6 +9,7 @@ import model.consulta.Consulta;
  * @author asael
  */
 public interface ConsultaDAO extends CRUD<Consulta> {
+    void create2(Consulta consulta);
     int getLastCodigo();
     void setNextCodigo(int codigo);
     void setEstado(String codConsulta, int estado);

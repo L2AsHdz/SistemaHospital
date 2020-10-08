@@ -26,7 +26,8 @@ public class LecturaLaboratorista {
     private static final CRUD<Turno> turnoDAO = TurnoDAOImpl.getTurnoDAO();
     private static final TipoExamenDAO tipoExamenDAO = TipoExamenDAOImpl.getTipoExamenDAO();
 
-    public static void leerLaboratorista(Document doc) throws FileInputException {
+    public static List<String> leerLaboratorista(Document doc) {
+        List<String> errores = new ArrayList<>();
         NodeList laboratoristas = doc.getElementsByTagName("laboratorista");
         List<String> listDias = new ArrayList<>();
 
@@ -55,17 +56,22 @@ public class LecturaLaboratorista {
                     listDias.add(titulo.getTextContent());
                 }
 
-                validarLaboratorista(codigo, nombre, registro, cui, telefono, correo,
-                        fechaInicioLabores, tipoExamen, password, listDias, i);
-                laboratoristaDAO.create(new Laboratorista(registro, telefono,
-                        tipoExamenDAO.getCodigoByNombre(tipoExamen), correo,
-                        fechaInicioLabores, codigo, nombre, cui, password));
+                try {
+                    validarLaboratorista(codigo, nombre, registro, cui, telefono, correo,
+                            fechaInicioLabores, tipoExamen, password, listDias, i);
+                    laboratoristaDAO.create(new Laboratorista(registro, telefono,
+                            tipoExamenDAO.getCodigoByNombre(tipoExamen), correo,
+                            fechaInicioLabores, codigo, nombre, cui, password));
 
-                listDias.forEach(d -> {
-                    turnoDAO.create(new Turno(codigo, d));
-                });
+                    listDias.forEach(d -> {
+                        turnoDAO.create(new Turno(codigo, d));
+                    });
+                } catch (FileInputException e) {
+                    errores.add(e.getMessage());
+                }
             }
         }
+        return errores;
     }
 
     private static String getTextNode(Element element, String tagName) {

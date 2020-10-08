@@ -4,6 +4,8 @@ import datos.consulta.ConsultaDAO;
 import datos.consulta.ConsultaDAOImpl;
 import datos.especialidad.EspecialidadDAO;
 import datos.especialidad.EspecialidadDAOImpl;
+import java.util.ArrayList;
+import java.util.List;
 import model.consulta.Consulta;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -21,7 +23,8 @@ public class LecturaConsulta {
     private static final ConsultaDAO consultaDAO = ConsultaDAOImpl.getconsultaDAO();
     private static final EspecialidadDAO especialidadDAO = EspecialidadDAOImpl.getEspecialidadDAO();
 
-    public static void leerConsulta(Document doc) throws FileInputException {
+    public static List<String> leerConsulta(Document doc) {
+        List<String> errores = new ArrayList<>();
         NodeList consultas = doc.getElementsByTagName("cita");
 
         for (int i = 0; i < consultas.getLength(); i++) {
@@ -43,12 +46,14 @@ public class LecturaConsulta {
                     consultaDAO.create(new Consulta(codigo, medico, paciente, idEspecialidad,
                             fecha, hora, 0, especialidadDAO.getCosto(idEspecialidad)));
                 } catch (FileInputException e) {
-                    throw e;
+                    errores.add(e.getMessage());
                 }
             }
         }
         
         consultaDAO.setNextCodigo(consultaDAO.getLastCodigo());
+        
+        return errores;
     }
 
     private static String getTextNode(Element element, String tagName) {

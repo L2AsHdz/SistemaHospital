@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -19,9 +20,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
-import otros.FileInputException;
 import static web.lecturaArchivo.LecturaAdmin.leerAdmin;
 import static web.lecturaArchivo.LecturaPaciente.leerPaciente;
 import static web.lecturaArchivo.LecturaEspecialidad.leerEspecialidad;
@@ -46,19 +45,20 @@ public class LecturaArchivoServlet extends HttpServlet {
         String inputFileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
 
         List<Part> fileParts = (List<Part>) request.getParts();
-        
+
         fileParts.forEach(part -> {
             String name = Paths.get(part.getSubmittedFileName()).getFileName().toString();
             guardarArchivo(part, name);
         });
-        
+
         //Guardar archivo de entrada en servidor
         guardarArchivo(filePart, inputFileName);
 
         //Leer datos del archivo XML
-        leerArchivoXML(inputFileName);
+        List<String> errores = leerArchivoXML(inputFileName);
 
-        response.sendRedirect("login.jsp");
+        request.setAttribute("errores", errores);
+        request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 
     @Override
@@ -72,14 +72,18 @@ public class LecturaArchivoServlet extends HttpServlet {
 
         try ( InputStream input = filePart.getInputStream()) {
             Files.copy(input, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            System.out.println("Archivo "+nombreArchivo + " guardado");
+            System.out.println("Archivo " + nombreArchivo + " guardado");
         } catch (Exception e) {
             e.printStackTrace(System.out);
         }
     }
 
-    private void leerArchivoXML(String nombreArchivo) {
+    private List<String> leerArchivoXML(String nombreArchivo) {
+
+        //Errores en la lectura del archivo
+        List<String> errores = new ArrayList<>();
         try {
+
             //DocumentBuilder
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -89,67 +93,35 @@ public class LecturaArchivoServlet extends HttpServlet {
             Document doc = builder.parse(xml);
 
             //Leer etiqueta admin
-            try {
-                leerAdmin(doc);
-            } catch (FileInputException e) {
-                //mostrar error en pagina web
-            }
+            errores.addAll(leerAdmin(doc));
 
             //Leer etiqueta paciente
-            try {
-                leerPaciente(doc);
-            } catch (FileInputException ex) {
-            }
+            errores.addAll(leerPaciente(doc));
 
             //Leer etiqueta consulta (especialidad)
-            try {
-                leerEspecialidad(doc);
-            } catch (FileInputException ex) {
-            }
+            errores.addAll(leerEspecialidad(doc));
 
             //Leer etiqueta doctor (medico)
-            try {
-                leerMedico(doc);
-            } catch (FileInputException ex) {
-            }
+            errores.addAll(leerMedico(doc));
 
             //Leer etiqueta examen (Tipo Examen)
-            try {
-                leerTipoExamen(doc);
-            } catch (FileInputException ex) {
-            }
+            errores.addAll(leerTipoExamen(doc));
 
             //Leer etiqueta laboratorista
-            try {
-                leerLaboratorista(doc);
-            } catch (FileInputException ex) {
-            }
+            errores.addAll(leerLaboratorista(doc));
 
             //Leer etiqueta resultado (Examen y Resultado)
-            try {
-                leerResultado(doc);
-            } catch (FileInputException ex) {
-            }
+            errores.addAll(leerResultado(doc));
 
             //Leer etiqueta cita (consulta)
-            try {
-                leerConsulta(doc);
-            } catch (FileInputException ex) {
-            }
+            errores.addAll(leerConsulta(doc));
 
             //Leer etiqueta reporte (informe)
-            try {
-                leerInforme(doc);
-            } catch (FileInputException ex) {
-            }
+            errores.addAll(leerInforme(doc));
 
         } catch (IOException | ParserConfigurationException | DOMException | SAXException ex) {
             ex.printStackTrace(System.out);
         }
+        return errores;
     }
-
-    private String getTextNode(Element element, String tagName) {
-        return element.getElementsByTagName(tagName).item(0).getTextContent();
-    }
-
 }

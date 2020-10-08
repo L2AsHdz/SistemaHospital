@@ -2,6 +2,8 @@ package web.lecturaArchivo;
 
 import datos.CRUD;
 import datos.examen.TipoExamenDAOImpl;
+import java.util.ArrayList;
+import java.util.List;
 import model.examen.TipoExamen;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -18,7 +20,8 @@ public class LecturaTipoExamen {
 
     private static final CRUD<TipoExamen> tipoExamenDAO = TipoExamenDAOImpl.getTipoExamenDAO();
 
-    public static void leerTipoExamen(Document doc) throws FileInputException {
+    public static List<String> leerTipoExamen(Document doc) {
+        List<String> errores = new ArrayList<>();
         NodeList tiposExamenes = doc.getElementsByTagName("examen");
 
         for (int i = 0; i < tiposExamenes.getLength(); i++) {
@@ -34,10 +37,15 @@ public class LecturaTipoExamen {
                 String costo = getTextNode(tipoExamen, "COSTO");
                 String informe = getTextNode(tipoExamen, "INFORME");
 
-                validarTipoExamen(codigo, nombre, orden, descripcion, costo, informe, i);
-                tipoExamenDAO.create(new TipoExamen(codigo, nombre, orden, descripcion, costo, informe));
+                try {
+                    validarTipoExamen(codigo, nombre, orden, descripcion, costo, informe, i);
+                    tipoExamenDAO.create(new TipoExamen(codigo, nombre, orden, descripcion, costo, informe));
+                } catch (FileInputException e) {
+                    errores.add(e.getMessage());
+                }
             }
         }
+        return errores;
     }
 
     private static String getTextNode(Element element, String tagName) {

@@ -53,6 +53,25 @@ public class ConsultaDAOImpl implements ConsultaDAO {
             ex.printStackTrace(System.out);
         }
     }
+    
+    @Override
+    public void create2(Consulta consulta) {
+        String sql = "INSERT INTO consulta  VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setInt(1, consulta.getCodigo());
+            ps.setString(2, consulta.getCodigoPaciente());
+            ps.setString(3, consulta.getCodigoMedico());
+            ps.setInt(4, consulta.getIdEspecialidad());
+            ps.setString(5, consulta.getFecha().toString());
+            ps.setString(6, consulta.getHora().toString());
+            ps.setInt(7, consulta.getEstado());
+            ps.setFloat(8, consulta.getTotal());
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        }
+    }
 
     @Override
     public Consulta getObject(String codigo) {

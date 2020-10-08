@@ -26,7 +26,8 @@ public class LecturaMedico {
     private static final EspecialidadDAO especialidadDAO = EspecialidadDAOImpl.getEspecialidadDAO();
     private static final CRUD<AsignacionEspecialidad> asignacionDAO = AsignacionEspecialidadDAOImpl.getAsignacionEsDAO();
 
-    public static void leerMedico(Document doc) throws FileInputException {
+    public static List<String> leerMedico(Document doc) {
+        List<String> errores = new ArrayList<>();
         NodeList medicos = doc.getElementsByTagName("doctor");
         List<String> listTitulos = new ArrayList<>();
 
@@ -58,16 +59,21 @@ public class LecturaMedico {
                 String horaInicio = getTextNode(horario, "INICIO");
                 String horaFinal = getTextNode(horario, "FIN");
 
-                validarMedico(codigo, nombre, colegiado, cui, telefono, correo,
-                        horaInicio, horaFinal, fechaInicioLabores, password, listTitulos, i);
-                medicoDAO.create(new Medico(colegiado, telefono, correo, horaInicio,
-                        horaFinal, fechaInicioLabores, codigo, nombre, cui, password));
+                try {
+                    validarMedico(codigo, nombre, colegiado, cui, telefono, correo,
+                            horaInicio, horaFinal, fechaInicioLabores, password, listTitulos, i);
+                    medicoDAO.create(new Medico(colegiado, telefono, correo, horaInicio,
+                            horaFinal, fechaInicioLabores, codigo, nombre, cui, password));
 
-                listTitulos.forEach(t -> {
-                    asignacionDAO.create(new AsignacionEspecialidad(codigo, especialidadDAO.getIdEspecialidad(t)));
-                });
+                    listTitulos.forEach(t -> {
+                        asignacionDAO.create(new AsignacionEspecialidad(codigo, especialidadDAO.getIdEspecialidad(t)));
+                    });
+                } catch (FileInputException e) {
+                    errores.add(e.getMessage());
+                }
             }
         }
+        return errores;
     }
 
     private static String getTextNode(Element element, String tagName) {
