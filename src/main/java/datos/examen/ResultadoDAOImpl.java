@@ -1,6 +1,7 @@
 package datos.examen;
 
 import datos.Conexion;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -87,7 +88,7 @@ public class ResultadoDAOImpl implements ResultadoDAO {
 
     @Override
     public List<Resultado> getListResultadoByPaciente(String codPaciente) {
-        String sql = "SELECT e.codigo, p.nombre paciente, m.nombre medico, l.nombre laboratorista, te.nombre tipoExamen, "
+        String sql = "SELECT e.codigo, p.nombre paciente, m.nombre medico, l.nombre laboratorista, te.tipoInforme, te.nombre tipoExamen, "
                 + "e.fecha, e.hora, r.resultado, e.total FROM resultado r INNER JOIN examen e "
                 + "ON r.codigoExamen=e.codigo LEFT JOIN medico m ON e.codigoMedico=m.codigo "
                 + "INNER JOIN paciente p ON e.codigoPaciente=p.codigo INNER JOIN laboratorista l ON r.codigoLaboratorista=l.codigo INNER JOIN "
@@ -107,6 +108,7 @@ public class ResultadoDAOImpl implements ResultadoDAO {
                     resultado.setMedico(rs.getString("medico"));
                     resultado.setLaboratorista(rs.getString("laboratorista"));
                     resultado.setTipoExamen(rs.getString("tipoExamen"));
+                    resultado.setTipoInforme(rs.getString("tipoInforme"));
                     resultado.setFecha(LocalDate.parse(rs.getString("fecha")));
                     resultado.setHora(LocalTime.parse(rs.getString("hora")));
                     resultado.setResultado(rs.getBinaryStream("resultado"));
@@ -331,6 +333,29 @@ public class ResultadoDAOImpl implements ResultadoDAO {
             e.printStackTrace(System.out);
         }
         return resultados;
+    }
+
+    @Override
+    public byte[] getResultadoByCodExamen(String codigoExamen) {
+        String sql = "SELECT resultado FROM resultado WHERE codigoExamen = ?";
+        InputStream orden = null;
+        byte[] datosPDF = null;
+
+        try ( PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, codigoExamen);
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    orden = rs.getBinaryStream("resultado");
+
+                    int tamanoInput = orden.available();
+                    datosPDF = new byte[tamanoInput];
+                    orden.read(datosPDF, 0, tamanoInput);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace(System.out);
+        }
+        return datosPDF;
     }
 
 }

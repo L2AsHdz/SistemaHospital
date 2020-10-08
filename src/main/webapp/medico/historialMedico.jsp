@@ -160,10 +160,19 @@
                                                     <td>${resultado.fecha}</td>
                                                     <td>${resultado.hora}</td>
                                                     <td>
-                                                        <a class="btn btn-info" data-toggle="modal" data-target="#modal-resultado"
-                                                           onclick="$('#content-resultado').attr('src','${pageContext.request.contextPath}/images/${resultado.codigoExamen}')">
-                                                            <i class="fas fa-eye"></i> Ver resultado
-                                                        </a>
+                                                        <c:choose>
+                                                            <c:when test="${resultado.tipoInforme eq 'PDF'}">
+                                                                <a class="btn btn-danger" href="${pageContext.request.contextPath}/pdfR?codExamen=${resultado.codigoExamen}" target="_blank">
+                                                                    <i class="fas fa-file-pdf"></i> Ver resultado
+                                                                </a>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <a class="btn btn-info" data-toggle="modal" data-target="#modal-resultado"
+                                                                   onclick="$('#content-resultado').attr('src', '${pageContext.request.contextPath}/images/${resultado.codigoExamen}')">
+                                                                    <i class="fas fa-eye"></i> Ver resultado
+                                                                </a>
+                                                            </c:otherwise>
+                                                        </c:choose>
                                                     </td>
                                                 </tr>
                                             </c:forEach>

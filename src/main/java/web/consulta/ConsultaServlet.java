@@ -88,7 +88,7 @@ public class ConsultaServlet extends HttpServlet {
 
                 if (consultaDAO.isAvailable(codMedico, hora, fecha)) {
                     consultaDAO.create(consulta);
-                    request.setAttribute("success", true);
+                    request.setAttribute("successC", true);
                     request.getRequestDispatcher("paciente/agendarConsulta.jsp").forward(request, response);
                 } else {
                     String especialidad = request.getParameter("especialidad");

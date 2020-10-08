@@ -13,6 +13,7 @@ public class ResultadoDTO extends Resultado implements Serializable {
     private String tipoExamen;
     private String medico;
     private String laboratorista;
+    private String tipoInforme;
     private float costo;
     private int cantRealizados;
 
@@ -65,5 +66,13 @@ public class ResultadoDTO extends Resultado implements Serializable {
 
     public void setCantRealizados(int cantRealizados) {
         this.cantRealizados = cantRealizados;
+    }
+
+    public String getTipoInforme() {
+        return tipoInforme;
+    }
+
+    public void setTipoInforme(String tipoInforme) {
+        this.tipoInforme = tipoInforme;
     }
 }
