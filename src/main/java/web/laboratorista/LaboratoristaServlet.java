@@ -63,6 +63,17 @@ public class LaboratoristaServlet extends HttpServlet {
                 laboratoristaDAO.update(laboratorista);
                 redirect(request, response);
             }
+            case "perfil" -> {
+                Laboratorista lab = (Laboratorista) request.getSession().getAttribute("user");
+                lab.setNombre(nombre);
+                lab.setCUI(cui);
+                lab.setCorreo(correo);
+                lab.setTelefono(telefono);
+                
+                laboratoristaDAO.update(lab);
+                request.getSession().setAttribute("user", lab);
+                response.sendRedirect("laboratorista/inicioLab.jsp");
+            }
         }
     }
 
