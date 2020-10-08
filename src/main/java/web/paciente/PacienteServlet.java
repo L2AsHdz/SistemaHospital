@@ -36,10 +36,9 @@ public class PacienteServlet extends HttpServlet {
         String sangre = request.getParameter("sangre");
         String password = request.getParameter("password");
 
-        Paciente paciente = new Paciente(sexo, birth, telefono, peso, sangre, correo, codigo, nombre, cui, password);
-
         switch (accion) {
             case "agregar" -> {
+                Paciente paciente = new Paciente(sexo, birth, telefono, peso, sangre, correo, codigo, nombre, cui, password);
                 HttpSession sesion = request.getSession();
                 pacienteDAO.create(paciente);
                 sesion.setAttribute("user", paciente);
@@ -47,7 +46,7 @@ public class PacienteServlet extends HttpServlet {
                 response.sendRedirect("paciente/inicioPaciente.jsp");
             }
             case "perfil" -> {
-                paciente = (Paciente) request.getSession().getAttribute("user");
+                Paciente paciente = (Paciente) request.getSession().getAttribute("user");
                 paciente.setNombre(nombre);
                 paciente.setCUI(cui);
                 paciente.setBirth(LocalDate.parse(birth));

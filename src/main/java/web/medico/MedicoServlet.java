@@ -43,10 +43,9 @@ public class MedicoServlet extends HttpServlet {
         String password = request.getParameter("password");
         String[] checkEsp = request.getParameterValues("checkEsp");
 
-        Medico medico = new Medico(noColegiado, telefono, correo, horaInicio, horaFinal, fechaInicioLabores, codigo, nombre, cui, password);
-
         switch (accion) {
             case "agregar" -> {
+                Medico medico = new Medico(noColegiado, telefono, correo, horaInicio, horaFinal, fechaInicioLabores, codigo, nombre, cui, password);
                 if (!medicoDAO.exists(codigo)) {
                     medicoDAO.create(medico);
 
@@ -61,21 +60,22 @@ public class MedicoServlet extends HttpServlet {
                 }
             }
             case "modificar" -> {
+                Medico medico = new Medico(noColegiado, telefono, correo, horaInicio, horaFinal, fechaInicioLabores, codigo, nombre, cui, password);
                 medicoDAO.update(medico);
                 redirect(request, response);
                 //mostrar mensaje de exito
             }
             case "perfil" -> {
-                medico = (Medico) request.getSession().getAttribute("user");
+                Medico medico = (Medico) request.getSession().getAttribute("user");
                 medico.setNombre(nombre);
                 medico.setCUI(cui);
                 medico.setCorreo(correo);
                 medico.setTelefono(telefono);
-                
+
                 medicoDAO.update(medico);
                 request.getSession().setAttribute("user", medico);
                 response.sendRedirect("medico/inicioMedico.jsp");
-                
+
             }
         }
     }
@@ -83,7 +83,7 @@ public class MedicoServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String accion = request.getParameter("accion");
-        
+
         if (accion != null && accion.equals("editar")) {
             String codigo = request.getParameter("codigo");
             List<Especialidad> especialidades = especialidadDAO.getListado();
@@ -91,16 +91,16 @@ public class MedicoServlet extends HttpServlet {
             request.setAttribute("especialidades", especialidades);
             request.setAttribute("medico", medico);
             request.getRequestDispatcher("admin/formMedico.jsp").forward(request, response);
-        
+
         } else if (accion != null && accion.equals("add")) {
             List<Especialidad> especialidades = especialidadDAO.getListado();
             request.setAttribute("especialidades", especialidades);
             request.getRequestDispatcher("admin/formMedico.jsp").forward(request, response);
-        
+
         } else if (accion != null && accion.equals("logout")) {
             request.getSession().invalidate();
             response.sendRedirect("index.jsp");
-        
+
         } else {
             redirect(request, response);
         }

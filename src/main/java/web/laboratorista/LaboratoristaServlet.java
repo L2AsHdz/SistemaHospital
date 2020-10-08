@@ -23,7 +23,7 @@ import model.usuario.Turno;
  */
 @WebServlet("/LaboratoristaServlet")
 public class LaboratoristaServlet extends HttpServlet {
-    
+
     private final CRUD<Laboratorista> laboratoristaDAO = LaboratoristaDAOImpl.getLaboratoristaDAO();
     private final CRUD<TipoExamen> tipoExamenDAO = TipoExamenDAOImpl.getTipoExamenDAO();
     private final CRUD<Turno> turnoDAO = TurnoDAOImpl.getTurnoDAO();
@@ -41,14 +41,13 @@ public class LaboratoristaServlet extends HttpServlet {
         String fechaInicioLabores = request.getParameter("fechaLabores");
         String password = request.getParameter("password");
         String[] turnos = request.getParameterValues("turnos");
-        
-        Laboratorista laboratorista = new Laboratorista(registroSalud, telefono, tipoExamen, correo, fechaInicioLabores, codigo, nombre, cui, password);
-        
+
         switch (accion) {
             case "agregar" -> {
+                Laboratorista laboratorista = new Laboratorista(registroSalud, telefono, tipoExamen, correo, fechaInicioLabores, codigo, nombre, cui, password);
                 if (!laboratoristaDAO.exists(codigo)) {
                     laboratoristaDAO.create(laboratorista);
-                    
+
                     for (String turno : turnos) {
                         turnoDAO.create(new Turno(codigo, turno));
                     }
@@ -60,6 +59,7 @@ public class LaboratoristaServlet extends HttpServlet {
                 }
             }
             case "modificar" -> {
+                Laboratorista laboratorista = new Laboratorista(registroSalud, telefono, tipoExamen, correo, fechaInicioLabores, codigo, nombre, cui, password);
                 laboratoristaDAO.update(laboratorista);
                 redirect(request, response);
             }
@@ -69,7 +69,7 @@ public class LaboratoristaServlet extends HttpServlet {
                 lab.setCUI(cui);
                 lab.setCorreo(correo);
                 lab.setTelefono(telefono);
-                
+
                 laboratoristaDAO.update(lab);
                 request.getSession().setAttribute("user", lab);
                 response.sendRedirect("laboratorista/inicioLab.jsp");
@@ -80,7 +80,7 @@ public class LaboratoristaServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String accion = request.getParameter("accion");
-        
+
         if (accion != null && accion.equals("editar")) {
             String codigo = request.getParameter("codigo");
             List<TipoExamen> tiposExamen = tipoExamenDAO.getListado();
@@ -88,16 +88,16 @@ public class LaboratoristaServlet extends HttpServlet {
             request.setAttribute("tiposExamen", tiposExamen);
             request.setAttribute("laboratorista", laboratorista);
             request.getRequestDispatcher("admin/formLaboratorista.jsp").forward(request, response);
-        
+
         } else if (accion != null && accion.equals("add")) {
             List<TipoExamen> tiposExamen = tipoExamenDAO.getListado();
             request.setAttribute("tiposExamen", tiposExamen);
             request.getRequestDispatcher("admin/formLaboratorista.jsp").forward(request, response);
-        
-        }else if (accion != null && accion.equals("logout")) {
+
+        } else if (accion != null && accion.equals("logout")) {
             request.getSession().invalidate();
             response.sendRedirect("index.jsp");
-        
+
         } else {
             redirect(request, response);
         }
@@ -109,5 +109,5 @@ public class LaboratoristaServlet extends HttpServlet {
         sesion.setAttribute("laboratoristas", laboratoristas);
         response.sendRedirect("admin/laboratoristas.jsp");
     }
-    
+
 }
