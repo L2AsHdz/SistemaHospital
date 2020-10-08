@@ -89,8 +89,16 @@ public class AdminDAOImpl implements AdminDAO {
     }
 
     @Override
-    public void update(Admin t) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void update(Admin admin) {
+        String sql = "UPDATE admin SET nombre = ?, cui = ? WHERE codigo = ?";
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, admin.getNombre());
+            ps.setString(2, admin.getCUI());
+            ps.setString(3, admin.getCodigo());
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        }
     }
 
     @Override
